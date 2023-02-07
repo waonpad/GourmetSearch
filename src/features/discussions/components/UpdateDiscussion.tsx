@@ -6,7 +6,9 @@ import { Form, FormDrawer, InputField, TextAreaField } from '@/components/Form';
 import { Authorization, ROLES } from '@/lib/authorization';
 
 import { useDiscussion } from '../api/getDiscussion';
-import { UpdateDiscussionDTO, useUpdateDiscussion } from '../api/updateDiscussion';
+import { useUpdateDiscussion } from '../api/updateDiscussion';
+
+import type { UpdateDiscussionDTO } from '../api/updateDiscussion';
 
 type UpdateDiscussionProps = {
   discussionId: string;

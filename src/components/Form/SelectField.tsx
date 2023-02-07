@@ -1,8 +1,11 @@
-import clsx from 'clsx';
 import * as React from 'react';
-import { UseFormRegisterReturn } from 'react-hook-form';
 
-import { FieldWrapper, FieldWrapperPassThroughProps } from './FieldWrapper';
+import clsx from 'clsx';
+
+import { FieldWrapper } from './FieldWrapper';
+
+import type { FieldWrapperPassThroughProps } from './FieldWrapper';
+import type { UseFormRegisterReturn } from 'react-hook-form';
 
 type Option = {
   label: React.ReactNode;

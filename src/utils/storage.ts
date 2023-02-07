@@ -1,4 +1,6 @@
-const storagePrefix = 'bulletproof_react_';
+import { APP_NAME } from '@/config';
+
+const storagePrefix = `${APP_NAME}_`;
 
 const storage = {
   getToken: () => {

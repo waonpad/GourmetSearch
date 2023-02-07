@@ -1,4 +1,3 @@
-import { Meta, Story } from '@storybook/react';
 import * as React from 'react';
 
 import { useDisclosure } from '@/hooks/useDisclosure';
@@ -6,6 +5,8 @@ import { useDisclosure } from '@/hooks/useDisclosure';
 import { Button } from '../Button';
 
 import { Dialog, DialogTitle } from './Dialog';
+
+import type { Meta, Story } from '@storybook/react';
 
 const meta: Meta = {
   title: 'Components/Elements/Dialog',

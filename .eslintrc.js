@@ -36,7 +36,7 @@ module.exports = {
         'plugin:jest-dom/recommended',
       ],
       rules: {
-        "import/no-unresolved": "off",
+        "import/no-unresolved": "off", //
         'no-restricted-imports': [
           'error',
           {
@@ -47,13 +47,31 @@ module.exports = {
         'react/prop-types': 'off',
 
         'import/order': [
+          // https://zenn.dev/riemonyamada/articles/02e8c172e1eeb1
           'error',
           {
-            groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object'],
+            groups: ['builtin', 'external', 'parent', 'sibling', 'index', 'object', 'type'],
+            pathGroups: [
+              {
+                pattern: '{react,react-dom/**,react-router-dom}',
+                group: 'builtin',
+                position: 'before',
+              },
+              {
+                pattern: '@/**',
+                group: 'parent',
+                position: 'before',
+              },
+            ],
+            pathGroupsExcludedImportTypes: ['builtin'],
+            alphabetize: {
+              order: 'asc',
+            },
             'newlines-between': 'always',
-            alphabetize: { order: 'asc', caseInsensitive: true },
           },
         ],
+        '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
+        //
         'import/default': 'off',
         'import/no-named-as-default-member': 'off',
         'import/no-named-as-default': 'off',

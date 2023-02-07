@@ -1,7 +1,7 @@
 import { ArchiveIcon } from '@heroicons/react/outline';
 
 import { Spinner, MDPreview } from '@/components/Elements';
-import { User } from '@/features/users';
+import type { User } from '@/features/users';
 import { useAuth } from '@/lib/auth';
 import { POLICIES, Authorization } from '@/lib/authorization';
 import { formatDate } from '@/utils/format';

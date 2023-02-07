@@ -1,6 +1,7 @@
-import { Meta, Story } from '@storybook/react';
+import { Notification } from './Notification';
 
-import { Notification, NotificationProps } from './Notification';
+import type { NotificationProps } from './Notification';
+import type { Meta, Story } from '@storybook/react';
 
 const meta: Meta = {
   title: 'Components/Notifications',

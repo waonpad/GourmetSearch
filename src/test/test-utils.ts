@@ -1,6 +1,7 @@
+import type { FunctionComponent } from 'react';
+
 import { render as rtlRender, screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { FunctionComponent } from 'react';
 
 import { AppProvider } from '@/providers/app';
 import storage from '@/utils/storage';

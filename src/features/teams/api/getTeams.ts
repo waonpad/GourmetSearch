@@ -1,9 +1,9 @@
 import { useQuery } from 'react-query';
 
 import { axios } from '@/lib/axios';
-import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query';
+import type { ExtractFnReturnType, QueryConfig } from '@/lib/react-query';
 
-import { Team } from '../types';
+import type { Team } from '../types';
 
 export const getTeams = (): Promise<Team[]> => {
   return axios.get('/teams');

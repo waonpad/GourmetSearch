@@ -1,4 +1,3 @@
-import { Meta, Story } from '@storybook/react';
 import * as React from 'react';
 
 import { Button } from '../Elements';
@@ -8,6 +7,8 @@ import { FormDrawer } from './FormDrawer';
 import { InputField } from './InputField';
 import { SelectField } from './SelectField';
 import { TextAreaField } from './TextareaField';
+
+import type { Meta, Story } from '@storybook/react';
 
 type FormValues = {
   title: string;

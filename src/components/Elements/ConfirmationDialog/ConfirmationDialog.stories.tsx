@@ -1,8 +1,9 @@
-import { Meta, Story } from '@storybook/react';
-
 import { Button } from '../Button';
 
-import { ConfirmationDialog, ConfirmationDialogProps } from './ConfirmationDialog';
+import { ConfirmationDialog } from './ConfirmationDialog';
+
+import type { ConfirmationDialogProps } from './ConfirmationDialog';
+import type { Meta, Story } from '@storybook/react';
 
 const meta: Meta = {
   title: 'Components/Elements/ConfirmationDialog',

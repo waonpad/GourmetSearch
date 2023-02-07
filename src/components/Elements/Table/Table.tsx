@@ -1,5 +1,6 @@
-import { ArchiveIcon } from '@heroicons/react/outline';
 import * as React from 'react';
+
+import { ArchiveIcon } from '@heroicons/react/outline';
 
 type TableColumn<Entry> = {
   title: string;
