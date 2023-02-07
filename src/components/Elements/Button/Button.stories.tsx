@@ -1,6 +1,7 @@
-import { Meta, Story } from '@storybook/react';
+import { Button } from './Button';
 
-import { Button, ButtonProps } from './Button';
+import type { ButtonProps } from './Button';
+import type { Meta, Story } from '@storybook/react';
 
 const meta: Meta = {
   title: 'Components/Elements/Button',

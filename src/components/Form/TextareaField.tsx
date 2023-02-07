@@ -1,7 +1,9 @@
 import clsx from 'clsx';
-import { UseFormRegisterReturn } from 'react-hook-form';
 
-import { FieldWrapper, FieldWrapperPassThroughProps } from './FieldWrapper';
+import { FieldWrapper } from './FieldWrapper';
+
+import type { FieldWrapperPassThroughProps } from './FieldWrapper';
+import type { UseFormRegisterReturn } from 'react-hook-form';
 
 type TextAreaFieldProps = FieldWrapperPassThroughProps & {
   className?: string;

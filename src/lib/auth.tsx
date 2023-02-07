@@ -1,15 +1,13 @@
 import { initReactQueryAuth } from 'react-query-auth';
 
 import { Spinner } from '@/components/Elements';
-import {
-  loginWithEmailAndPassword,
-  getUser,
-  registerWithEmailAndPassword,
+import type {
   UserResponse,
   LoginCredentialsDTO,
   RegisterCredentialsDTO,
   AuthUser,
 } from '@/features/auth';
+import { loginWithEmailAndPassword, getUser, registerWithEmailAndPassword } from '@/features/auth';
 import storage from '@/utils/storage';
 
 async function handleUserResponse(data: UserResponse) {

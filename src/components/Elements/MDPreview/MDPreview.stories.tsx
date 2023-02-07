@@ -1,6 +1,7 @@
-import { Meta, Story } from '@storybook/react';
+import { MDPreview } from './MDPreview';
 
-import { MDPreview, MDPreviewProps } from './MDPreview';
+import type { MDPreviewProps } from './MDPreview';
+import type { Meta, Story } from '@storybook/react';
 
 const meta: Meta = {
   title: 'Components/Elements/MDPreview',

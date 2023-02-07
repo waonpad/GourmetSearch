@@ -1,5 +1,7 @@
+import type { LinkProps } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+
 import clsx from 'clsx';
-import { Link as RouterLink, LinkProps } from 'react-router-dom';
 
 export const Link = ({ className, children, ...props }: LinkProps) => {
   return (

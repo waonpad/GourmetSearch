@@ -1,7 +1,8 @@
+import * as React from 'react';
+
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import clsx from 'clsx';
-import * as React from 'react';
 import 'intersection-observer';
 
 const sizes = {

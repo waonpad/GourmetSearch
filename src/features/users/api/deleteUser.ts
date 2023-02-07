@@ -1,10 +1,11 @@
 import { useMutation } from 'react-query';
 
 import { axios } from '@/lib/axios';
-import { MutationConfig, queryClient } from '@/lib/react-query';
+import type { MutationConfig } from '@/lib/react-query';
+import { queryClient } from '@/lib/react-query';
 import { useNotificationStore } from '@/stores/notifications';
 
-import { User } from '../types';
+import type { User } from '../types';
 
 export type DeleteUserDTO = {
   userId: string;

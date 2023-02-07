@@ -1,3 +1,6 @@
+import * as React from 'react';
+import { NavLink, Link } from 'react-router-dom';
+
 import { Dialog, Menu, Transition } from '@headlessui/react';
 import {
   UserIcon,
@@ -8,10 +11,9 @@ import {
   XIcon,
 } from '@heroicons/react/outline';
 import clsx from 'clsx';
-import * as React from 'react';
-import { NavLink, Link } from 'react-router-dom';
 
 import logo from '@/assets/logo.svg';
+import { APP_NAME } from '@/config';
 import { useAuth } from '@/lib/auth';
 import { useAuthorization, ROLES } from '@/lib/authorization';
 
@@ -222,7 +224,7 @@ const Logo = () => {
   return (
     <Link className="flex items-center text-white" to=".">
       <img className="h-8 w-auto" src={logo} alt="Workflow" />
-      <span className="text-xl text-white font-semibold">Bulletproof React</span>
+      <span className="text-xl text-white font-semibold">{APP_NAME}</span>
     </Link>
   );
 };

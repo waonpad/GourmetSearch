@@ -1,3 +1,5 @@
+import { Fragment } from 'react';
+
 import { Transition } from '@headlessui/react';
 import {
   CheckCircleIcon,
@@ -6,7 +8,6 @@ import {
   InformationCircleIcon,
 } from '@heroicons/react/outline';
 import { XIcon } from '@heroicons/react/solid';
-import { Fragment } from 'react';
 
 const icons = {
   info: <InformationCircleIcon className="h-6 w-6 text-blue-500" aria-hidden="true" />,

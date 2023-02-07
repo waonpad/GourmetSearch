@@ -1,5 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 
+import { APP_NAME } from '@/config';
+
 type HeadProps = {
   title?: string;
   description?: string;
@@ -7,10 +9,7 @@ type HeadProps = {
 
 export const Head = ({ title = '', description = '' }: HeadProps = {}) => {
   return (
-    <Helmet
-      title={title ? `${title} | Bulletproof React` : undefined}
-      defaultTitle="Bulletproof React"
-    >
+    <Helmet title={title ? `${title} | ${APP_NAME}` : undefined} defaultTitle={APP_NAME}>
       <meta name="description" content={description} />
     </Helmet>
   );

@@ -3,7 +3,9 @@ import * as React from 'react';
 import { useDisclosure } from '@/hooks/useDisclosure';
 
 import { Button } from '../Elements/Button';
-import { Drawer, DrawerProps } from '../Elements/Drawer';
+import { Drawer } from '../Elements/Drawer';
+
+import type { DrawerProps } from '../Elements/Drawer';
 
 type FormDrawerProps = {
   isDone: boolean;

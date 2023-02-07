@@ -1,6 +1,8 @@
-import clsx from 'clsx';
 import * as React from 'react';
-import { FieldError } from 'react-hook-form';
+
+import clsx from 'clsx';
+
+import type { FieldError } from 'react-hook-form';
 
 type FieldWrapperProps = {
   label?: string;

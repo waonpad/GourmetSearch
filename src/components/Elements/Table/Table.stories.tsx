@@ -1,6 +1,7 @@
-import { Meta, Story } from '@storybook/react';
+import { Table } from './Table';
 
-import { Table, TableProps } from './Table';
+import type { TableProps } from './Table';
+import type { Meta, Story } from '@storybook/react';
 
 const meta: Meta = {
   title: 'Components/Elements/Table',

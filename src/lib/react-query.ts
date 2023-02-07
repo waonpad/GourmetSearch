@@ -1,12 +1,16 @@
-import { AxiosError } from 'axios';
-import { QueryClient, UseQueryOptions, UseMutationOptions, DefaultOptions } from 'react-query';
-import { PromiseValue } from 'type-fest';
+import { QueryClient } from 'react-query';
+
+import type { AxiosError } from 'axios';
+import type { UseQueryOptions, UseMutationOptions, DefaultOptions } from 'react-query';
+import type { PromiseValue } from 'type-fest';
 
 const queryConfig: DefaultOptions = {
   queries: {
     useErrorBoundary: true,
+    // refetchOnMount: false, // ページ遷移から戻ってきたときにリクエストするか
     refetchOnWindowFocus: false,
     retry: false,
+    // suspense: true, // reactのsuspenseに対応させられる
   },
 };
 

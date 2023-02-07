@@ -1,9 +1,9 @@
 import { useQuery } from 'react-query';
 
 import { axios } from '@/lib/axios';
-import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query';
+import type { ExtractFnReturnType, QueryConfig } from '@/lib/react-query';
 
-import { Discussion } from '../types';
+import type { Discussion } from '../types';
 
 export const getDiscussion = ({ discussionId }: { discussionId: string }): Promise<Discussion> => {
   return axios.get(`/discussions/${discussionId}`);

@@ -1,10 +1,10 @@
-import { Meta, Story } from '@storybook/react';
-
 import { useDisclosure } from '@/hooks/useDisclosure';
 
 import { Button } from '../Button';
 
 import { Drawer } from './Drawer';
+
+import type { Meta, Story } from '@storybook/react';
 
 const meta: Meta = {
   title: 'Components/Elements/Drawer',

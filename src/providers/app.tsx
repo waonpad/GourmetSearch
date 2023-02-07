@@ -1,9 +1,10 @@
 import * as React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+
 import { ErrorBoundary } from 'react-error-boundary';
 import { HelmetProvider } from 'react-helmet-async';
 import { QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { ReactQueryDevtools } from 'react-query/devtools'; // これのおかげでブラウザでクエリが簡単に確認できる
 
 import { Button, Spinner } from '@/components/Elements';
 import { Notifications } from '@/components/Notifications/Notifications';

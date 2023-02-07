@@ -1,10 +1,11 @@
+import { APP_NAME } from '@/config';
 import { render, waitFor } from '@/test/test-utils';
 
 import { Head } from '../Head';
 
 test('should add proper page title and meta description', async () => {
   const title = 'Hello World';
-  const titleSuffix = ' | Bulletproof React';
+  const titleSuffix = ` | ${APP_NAME}`;
   const description = 'This is a description';
 
   render(<Head title={title} description={description} />);

@@ -1,6 +1,7 @@
-import { Switch } from '@headlessui/react';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+
+import { Switch } from '@headlessui/react';
 import * as z from 'zod';
 
 import { Button } from '@/components/Elements';

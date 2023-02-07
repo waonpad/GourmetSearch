@@ -1,10 +1,12 @@
 import jwt from 'jsonwebtoken';
 import omit from 'lodash/omit';
-import { RestRequest, createResponseComposition, context } from 'msw';
+import { createResponseComposition, context } from 'msw';
 
 import { JWT_SECRET } from '@/config';
 
 import { db } from './db';
+
+import type { RestRequest } from 'msw';
 
 const isTesting = process.env.NODE_ENV === 'test' || ((window as any).Cypress as any);
 
