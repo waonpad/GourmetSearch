@@ -4,11 +4,11 @@ import logo from '@/assets/logo.svg';
 import { Button } from '@/components/Elements';
 import { Head } from '@/components/Head';
 import { APP_NAME, APP_GITHUB_REPO } from '@/config';
-import { useAuth } from '@/lib/auth';
+import { useFireAuth } from '@/lib/fireAuth';
 
 export const Landing = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user } = useFireAuth();
 
   const handleStart = () => {
     if (user) {
