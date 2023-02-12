@@ -1,12 +1,12 @@
 import { ContentLayout } from '@/components/Layout';
-import { useAuth } from '@/lib/auth';
-import { ROLES } from '@/lib/authorization';
+// import { useFireAuth } from '@/lib/fireAuth';
+// import { ROLES } from '@/lib/authorization';
 
 export const Dashboard = () => {
-  const { user } = useAuth();
+  // const { user } = useFireAuth();
   return (
     <ContentLayout title="Dashboard">
-      <h1 className="text-xl mt-2">
+      {/* <h1 className="text-xl mt-2">
         Welcome <b>{`${user?.firstName} ${user?.lastName}`}</b>
       </h1>
       <h4 className="my-3">
@@ -27,7 +27,7 @@ export const Dashboard = () => {
           <li>Comment on discussions</li>
           <li>Delete all comments</li>
         </ul>
-      )}
+      )} */}
     </ContentLayout>
   );
 };

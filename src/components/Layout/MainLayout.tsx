@@ -7,15 +7,15 @@ import {
   FolderIcon,
   HomeIcon,
   MenuAlt2Icon,
-  UsersIcon,
+  // UsersIcon,
   XIcon,
 } from '@heroicons/react/outline';
+import { UsersIcon } from '@heroicons/react/solid';
 import clsx from 'clsx';
 
 import logo from '@/assets/logo.svg';
 import { APP_NAME } from '@/config';
-import { useAuth } from '@/lib/auth';
-import { useAuthorization, ROLES } from '@/lib/authorization';
+import { useFireAuth } from '@/lib/fireAuth';
 
 type SideNavigationItem = {
   name: string;
@@ -24,16 +24,20 @@ type SideNavigationItem = {
 };
 
 const SideNavigation = () => {
-  const { checkAccess } = useAuthorization();
   const navigation = [
     { name: 'Dashboard', to: '.', icon: HomeIcon },
     { name: 'Discussions', to: './discussions', icon: FolderIcon },
-    checkAccess({ allowedRoles: [ROLES.ADMIN] }) && {
+    {
       name: 'Users',
       to: './users',
       icon: UsersIcon,
     },
-  ].filter(Boolean) as SideNavigationItem[];
+    {
+      name: 'Posts',
+      to: './posts',
+      icon: UsersIcon,
+    },
+  ] as SideNavigationItem[];
 
   return (
     <>
@@ -69,7 +73,7 @@ type UserNavigationItem = {
 };
 
 const UserNavigation = () => {
-  const { logout } = useAuth();
+  const { signOut } = useFireAuth();
 
   const userNavigation = [
     { name: 'Your Profile', to: './profile' },
@@ -77,7 +81,7 @@ const UserNavigation = () => {
       name: 'Sign out',
       to: '',
       onClick: () => {
-        logout();
+        signOut();
       },
     },
   ].filter(Boolean) as UserNavigationItem[];

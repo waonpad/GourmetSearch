@@ -12,6 +12,7 @@ const { DiscussionsRoutes } = lazyImport(
 const { Dashboard } = lazyImport(() => import('@/features/misc'), 'Dashboard');
 const { Profile } = lazyImport(() => import('@/features/users'), 'Profile');
 const { Users } = lazyImport(() => import('@/features/users'), 'Users');
+const { Posts } = lazyImport(() => import('@/features/posts'), 'Posts');
 
 const App = () => {
   return (
@@ -37,6 +38,7 @@ export const protectedRoutes = [
       { path: '/discussions/*', element: <DiscussionsRoutes /> },
       { path: '/users', element: <Users /> },
       { path: '/profile', element: <Profile /> },
+      { path: '/posts', element: <Posts /> },
       { path: '/', element: <Dashboard /> },
       { path: '*', element: <Navigate to="." /> },
     ],
