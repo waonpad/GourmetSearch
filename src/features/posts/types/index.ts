@@ -1,7 +1,6 @@
-import type { FieldValue } from 'firebase/firestore';
+import type { FireBaseEntity } from '@/types';
 
 export type Post = {
   body: string;
   authorId: string;
-  createdAt: FieldValue;
-};
+} & FireBaseEntity;

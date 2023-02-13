@@ -11,6 +11,7 @@ import { SuspenseFallback } from '@/components/Elements/SuspenseFallback/Suspens
 import { Notifications } from '@/components/Notifications/Notifications';
 import { FireAuthProvider } from '@/lib/fireAuth';
 import { queryClient } from '@/lib/react-query';
+import { ToastProvider } from '@/lib/react-toastify';
 
 type AppProviderProps = {
   children: React.ReactNode;
@@ -25,6 +26,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
             {process.env.NODE_ENV !== 'test' && <ReactQueryDevtools />}
             <Notifications />
             <FireAuthProvider>
+              <ToastProvider />
               <Router>{children}</Router>
             </FireAuthProvider>
           </QueryClientProvider>
