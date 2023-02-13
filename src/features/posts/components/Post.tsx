@@ -2,14 +2,14 @@ import { Button } from '@/components/Elements';
 
 import { useDeletePost } from '../api/deletePost';
 
-import type { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
+import type { Post as PostType } from '../types';
 
 type PostProps = {
-  post: QueryDocumentSnapshot<DocumentData>;
+  post: PostType;
 };
 
 export const Post = ({ post }: PostProps) => {
-  const deletePost = useDeletePost({ postUId: post.id });
+  const deletePost = useDeletePost({ postId: post.id });
 
   const onDeleteClick = () => {
     deletePost.mutate();
@@ -17,7 +17,7 @@ export const Post = ({ post }: PostProps) => {
 
   return (
     <div>
-      <h1>{post.data().body}</h1>
+      <h1>{post.body}</h1>
       <Button onClick={onDeleteClick} isLoading={deletePost.isLoading}>
         Delete
       </Button>

@@ -1,23 +1,19 @@
-// import { useEffect } from 'react';
-
-import { useFirestoreQuery } from '@react-query-firebase/firestore';
-import { collection, orderBy, query } from 'firebase/firestore';
+import { collection, query, orderBy } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
+import { useFirestore } from '@/hooks/useFirestore';
+
+import type { Post } from '../types';
 
 export const usePosts = () => {
-  const { data, isLoading: isPostsLoading } = useFirestoreQuery(
-    ['posts'],
-    query(collection(db, 'posts'), orderBy('createdAt', 'desc')),
-    {
-      subscribe: true,
-    }
+  const { docs, isLoading } = useFirestore(
+    query(collection(db, 'posts'), orderBy('createdAt', 'desc'))
   );
 
-  const posts = data?.docs;
+  const posts = docs as Post[];
 
   return {
     posts,
-    isPostsLoading,
+    isLoading,
   };
 };

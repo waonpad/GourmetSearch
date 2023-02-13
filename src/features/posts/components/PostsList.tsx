@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Post } from './Post';
 
-import type { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
+import type { Post as PostType } from '../types';
 
 type PostsListProps = {
-  posts: QueryDocumentSnapshot<DocumentData>[] | undefined;
+  posts: PostType[];
 };
 
 export const PostsList = ({ posts }: PostsListProps) => {
