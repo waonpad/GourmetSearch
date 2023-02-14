@@ -6,14 +6,14 @@ import { signInWithPopup, signOut as firebaseSignOut } from 'firebase/auth';
 import { SuspenseFallback } from '@/components/Elements/SuspenseFallback';
 import { auth } from '@/config/firebase';
 import { firebaseAuthProviders } from '@/config/firebaseAuthProviders';
-import { useObserveUser } from '@/hooks/useObserveUser';
+import { useFireAuthUser } from '@/features/auth';
+import type { FireUser } from '@/features/users';
 import { useObserveUserDoc } from '@/hooks/useObserveUserDoc';
 
 import type { User, UserCredential } from 'firebase/auth';
-import type { DocumentData } from 'firebase/firestore';
 
 export const useFireAuth = () => {
-  const { user, isLoading: isAuthLoading } = useObserveUser();
+  const { user, isLoading: isAuthLoading } = useFireAuthUser();
   const { userDocData, isLoading: isDocLoading } = useObserveUserDoc(user);
 
   const signIn = async (provider: keyof typeof firebaseAuthProviders) => {
@@ -41,7 +41,7 @@ export const useFireAuth = () => {
 const AuthContext = createContext<{
   user: User | null;
   isAuthLoading: boolean;
-  userDocData: DocumentData | null;
+  userDocData: FireUser | undefined;
   isDocLoading: boolean;
   signIn: (provider: keyof typeof firebaseAuthProviders) => Promise<UserCredential>;
   signOut: () => Promise<void>;

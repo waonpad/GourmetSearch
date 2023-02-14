@@ -6,7 +6,7 @@ import { auth } from '@/config/firebase';
 
 import type { User } from 'firebase/auth';
 
-export const useObserveUser = () => {
+export const useFireAuthUser = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
@@ -22,11 +22,8 @@ export const useObserveUser = () => {
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    const unsubscribed = onAuthStateChanged(auth, handleUser, handleError);
-    return () => {
-      unsubscribed();
-    };
+    const unsubscribe = onAuthStateChanged(auth, handleUser, handleError);
+    return unsubscribe;
   }, []);
 
   return { user, isLoading, error };

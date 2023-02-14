@@ -5,7 +5,7 @@ import { Post } from './Post';
 import type { Post as PostType } from '../types';
 
 type PostsListProps = {
-  posts: PostType[];
+  posts: PostType[] | undefined;
 };
 
 export const PostsList = ({ posts }: PostsListProps) => {

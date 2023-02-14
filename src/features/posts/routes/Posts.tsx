@@ -5,12 +5,12 @@ import { CreatePost } from '../components/CreatePost';
 import { PostsList } from '../components/PostsList';
 
 export const Posts = () => {
-  const { posts } = usePosts();
+  const posts = usePosts();
 
   return (
     <ContentLayout title="Posts">
       <CreatePost />
-      <PostsList posts={posts} />
+      <PostsList posts={posts.data} />
     </ContentLayout>
   );
 };
