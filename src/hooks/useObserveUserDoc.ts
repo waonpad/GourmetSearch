@@ -1,48 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-import { doc, onSnapshot } from 'firebase/firestore';
-
-import { db } from '@/config/firebase';
-
-import { useUserDocMutation } from './useUserDocMutaion';
+import type { FireUser } from '@/features/users';
+import { useFireUser, useCreateFireUser } from '@/features/users';
 
 import type { User } from 'firebase/auth';
-import type { DocumentData, DocumentSnapshot, FirestoreError } from 'firebase/firestore';
+import type { FirestoreError } from 'firebase/firestore';
 
-export const useObserveUserDoc = (user: User | null) => {
-  const [userDocData, setUserDocData] = useState<DocumentData | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<Error | string | null>(null);
+export const useObserveUserDoc = (
+  user: User | null
+): { userDocData: FireUser | undefined; isLoading: boolean; error: FirestoreError | null } => {
+  const { data: userDocData, isLoading, error } = useFireUser(user ? user?.uid : '_');
 
-  const { init } = useUserDocMutation(user);
-
-  const handleDoc = (doc: DocumentSnapshot<DocumentData>) => {
-    if (doc.exists()) {
-      const data = doc.data();
-      setUserDocData(data);
-    } else {
-      init();
-    }
-    setIsLoading(false);
-  };
-
-  const handleError = (error: FirestoreError) => {
-    setError(error);
-    console.log('onSnapshotでのエラーです', error);
-    setIsLoading(false);
-  };
+  const createFireUser = useCreateFireUser();
 
   useEffect(() => {
-    setIsLoading(true);
-    if (user) {
-      const unsubscribe = onSnapshot(doc(db, 'users', user.uid), handleDoc, handleError);
-      return unsubscribe;
-    } else {
-      setIsLoading(false);
-      setUserDocData(null);
+    if (user && !isLoading && !userDocData) {
+      createFireUser.mutateDTO(user);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [userDocData, isLoading, user, createFireUser]);
 
-  return { userDocData, isLoading, error };
+  return {
+    userDocData,
+    isLoading,
+    error,
+  };
 };

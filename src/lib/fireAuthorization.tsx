@@ -35,13 +35,13 @@ export const useAuthorization = () => {
 
   const checkAccess = React.useCallback(
     ({ allowedRoles }: { allowedRoles: RoleTypes[] }) => {
-      if (allowedRoles && allowedRoles.length > 0) {
+      if (allowedRoles && allowedRoles.length > 0 && userDocData) {
         return allowedRoles?.includes(userDocData?.role);
       }
 
       return true;
     },
-    [userDocData?.role]
+    [userDocData]
   );
 
   return { checkAccess, role: userDocData?.role };

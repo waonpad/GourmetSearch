@@ -9,7 +9,7 @@ type PostProps = {
 };
 
 export const Post = ({ post }: PostProps) => {
-  const deletePost = useDeletePost({ postId: post.id });
+  const deletePost = useDeletePost(post);
 
   const onDeleteClick = () => {
     deletePost.mutate();

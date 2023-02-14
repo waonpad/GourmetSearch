@@ -1,3 +1,4 @@
+import type { RoleTypes } from '@/lib/fireAuthorization';
 import type { BaseEntity } from '@/types';
 
 export type User = {
@@ -8,3 +9,10 @@ export type User = {
   teamId: string;
   bio: string;
 } & BaseEntity;
+
+export type FireUser = {
+  id: string;
+  displayName: string | null | undefined;
+  email: string | null | undefined;
+  role: RoleTypes;
+};
