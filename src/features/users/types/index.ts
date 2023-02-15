@@ -12,7 +12,7 @@ export type User = {
 
 export type FireUser = {
   id: string;
-  displayName: string | null | undefined;
-  email: string | null | undefined;
+  displayName: string;
+  email: string;
   role: RoleTypes;
 };
