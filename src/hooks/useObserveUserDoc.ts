@@ -16,12 +16,7 @@ export const useObserveUserDoc = (
   const [check, setCheck] = useState(false);
 
   useEffect(() => {
-    console.log(createFireUser.error);
-  }, [createFireUser.error]);
-
-  useEffect(() => {
     if (user && !isLoading && !userDocData && !check) {
-      console.log('mutateDTO');
       setCheck(true);
       createFireUser.mutateDTO();
     }

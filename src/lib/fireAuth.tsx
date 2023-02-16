@@ -1,5 +1,5 @@
 import type { FC, ReactNode } from 'react';
-import React, { createContext, useContext, useEffect } from 'react';
+import React, { createContext, useContext } from 'react';
 
 import { signInWithPopup, signOut as firebaseSignOut } from 'firebase/auth';
 
@@ -15,10 +15,6 @@ import type { User, UserCredential } from 'firebase/auth';
 export const useFireAuth = () => {
   const { user, isLoading: isAuthLoading } = useFireAuthUser();
   const { userDocData, isLoading: isDocLoading } = useObserveUserDoc(user);
-
-  useEffect(() => {
-    console.log(userDocData);
-  }, [userDocData]);
 
   const signIn = async (provider: keyof typeof firebaseAuthProviders) => {
     const result = await signInWithPopup(auth, firebaseAuthProviders[provider]);
