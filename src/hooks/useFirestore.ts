@@ -1,62 +1,44 @@
 import { useEffect, useState } from 'react';
 
 import { onSnapshot } from 'firebase/firestore';
-import { useErrorHandler } from 'react-error-boundary';
-
-import { fireUserValidator } from '@/features/users';
 
 import type { Query, DocumentReference, DocumentData, FirestoreError } from 'firebase/firestore';
 
 export const useFirestore = <T>(
   docOrQuery: Query<DocumentData> | DocumentReference | undefined
 ) => {
-  const [data, setData] = useState<T | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<FirestoreError | null>(null);
-
-  const handleError = useErrorHandler();
-
-  const [test, setTest] = useState<string>('');
-
-  useEffect(() => {
-    if (JSON.stringify(docOrQuery) !== test && docOrQuery) {
-      console.log('query updated');
-      setTest(JSON.stringify(docOrQuery));
-      // console.log(JSON.stringify(docOrQuery));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [docOrQuery]);
+  const [firestore, setFirestore] = useState<{
+    data: T | undefined;
+    isLoading: boolean;
+    error: FirestoreError | null;
+  }>({
+    data: undefined,
+    isLoading: true,
+    error: null,
+  });
 
   useEffect(() => {
     if (!docOrQuery) {
       return;
     }
     console.log('request');
-    setIsLoading(true);
+    setFirestore((prev) => ({ ...prev, isLoading: true }));
     let unsubscribe: () => void;
     if (docOrQuery.type === 'document') {
       unsubscribe = onSnapshot(docOrQuery as DocumentReference, {
         next(doc) {
           if (doc.exists()) {
             console.log(doc.data());
-            if (fireUserValidator(doc.data())) {
-              const updatedData = doc.data();
-              setData(updatedData as T);
-              setIsLoading(false);
-              setError(null);
-            } else {
-              handleError('invalid');
-              setIsLoading(false);
-              unsubscribe;
-            }
+            const updatedData = { id: doc.id, ...doc.data() };
+            setFirestore({ data: updatedData as unknown as T, isLoading: false, error: null });
           } else {
             console.log('no such document');
-            setIsLoading(false);
+            setFirestore((prev) => ({ ...prev, isLoading: false }));
             unsubscribe;
           }
         },
         error(error) {
-          setError(error);
+          setFirestore((prev) => ({ ...prev, isLoading: false, error: error }));
           unsubscribe;
         },
       });
@@ -65,19 +47,17 @@ export const useFirestore = <T>(
         next(snapshot) {
           console.log(snapshot);
           const updatedData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-          setData(updatedData as unknown as T);
-          setIsLoading(false);
-          setError(null);
+          setFirestore({ data: updatedData as unknown as T, isLoading: false, error: null });
         },
         error(error) {
-          setError(error);
+          setFirestore((prev) => ({ ...prev, isLoading: false, error: error }));
           unsubscribe;
         },
       });
     }
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [test]);
+  }, [JSON.stringify(docOrQuery)]);
 
-  return { data, isLoading, error };
+  return firestore;
 };

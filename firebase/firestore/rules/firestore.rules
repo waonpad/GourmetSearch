@@ -1,0 +1,91 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    // request user is same as resource user
+    function isUserAuthenticated(userId) {
+      return request.auth.uid == userId;
+    }
+    // request user is same as resource author
+		// function isMatchUserReference(ref, userId) {
+		// return ref != null && ref == get(/databases/$(database)/documents/users/$(userId)).__name__ && ref.size() > 0;
+		// }
+
+    // type check /////////////////////////////////////////////////////////////////////////
+    // email
+    function isValidEmail(email) {
+      return email.matches('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$');
+    }
+    // string
+    function isValidString(string) {
+      return string is string && string.size() > 0;
+    }
+    // number
+    function isValidNumber(number) {
+      return number is number && number.size() > 0;
+    }
+    // boolean
+    function isValidBoolean(boolean) {
+      return boolean is bool && boolean.size() > 0;
+    }
+    // timestamp
+    function isValidTimestamp(timestampVal) {
+      return timestampVal is timestamp && timestampVal.size() > 0;
+    }
+    // array
+    function isValidArray(array) {
+      return array is list;
+    }
+    // value in array
+    function isValidInArray(array, value) {
+      return array is list && array.size() > 0 && value in array;
+    }
+    // object
+    function isValidObject(object) {
+      return object is map && object.size() > 0;
+    }
+    // path
+    function isValidPath(path) {
+      return path is path && path.size() > 0;
+    }
+    /////////////////////////////////////////////////////////////////////////
+
+    // validate user
+    function isValidUser(user) {
+      return
+      isValidString(user.displayName) &&
+      isValidEmail(user.email) &&
+      isValidInArray(['ADMIN', 'USER'], user.role);
+    }
+
+    // validate post
+    function isValidPost(post) {
+      return
+      isValidString(post.body) &&
+      isValidTimestamp(post.createdAt);
+    }
+
+    // user
+    match /users/{userId} {
+    	allow read;
+      allow create: if isValidUser(request.resource.data) && isAuthenticated();
+      allow update: if isValidUser(request.resource.data) && isUserAuthenticated(userId);
+    }
+
+    // user's post
+    match /users/{userId}/posts/{postId} {
+      allow read;
+      allow create: if isAuthenticated();
+      allow update: if isValidPost(request.resource.data) && isUserAuthenticated(userId);
+      allow delete: if isUserAuthenticated(userId);
+    }
+
+    // post group
+    match /{path=**}/posts/{postId} {
+      allow read;
+    }
+  }
+}
