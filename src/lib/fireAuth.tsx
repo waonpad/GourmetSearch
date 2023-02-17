@@ -4,8 +4,7 @@ import React, { createContext, useContext } from 'react';
 import { signInWithPopup, signOut as firebaseSignOut } from 'firebase/auth';
 
 import { SuspenseFallback } from '@/components/Elements/SuspenseFallback';
-import { auth } from '@/config/firebase';
-import { firebaseAuthProviders } from '@/config/firebaseAuthProviders';
+import { auth, firebaseAuthProviders } from '@/config/firebase';
 import { useFireAuthUser } from '@/features/auth';
 import type { FireUser } from '@/features/users';
 import { useObserveUserDoc } from '@/hooks/useObserveUserDoc';

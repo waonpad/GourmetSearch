@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 
 import { onSnapshot } from 'firebase/firestore';
 
+import { formatDoc } from '../utils/format';
+
 import type { Query, DocumentReference, DocumentData, FirestoreError } from 'firebase/firestore';
 
 export const useFirestore = <T>(
@@ -29,11 +31,18 @@ export const useFirestore = <T>(
         next(doc) {
           if (doc.exists()) {
             console.log(doc.data());
-            const updatedData = { id: doc.id, ...doc.data() };
-            setFirestore({ data: updatedData as unknown as T, isLoading: false, error: null });
+            const updatedData = formatDoc(doc) as unknown as T;
+            setFirestore({ data: updatedData, isLoading: false, error: null });
           } else {
-            console.log('no such document');
-            setFirestore((prev) => ({ ...prev, isLoading: false }));
+            setFirestore((prev) => ({
+              ...prev,
+              isLoading: false,
+              error: {
+                code: 'not-found',
+                message: 'Document does not exist',
+                name: 'FirestoreError',
+              },
+            }));
             unsubscribe;
           }
         },
@@ -46,8 +55,8 @@ export const useFirestore = <T>(
       unsubscribe = onSnapshot(docOrQuery as Query<DocumentData>, {
         next(snapshot) {
           console.log(snapshot);
-          const updatedData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-          setFirestore({ data: updatedData as unknown as T, isLoading: false, error: null });
+          const updatedData = snapshot.docs.map((doc) => formatDoc(doc)) as unknown as T;
+          setFirestore({ data: updatedData, isLoading: false, error: null });
         },
         error(error) {
           setFirestore((prev) => ({ ...prev, isLoading: false, error: error }));

@@ -39,3 +39,6 @@ fireIndexGet:
 
 fireFuncList:
 	yarn firebase functions:list
+
+fireEmuStart:
+	yarn firebase emulators:start
