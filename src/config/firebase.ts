@@ -1,8 +1,14 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import {
+  connectAuthEmulator,
+  getAuth,
+  GithubAuthProvider,
+  GoogleAuthProvider,
+} from 'firebase/auth';
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 
 import {
+  FIREBASE_EMULATE,
   FIREBASE_API_KEY,
   FIREBASE_AUTH_DOMAIN,
   FIREBASE_PROJECT_ID,
@@ -22,7 +28,17 @@ const firebaseConfig = {
   measurementId: FIREBASE_MEASUREMENT_ID,
 };
 
-export const firebase = initializeApp(firebaseConfig);
+const firebase = initializeApp(firebaseConfig);
 
-export const auth = getAuth();
-export const db = getFirestore();
+const auth = getAuth();
+FIREBASE_EMULATE === 'true' && connectAuthEmulator(auth, 'http://localhost:9009');
+
+const db = getFirestore();
+FIREBASE_EMULATE === 'true' && connectFirestoreEmulator(db, 'localhost', 8080);
+
+const firebaseAuthProviders = {
+  github: new GithubAuthProvider(),
+  google: new GoogleAuthProvider(),
+};
+
+export { firebase, auth, db, firebaseAuthProviders };
