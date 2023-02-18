@@ -30,7 +30,6 @@ export const useFirestore = <T>(
       unsubscribe = onSnapshot(docOrQuery as DocumentReference, {
         next(doc) {
           if (doc.exists()) {
-            console.log(doc.data());
             const updatedData = formatDoc(doc) as unknown as T;
             setFirestore({ data: updatedData, isLoading: false, error: null });
           } else {
@@ -54,7 +53,6 @@ export const useFirestore = <T>(
     } else {
       unsubscribe = onSnapshot(docOrQuery as Query<DocumentData>, {
         next(snapshot) {
-          console.log(snapshot);
           const updatedData = snapshot.docs.map((doc) => formatDoc(doc)) as unknown as T;
           setFirestore({ data: updatedData, isLoading: false, error: null });
         },

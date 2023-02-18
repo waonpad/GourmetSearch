@@ -27,14 +27,7 @@ export const useFireAuth = () => {
     window.location.assign(window.location.origin as unknown as string);
   };
 
-  return {
-    user,
-    isAuthLoading,
-    userDocData,
-    isDocLoading,
-    signIn,
-    signOut,
-  };
+  return { user, isAuthLoading, userDocData, isDocLoading, signIn, signOut };
 };
 
 const AuthContext = createContext<{
