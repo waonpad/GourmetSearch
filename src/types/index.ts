@@ -5,5 +5,5 @@ export type BaseEntity = {
 
 export type FireBaseEntity = {
   id: string;
-  createdAt: string;
+  createdAt: Date;
 };

@@ -1,5 +1,5 @@
-import { useFirestoreCollectionMutation } from '@react-query-firebase/firestore';
-import { collection, doc, serverTimestamp } from 'firebase/firestore';
+import { useFirestoreWriteBatch } from '@react-query-firebase/firestore';
+import { collection, doc, serverTimestamp, writeBatch } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
 import { useFireAuth } from '@/lib/fireAuth';
@@ -10,10 +10,11 @@ type CreatePostDTO = {
   };
 };
 
-export const useCreatePost = () => {
+export const useCreatePostTBatch = () => {
   const { user } = useFireAuth();
   const userRef = doc(collection(db, 'users'), user ? user?.uid : '_');
-  const createPostMutaion = useFirestoreCollectionMutation(collection(userRef, 'posts'));
+  const batch = writeBatch(db);
+  const createPostBatch = useFirestoreWriteBatch(batch);
 
   const mutateDTO = (config: CreatePostDTO) => {
     const newPost = {
@@ -22,11 +23,14 @@ export const useCreatePost = () => {
       createdAt: serverTimestamp(),
     };
 
-    createPostMutaion.mutate(newPost);
+    batch.set(doc(collection(userRef, 'posts')), newPost);
+    batch.set(doc(collection(db, 'posts')), newPost);
+
+    createPostBatch.mutate();
   };
 
   return {
-    ...createPostMutaion,
+    ...createPostBatch,
     mutateDTO,
   };
 };

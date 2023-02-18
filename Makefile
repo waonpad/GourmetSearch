@@ -42,3 +42,6 @@ fireFuncList:
 
 fireEmuStart:
 	yarn firebase emulators:start
+
+fireEmuSaveStart:
+	yarn firebase emulators:start --import=./firebase/emulator-data --export-on-exit
