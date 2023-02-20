@@ -6,6 +6,8 @@ import {
   GoogleAuthProvider,
 } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
+// firebase v9 でfirebase/storageをimport
+import { connectStorageEmulator, getStorage } from 'firebase/storage';
 
 import {
   FIREBASE_EMULATE,
@@ -31,14 +33,17 @@ const firebaseConfig = {
 const firebase = initializeApp(firebaseConfig);
 
 const auth = getAuth();
-FIREBASE_EMULATE === 'true' && connectAuthEmulator(auth, 'http://localhost:9009');
+FIREBASE_EMULATE === 'true' && connectAuthEmulator(auth, 'http://localhost:9099');
 
 const db = getFirestore();
 FIREBASE_EMULATE === 'true' && connectFirestoreEmulator(db, 'localhost', 8080);
+
+const storage = getStorage();
+FIREBASE_EMULATE === 'true' && connectStorageEmulator(storage, 'localhost', 9199);
 
 const firebaseAuthProviders = {
   github: new GithubAuthProvider(),
   google: new GoogleAuthProvider(),
 };
 
-export { firebase, auth, db, firebaseAuthProviders };
+export { firebase, auth, db, storage, firebaseAuthProviders };

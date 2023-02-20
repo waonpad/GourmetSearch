@@ -13,6 +13,7 @@ const { Dashboard } = lazyImport(() => import('@/features/misc'), 'Dashboard');
 const { Profile } = lazyImport(() => import('@/features/users'), 'Profile');
 const { Users } = lazyImport(() => import('@/features/users'), 'Users');
 const { Posts } = lazyImport(() => import('@/features/posts'), 'Posts');
+const { Storage } = lazyImport(() => import('@/features/storage'), 'Storage');
 
 const App = () => {
   return (
@@ -39,6 +40,7 @@ export const protectedRoutes = [
       { path: '/users', element: <Users /> },
       { path: '/profile', element: <Profile /> },
       { path: '/posts', element: <Posts /> },
+      { path: '/storage', element: <Storage /> },
       { path: '/', element: <Dashboard /> },
       { path: '*', element: <Navigate to="." /> },
     ],
