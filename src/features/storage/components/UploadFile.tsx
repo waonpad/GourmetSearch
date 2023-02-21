@@ -15,9 +15,8 @@ export const UploadFile = () => {
   };
 
   useEffect(() => {
-    fireStorageMutaion.downloadURL &&
-      console.log('アップロード成功', fireStorageMutaion.downloadURL);
-  }, [fireStorageMutaion.downloadURL]);
+    fireStorageMutaion.data && console.log('アップロード成功', fireStorageMutaion.data);
+  }, [fireStorageMutaion.data]);
 
   return (
     <div>

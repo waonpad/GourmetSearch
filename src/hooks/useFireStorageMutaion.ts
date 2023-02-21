@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 
 import { uuidv4 } from '@firebase/util';
-import { uploadBytesResumable, ref, getDownloadURL } from 'firebase/storage';
+import { uploadBytesResumable, ref, getDownloadURL, getMetadata } from 'firebase/storage';
 
 import { storage } from '@/config/firebase';
 import { useFireAuth } from '@/lib/fireAuth';
 
-import type { StorageError, TaskState } from 'firebase/storage';
+import type { StorageError, TaskState, FullMetadata } from 'firebase/storage';
 
 const FILE_TYPE_ERROR_MESSAGE = '画像または動画ファイルを選択してください';
 const FILE_NOT_SELECTED_ERROR_MESSAGE = 'ファイルが選択されていません';
@@ -19,13 +19,13 @@ export const useFireStorageMutation = () => {
     error: Error | StorageError | null;
     status: TaskState | null;
     progress: number;
-    downloadURL?: string;
+    data?: (FullMetadata & { downloadUrl: string }) | undefined;
   }>({
     file: undefined,
     error: null,
     status: null,
     progress: 0,
-    downloadURL: undefined,
+    data: undefined,
   });
 
   const { file, error } = fireStorageMutation;
@@ -36,9 +36,8 @@ export const useFireStorageMutation = () => {
 
   const setFile = (file: File | undefined) => {
     console.log(file);
-    if (!file) return; // ファイルが選択されていない場合は処理を終了
+    if (!file) return;
 
-    // ファイルタイプチェック
     if (file.type.match(/(image|video)/)) {
       setFireStorageMutation((prevState) => ({
         ...prevState,
@@ -60,7 +59,6 @@ export const useFireStorageMutation = () => {
   };
 
   const mutate = (path: string, onSuccess?: () => void, onError?: () => void) => {
-    // ファイルが選択されていない場合はエラーを返す
     if (!file) {
       setFireStorageMutation((prevState) => ({
         ...prevState,
@@ -68,7 +66,6 @@ export const useFireStorageMutation = () => {
       }));
       onError && onError();
     } else {
-      // アップロード処理
       const fileName = `${uuidv4()}.${file.name.split('.').pop()}`;
 
       const uploadTask = uploadBytesResumable(
@@ -99,15 +96,27 @@ export const useFireStorageMutation = () => {
           }));
           onError && onError();
         },
-        // アップロード完了時にダウンロードURLを取得
         () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setFireStorageMutation((prevState) => ({
-              ...prevState,
-              error: null,
-              downloadURL: downloadURL,
-            }));
-          });
+          Promise.all([
+            getMetadata(uploadTask.snapshot.ref),
+            getDownloadURL(uploadTask.snapshot.ref),
+          ])
+            .then(([metadata, downloadUrl]) => {
+              const fileData = { ...metadata, downloadUrl: downloadUrl };
+              console.log(fileData);
+
+              setFireStorageMutation((prevState) => ({
+                ...prevState,
+                error: null,
+                data: fileData,
+              }));
+            })
+            .catch((error) => {
+              setFireStorageMutation((prevState) => ({
+                ...prevState,
+                error: error,
+              }));
+            });
           onSuccess && onSuccess();
         }
       );
