@@ -68,6 +68,14 @@ service cloud.firestore {
       isValidTimestamp(post.createdAt);
     }
 
+    // validate mediaPost
+    function isValidMediaPost(post) {
+      return
+      isValidString(post.body) &&
+      isValidObject(post.file) &&
+      isValidTimestamp(post.createdAt);
+    }
+
     // user
     match /users/{userId} {
     	allow read;
@@ -83,8 +91,21 @@ service cloud.firestore {
       allow delete: if isUserAuthenticated(userId);
     }
 
+    // user's mediaPost
+    match /users/{userId}/mediaPosts/{mediaPostId} {
+      allow read;
+      allow create: if isAuthenticated();
+      allow update: if isValidMediaPost(request.resource.data) && isUserAuthenticated(userId);
+      allow delete: if isUserAuthenticated(userId);
+    }
+
     // post group
     match /{path=**}/posts/{postId} {
+      allow read;
+    }
+
+    // mediaPost group
+    match /{path=**}/mediaPosts/{mediaPostId} {
       allow read;
     }
   }

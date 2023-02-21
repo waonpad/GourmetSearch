@@ -58,13 +58,19 @@ export const useFireStorageMutation = () => {
     }
   };
 
-  const mutate = (path: string, onSuccess?: () => void, onError?: () => void) => {
+  const mutate = (
+    path: string,
+    options?: {
+      onSuccess?: (data: FullMetadata & { downloadUrl: string }) => void;
+      onError?: (error?: StorageError) => void;
+    }
+  ) => {
     if (!file) {
       setFireStorageMutation((prevState) => ({
         ...prevState,
         error: new Error(FILE_NOT_SELECTED_ERROR_MESSAGE),
       }));
-      onError && onError();
+      options?.onError && options.onError();
     } else {
       const fileName = `${uuidv4()}.${file.name.split('.').pop()}`;
 
@@ -94,7 +100,7 @@ export const useFireStorageMutation = () => {
             ...prevState,
             error: error,
           }));
-          onError && onError();
+          options?.onError && options.onError(error);
         },
         () => {
           Promise.all([
@@ -110,14 +116,15 @@ export const useFireStorageMutation = () => {
                 error: null,
                 data: fileData,
               }));
+              options?.onSuccess && options.onSuccess(fileData);
             })
             .catch((error) => {
               setFireStorageMutation((prevState) => ({
                 ...prevState,
                 error: error,
               }));
+              options?.onError && options.onError(error);
             });
-          onSuccess && onSuccess();
         }
       );
     }

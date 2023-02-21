@@ -38,6 +38,11 @@ const SideNavigation = () => {
       icon: UsersIcon,
     },
     {
+      name: 'MediaPosts',
+      to: './mediaPosts',
+      icon: UsersIcon,
+    },
+    {
       name: 'Storage',
       to: './storage',
       icon: UsersIcon,

@@ -1,17 +1,20 @@
-import { useFirestoreDeletion } from '@/hooks/useFireStorageDeletion';
+import { useFireStorageDeletion } from '@/hooks/useFireStorageDeletion';
 
 import type { FullMetadata } from 'firebase/storage';
 
 export const File = ({ file }: { file: FullMetadata & { downloadUrl: string } }) => {
-  const fireStorageDeletion = useFirestoreDeletion();
+  const fireStorageDeletion = useFireStorageDeletion();
 
   const handleDeleteFile = () => {
     if (file) {
-      fireStorageDeletion.mutate(
-        `files/${file?.name}`,
-        () => console.log('File deleted successfully'),
-        () => console.error
-      );
+      fireStorageDeletion.mutate(`files/${file?.name}`, {
+        onSuccess: () => {
+          console.log('File deleted successfully');
+        },
+        onError: () => {
+          console.error;
+        },
+      });
     }
   };
 
