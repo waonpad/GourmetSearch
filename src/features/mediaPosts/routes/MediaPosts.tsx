@@ -8,7 +8,7 @@ export const MediaPosts = () => {
   const mediaPosts = useMediaPosts();
 
   return (
-    <ContentLayout title="MediaMediaPosts">
+    <ContentLayout title="MediaPosts">
       <CreateMediaPost />
       <MediaPostsList mediaPosts={mediaPosts.data} />
     </ContentLayout>
