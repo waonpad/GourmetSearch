@@ -5,7 +5,7 @@ import type { FullMetadata } from 'firebase/storage';
 
 export type MediaPost = {
   body: string;
-  file: Partial<MediaData>;
+  files: Partial<MediaData>[];
   author: DocumentReference<DocumentData>;
 } & FireBaseEntity;
 
