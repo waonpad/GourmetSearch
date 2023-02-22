@@ -23,12 +23,22 @@ export const useFirestore = <T>(
     if (!docOrQuery) {
       return;
     }
-    console.log('request');
     setFirestore((prev) => ({ ...prev, isLoading: true }));
     let unsubscribe: () => void;
+    let initialLoad = true;
     if (docOrQuery.type === 'document') {
       unsubscribe = onSnapshot(docOrQuery as DocumentReference, {
         next(doc) {
+          if (doc.metadata.hasPendingWrites) {
+            console.log('pending writes');
+            return;
+          }
+
+          // if (initialLoad) {
+          //   console.log('initial data loaded');
+          //   initialLoad = false;
+          // }
+
           if (doc.exists()) {
             const updatedData = formatDoc(doc) as unknown as T;
             setFirestore({ data: updatedData, isLoading: false, error: null });
@@ -53,6 +63,20 @@ export const useFirestore = <T>(
     } else {
       unsubscribe = onSnapshot(docOrQuery as Query<DocumentData>, {
         next(snapshot) {
+          if (snapshot.metadata.hasPendingWrites) {
+            console.log('pending writes');
+            return;
+          }
+
+          if (initialLoad) {
+            console.log('initial data loaded');
+            initialLoad = false;
+          } else {
+            snapshot.docChanges().forEach((change) => {
+              console.log(change.type, change.doc.id, change.doc.data());
+            });
+          }
+
           const updatedData = snapshot.docs.map((doc) => formatDoc(doc)) as unknown as T;
           setFirestore({ data: updatedData, isLoading: false, error: null });
         },

@@ -13,11 +13,9 @@ export const useFireStorageDeletion = () => {
     error: null,
   });
 
-  const { error } = deletion;
-
   useEffect(() => {
-    console.log(error);
-  }, [error]);
+    console.log(deletion.error);
+  }, [deletion.error]);
 
   const mutate = (path: string, options?: { onSuccess?: () => void; onError?: () => void }) => {
     setDeletion({
