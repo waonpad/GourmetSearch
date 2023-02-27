@@ -2,8 +2,8 @@
 import * as admin from "firebase-admin";
 admin.initializeApp();
 
-import * as posts from "./posts";
-import * as mediaPosts from "./mediaPosts";
+import * as posts from "./Posts";
+import * as mediaPosts from "./MediaPosts";
 
-exports.posts = { ...posts };
-exports.mediaPosts = { ...mediaPosts };
+exports.posts = {...posts};
+exports.mediaPosts = {...mediaPosts};

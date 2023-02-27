@@ -1,6 +1,12 @@
-const path = require('path');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const path = require("path");
 
 module.exports = {
+  settings: {
+    "node": {
+      "tryExtensions": [".js", ".json", ".node", ".ts", ".d.ts"],
+    },
+  },
   root: true,
   env: {
     es6: true,
@@ -17,13 +23,14 @@ module.exports = {
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    project: ["tsconfig.json", "tsconfig.dev.json"],
+    project: [
+      path.join(__dirname, "tsconfig.json"),
+      path.join(__dirname, "tsconfig.dev.json"),
+    ],
     sourceType: "module",
-    project:  path.join(__dirname, "tsconfig.json"), // <--- this is the important part
   },
   ignorePatterns: [
     "/lib/**/*", // Ignore built files.
-    "/src/*"
   ],
   plugins: [
     "@typescript-eslint",
@@ -35,7 +42,7 @@ module.exports = {
     "indent": ["error", 2],
     "node/no-unsupported-features/es-syntax": [
       "error",
-      { ignores: ["modules"] },
+      {ignores: ["modules"]},
     ],
-  }
+  },
 };

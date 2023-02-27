@@ -24,7 +24,7 @@ const POST_CREATE_SUCCESS = 'post create success';
 const POST_CREATE_FAILED = 'post create failed';
 const FILE_DELETE_SUCCESS = 'file delete (rollback) success';
 const FILE_DELETE_FAILED = 'file delete (rollback) failed';
-const PICk_FILE_DATA = ['bucket', 'contentType', 'downloadUrl', 'fullPath'];
+const PICK_FILE_DATA = ['bucket', 'contentType', 'downloadUrl', 'fullPath'];
 
 export const useCreateMediaPost = () => {
   const { user } = useFireAuth();
@@ -73,7 +73,7 @@ export const useCreateMediaPost = () => {
 
   // 投稿作成関数に入力データとアップロードしたファイルの情報を渡す
   const createPost = (config: CreateMediaPostDTO, files: MediaData[]) => {
-    const pickedFileData = files.map((file) => _.pick(file, PICk_FILE_DATA));
+    const pickedFileData = files.map((file) => _.pick(file, PICK_FILE_DATA));
 
     console.log('pickedFileData', pickedFileData);
 
@@ -106,6 +106,5 @@ export const useCreateMediaPost = () => {
     ...createMediaPostMutaion,
     mutateTSX,
     fireStorageMutation,
-    fireStorageDeletion,
   };
 };
