@@ -4,14 +4,14 @@ import { onAuthStateChanged } from 'firebase/auth';
 
 import { auth } from '@/config/firebase';
 
-import type { User } from 'firebase/auth';
+import type { AuthUser } from '../types';
 
-export const useFireAuthUser = () => {
-  const [user, setUser] = useState<User | null>(null);
+export const useGetAuthUser = () => {
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
-  const handleUser = (user: User | null) => {
+  const handleUser = (user: AuthUser | null) => {
     setUser(user);
     setIsLoading(false);
   };

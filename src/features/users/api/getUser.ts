@@ -5,8 +5,8 @@ import { useFirestore } from '@/hooks/useFirestore';
 
 import type { FireUser } from '../types';
 
-export const useFireUser = (uid: string | undefined) => {
-  const fireUser = useFirestore<FireUser>(uid ? doc(collection(db, 'users'), uid) : undefined);
+export const useGetUser = (uid: string | undefined) => {
+  const user = useFirestore<FireUser>(uid ? doc(collection(db, 'users'), uid) : undefined);
 
-  return fireUser;
+  return user;
 };

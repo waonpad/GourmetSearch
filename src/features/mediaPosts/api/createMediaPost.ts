@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { db } from '@/config/firebase';
 import { useFireStorageDeletion } from '@/hooks/useFireStorageDeletion';
 import { useFireStorageMutation } from '@/hooks/useFireStorageMutaion';
-import { useFireAuth } from '@/lib/fireAuth';
+import { useAuth } from '@/lib/auth';
 
 import type { MediaData, MediaPost } from '../types';
 import type { DocumentData, DocumentReference, FirestoreError } from 'firebase/firestore';
@@ -27,7 +27,7 @@ const FILE_DELETE_FAILED = 'file delete (rollback) failed';
 const PICK_FILE_DATA = ['bucket', 'contentType', 'downloadUrl', 'fullPath'];
 
 export const useCreateMediaPost = () => {
-  const { user } = useFireAuth();
+  const { user } = useAuth();
   const userRef = doc(db, 'users', user ? user?.uid : '_');
   const createMediaPostMutaion = useFirestoreCollectionMutation(collection(userRef, 'mediaPosts'));
   const fireStorageMutation = useFireStorageMutation(undefined, false);

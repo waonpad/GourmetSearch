@@ -1,63 +1,52 @@
-import { initReactQueryAuth } from 'react-query-auth';
+import type { FC, ReactNode } from 'react';
+import React, { createContext, useContext } from 'react';
 
-import { Spinner } from '@/components/Elements';
-import type {
-  UserResponse,
-  LoginCredentialsDTO,
-  RegisterCredentialsDTO,
-  AuthUser,
-} from '@/features/auth';
-import { loginWithEmailAndPassword, getUser, registerWithEmailAndPassword } from '@/features/auth';
-import storage from '@/utils/storage';
+import { signInWithPopup, signOut as firebaseSignOut } from 'firebase/auth';
 
-async function handleUserResponse(data: UserResponse) {
-  const { jwt, user } = data;
-  storage.setToken(jwt);
-  return user;
-}
+import { SuspenseFallback } from '@/components/Elements/SuspenseFallback';
+import { auth, firebaseAuthProviders } from '@/config/firebase';
+import { useGetAuthUser } from '@/features/auth';
+import type { FireUser } from '@/features/users';
+import { useObserveUserDoc } from '@/hooks/useObserveUserDoc';
 
-async function loadUser() {
-  if (storage.getToken()) {
-    const data = await getUser();
-    return data;
-  }
-  return null;
-}
+import type { User, UserCredential } from 'firebase/auth';
 
-async function loginFn(data: LoginCredentialsDTO) {
-  const response = await loginWithEmailAndPassword(data);
-  const user = await handleUserResponse(response);
-  return user;
-}
+export const useAuth = () => {
+  const { user, isLoading: isAuthLoading } = useGetAuthUser();
+  const { userDocData, isLoading: isDocLoading } = useObserveUserDoc(user);
 
-async function registerFn(data: RegisterCredentialsDTO) {
-  const response = await registerWithEmailAndPassword(data);
-  const user = await handleUserResponse(response);
-  return user;
-}
+  const signIn = async (provider: keyof typeof firebaseAuthProviders) => {
+    const result = await signInWithPopup(auth, firebaseAuthProviders[provider]);
+    console.log(result);
 
-async function logoutFn() {
-  storage.clearToken();
-  window.location.assign(window.location.origin as unknown as string);
-}
+    return result;
+  };
 
-const authConfig = {
-  loadUser,
-  loginFn,
-  registerFn,
-  logoutFn,
-  LoaderComponent() {
-    return (
-      <div className="w-screen h-screen flex justify-center items-center">
-        <Spinner size="xl" />
-      </div>
-    );
-  },
+  const signOut = async () => {
+    await firebaseSignOut(auth);
+    window.location.assign(window.location.origin as unknown as string);
+  };
+
+  return { user, isAuthLoading, userDocData, isDocLoading, signIn, signOut };
 };
 
-export const { AuthProvider, useAuth } = initReactQueryAuth<
-  AuthUser | null,
-  unknown,
-  LoginCredentialsDTO,
-  RegisterCredentialsDTO
->(authConfig);
+const AuthContext = createContext<{
+  user: User | null;
+  isAuthLoading: boolean;
+  userDocData: FireUser | undefined;
+  isDocLoading: boolean;
+  signIn: (provider: keyof typeof firebaseAuthProviders) => Promise<UserCredential>;
+  signOut: () => Promise<void>;
+} | null>(null);
+
+export const FireAuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  const auth = useAuth();
+
+  if (auth.isAuthLoading) {
+    return <SuspenseFallback />;
+  }
+
+  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+};
+
+export const useAuthContext = () => useContext(AuthContext);

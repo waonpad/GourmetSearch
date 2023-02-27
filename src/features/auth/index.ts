@@ -1,7 +1,4 @@
-export * from './api/getUser';
-export * from './api/login';
-export * from './api/register';
-export * from './api/getFireAuthUser';
+export * from './api/getAuthUser';
 
 export * from './routes';
 

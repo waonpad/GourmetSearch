@@ -3,14 +3,10 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import { ErrorBoundary } from 'react-error-boundary';
 import { HelmetProvider } from 'react-helmet-async';
-import { QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools'; // これのおかげでブラウザでクエリが簡単に確認できる
 
 import { ErrorFallback } from '@/components/Elements/ErrorFallback';
 import { SuspenseFallback } from '@/components/Elements/SuspenseFallback/SuspenseFallback';
-import { Notifications } from '@/components/Notifications/Notifications';
-import { FireAuthProvider } from '@/lib/fireAuth';
-import { queryClient } from '@/lib/react-query';
+import { FireAuthProvider } from '@/lib/auth';
 import { ToastProvider } from '@/lib/react-toastify';
 
 type AppProviderProps = {
@@ -22,14 +18,10 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     <React.Suspense fallback={<SuspenseFallback />}>
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <HelmetProvider>
-          <QueryClientProvider client={queryClient}>
-            {process.env.NODE_ENV !== 'test' && <ReactQueryDevtools />}
-            <Notifications />
-            <FireAuthProvider>
-              <ToastProvider />
-              <Router>{children}</Router>
-            </FireAuthProvider>
-          </QueryClientProvider>
+          <FireAuthProvider>
+            <ToastProvider />
+            <Router>{children}</Router>
+          </FireAuthProvider>
         </HelmetProvider>
       </ErrorBoundary>
     </React.Suspense>

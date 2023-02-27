@@ -1,12 +1,6 @@
 import { initializeApp } from 'firebase/app';
-import {
-  connectAuthEmulator,
-  getAuth,
-  GithubAuthProvider,
-  GoogleAuthProvider,
-} from 'firebase/auth';
+import { connectAuthEmulator, getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
-// firebase v9 でfirebase/storageをimport
 import { connectStorageEmulator, getStorage } from 'firebase/storage';
 
 import {
@@ -19,6 +13,12 @@ import {
   FIREBASE_APP_ID,
   FIREBASE_MEASUREMENT_ID,
 } from '@/config';
+
+const EMULATE_AUTH_URL = 'http://localhost:9099';
+const EMULATE_FIRESTORE_HOST = 'localhost';
+const EMULATE_FIRESTORE_PORT = 8080;
+const EMULATE_STORAGE_HOST = 'localhost';
+const EMULATE_STORAGE_PORT = 9199;
 
 const firebaseConfig = {
   apiKey: FIREBASE_API_KEY,
@@ -33,16 +33,17 @@ const firebaseConfig = {
 const firebase = initializeApp(firebaseConfig);
 
 const auth = getAuth();
-FIREBASE_EMULATE === 'true' && connectAuthEmulator(auth, 'http://localhost:9099');
+FIREBASE_EMULATE === 'true' && connectAuthEmulator(auth, EMULATE_AUTH_URL);
 
 const db = getFirestore();
-FIREBASE_EMULATE === 'true' && connectFirestoreEmulator(db, 'localhost', 8080);
+FIREBASE_EMULATE === 'true' &&
+  connectFirestoreEmulator(db, EMULATE_FIRESTORE_HOST, EMULATE_FIRESTORE_PORT);
 
 const storage = getStorage();
-FIREBASE_EMULATE === 'true' && connectStorageEmulator(storage, 'localhost', 9199);
+FIREBASE_EMULATE === 'true' &&
+  connectStorageEmulator(storage, EMULATE_STORAGE_HOST, EMULATE_STORAGE_PORT);
 
 const firebaseAuthProviders = {
-  github: new GithubAuthProvider(),
   google: new GoogleAuthProvider(),
 };
 

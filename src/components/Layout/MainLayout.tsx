@@ -15,7 +15,7 @@ import clsx from 'clsx';
 
 import logo from '@/assets/logo.svg';
 import { APP_NAME } from '@/config';
-import { useFireAuth } from '@/lib/fireAuth';
+import { useAuth } from '@/lib/auth';
 
 type SideNavigationItem = {
   name: string;
@@ -83,7 +83,7 @@ type UserNavigationItem = {
 };
 
 const UserNavigation = () => {
-  const { signOut } = useFireAuth();
+  const { signOut } = useAuth();
 
   const userNavigation = [
     { name: 'Your Profile', to: './profile' },

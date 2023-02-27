@@ -1,5 +1,5 @@
 {
-  "name": "bulletproof-react",
+  "name": "GameClips",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -7,6 +7,10 @@
     "@headlessui/react": "^1.2.0",
     "@heroicons/react": "^1.0.1",
     "@hookform/resolvers": "^2.5.2",
+    "@mui/icons-material": "^5.11.9",
+    "@mui/lab": "^5.0.0-alpha.120",
+    "@mui/material": "^5.11.10",
+    "@mui/styles": "^5.11.9",
     "@react-query-firebase/auth": "^1.0.0-dev.2",
     "@react-query-firebase/database": "^1.0.0-dev.2",
     "@react-query-firebase/firestore": "^1.0.0-dev.7",

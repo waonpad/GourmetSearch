@@ -2,7 +2,7 @@ import { useFirestoreWriteBatch } from '@react-query-firebase/firestore';
 import { collection, doc, serverTimestamp, writeBatch } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
-import { useFireAuth } from '@/lib/fireAuth';
+import { useAuth } from '@/lib/auth';
 
 type CreatePostDTO = {
   data: {
@@ -11,7 +11,7 @@ type CreatePostDTO = {
 };
 
 export const useCreatePostTBatch = () => {
-  const { user } = useFireAuth();
+  const { user } = useAuth();
   const userRef = doc(collection(db, 'users'), user ? user?.uid : '_');
   const batch = writeBatch(db);
   const createPostBatch = useFirestoreWriteBatch(batch);

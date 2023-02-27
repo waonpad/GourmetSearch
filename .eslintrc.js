@@ -5,7 +5,7 @@ module.exports = {
     es6: true,
   },
   parserOptions: { ecmaVersion: 8, sourceType: 'module' },
-  ignorePatterns: ['node_modules/*', 'firebase/functions/*'],
+  ignorePatterns: ['node_modules/*', 'public/*', 'firebase/functions/*'],
   extends: ['eslint:recommended'],
   overrides: [
     {

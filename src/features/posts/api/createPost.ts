@@ -2,7 +2,7 @@ import { useFirestoreCollectionMutation } from '@react-query-firebase/firestore'
 import { collection, doc, serverTimestamp } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
-import { useFireAuth } from '@/lib/fireAuth';
+import { useAuth } from '@/lib/auth';
 
 type CreatePostDTO = {
   data: {
@@ -11,7 +11,7 @@ type CreatePostDTO = {
 };
 
 export const useCreatePost = () => {
-  const { user } = useFireAuth();
+  const { user } = useAuth();
   const userRef = doc(collection(db, 'users'), user ? user?.uid : '_');
   const createPostMutaion = useFirestoreCollectionMutation(collection(userRef, 'posts'));
 
