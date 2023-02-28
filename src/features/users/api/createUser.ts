@@ -1,14 +1,12 @@
 import { useFirestoreDocumentMutation } from '@react-query-firebase/firestore';
-import { collection, doc } from 'firebase/firestore';
+import { doc } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
 
 import type { User } from 'firebase/auth';
 
-export const useCreateFireUser = (user: User | null) => {
-  const createFireUserMutaion = useFirestoreDocumentMutation(
-    doc(collection(db, 'users'), user ? user?.uid : '_')
-  );
+export const useCreateUser = (user: User | null) => {
+  const createUserMutaion = useFirestoreDocumentMutation(doc(db, 'users', user ? user?.uid : '_'));
 
   const mutateDTO = () => {
     if (user) {
@@ -19,12 +17,12 @@ export const useCreateFireUser = (user: User | null) => {
         role: 'USER',
       };
 
-      createFireUserMutaion.mutate(newUser);
+      createUserMutaion.mutate(newUser);
     }
   };
 
   return {
-    ...createFireUserMutaion,
+    ...createUserMutaion,
     mutateDTO,
   };
 };

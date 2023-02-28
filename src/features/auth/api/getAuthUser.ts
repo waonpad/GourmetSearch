@@ -11,18 +11,18 @@ export const useGetAuthUser = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
-  const handleUser = (user: AuthUser | null) => {
-    setUser(user);
-    setIsLoading(false);
-  };
-
-  const handleError = (error: Error) => {
-    setError(error);
-    setIsLoading(false);
-  };
-
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, handleUser, handleError);
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (user: AuthUser | null) => {
+        setUser(user);
+        setIsLoading(false);
+      },
+      (error: Error) => {
+        setError(error);
+        setIsLoading(false);
+      }
+    );
     return unsubscribe;
   }, []);
 
