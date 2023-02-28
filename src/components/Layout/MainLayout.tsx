@@ -15,7 +15,7 @@ import clsx from 'clsx';
 
 import logo from '@/assets/logo.svg';
 import { APP_NAME } from '@/config';
-import { useAuth } from '@/lib/auth';
+import { useAuthContext } from '@/lib/auth';
 
 type SideNavigationItem = {
   name: string;
@@ -83,7 +83,7 @@ type UserNavigationItem = {
 };
 
 const UserNavigation = () => {
-  const { signOut } = useAuth();
+  const auth = useAuthContext();
 
   const userNavigation = [
     { name: 'Your Profile', to: './profile' },
@@ -91,7 +91,7 @@ const UserNavigation = () => {
       name: 'Sign out',
       to: '',
       onClick: () => {
-        signOut();
+        auth?.signOut();
       },
     },
   ].filter(Boolean) as UserNavigationItem[];

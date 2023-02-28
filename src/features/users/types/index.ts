@@ -1,6 +1,6 @@
 import type { RoleTypes } from '@/lib/authorization';
 
-export type FireUser = {
+export type User = {
   id: string;
   displayName: string;
   email: string;

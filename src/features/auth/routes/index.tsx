@@ -1,11 +1,13 @@
-import { Route, Routes } from 'react-router-dom';
+import { Routes } from 'react-router-dom';
+
+import { PublicRoute } from '@/routes/PublicRoute';
 
 import { Login } from './Login';
 
 export const AuthRoutes = () => {
   return (
     <Routes>
-      <Route path="login" element={<Login />} />
+      <PublicRoute path="login" element={<Login />} />
     </Routes>
   );
 };

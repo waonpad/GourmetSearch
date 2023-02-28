@@ -3,10 +3,12 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import { ErrorBoundary } from 'react-error-boundary';
 import { HelmetProvider } from 'react-helmet-async';
+import { QueryClientProvider } from 'react-query';
 
 import { ErrorFallback } from '@/components/Elements/ErrorFallback';
 import { SuspenseFallback } from '@/components/Elements/SuspenseFallback/SuspenseFallback';
-import { FireAuthProvider } from '@/lib/auth';
+import { AuthProvider } from '@/lib/auth';
+import { queryClient } from '@/lib/react-query';
 import { ToastProvider } from '@/lib/react-toastify';
 
 type AppProviderProps = {
@@ -18,10 +20,12 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     <React.Suspense fallback={<SuspenseFallback />}>
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <HelmetProvider>
-          <FireAuthProvider>
-            <ToastProvider />
-            <Router>{children}</Router>
-          </FireAuthProvider>
+          <QueryClientProvider client={queryClient}>
+            <AuthProvider>
+              <ToastProvider />
+              <Router>{children}</Router>
+            </AuthProvider>
+          </QueryClientProvider>
         </HelmetProvider>
       </ErrorBoundary>
     </React.Suspense>
