@@ -1,0 +1,15 @@
+import type { {{ properCase name }} } from '../types';
+
+export type Delete{{ properCase name }}DTO = {
+  id: string;
+};
+
+type UseDelete{{ properCase name }}Options = {
+  config?: {
+    // ...
+  };
+};
+
+export const useDelete{{ properCase name }} = ({ config }: UseDelete{{ properCase name }}Options = {}) => {
+  return // ...
+};

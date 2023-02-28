@@ -1,0 +1,14 @@
+import { Navigate, Route, Routes } from 'react-router-dom';
+
+import { {{ properCase name }} } from './{{ properCase name }}';
+import { {{ properCase name }}s } from './{{ properCase name }}s';
+
+export const {{ properCase name }}Routes = () => {
+  return (
+    <Routes>
+      <Route path="" element={<{{ properCase name }}s />} />
+      <Route path=":{{ camelCase name }}Id" element={<{{ properCase name }} />} />
+      <Route path="*" element={<Navigate to="." />} />
+    </Routes>
+  );
+};

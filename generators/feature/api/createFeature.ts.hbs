@@ -1,0 +1,17 @@
+import type { {{ properCase name }} } from '../types';
+
+export type Create{{ properCase name }}DTO = {
+  data: {
+    body: string;
+  };
+};
+
+type UseCreate{{ properCase name }}Options = {
+  config?: {
+    // ...
+  };
+};
+
+export const useCreate{{ properCase name }} = ({ config }: UseCreate{{ properCase name }}Options = {}) => {
+  return // ...
+};

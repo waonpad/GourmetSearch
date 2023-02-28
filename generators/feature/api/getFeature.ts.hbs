@@ -1,0 +1,9 @@
+import type { {{ properCase name }} } from '../types';
+
+type Use{{ properCase name }}Options = {
+  id: string;
+};
+
+export const use{{ properCase name }} = ({ id }: Use{{ properCase name }}Options) => {
+  return // ...
+};

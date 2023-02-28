@@ -1,0 +1,17 @@
+import { ContentLayout } from '@/components/Layout';
+
+import { Create{{ properCase name }} } from '../components/Create{{ properCase name }}';
+import { {{ properCase name }}List } from '../components/{{ properCase name }}List';
+
+export const {{ properCase name }}s = () => {
+  return (
+    <ContentLayout title="{{ properCase name }}s">
+      <div className="flex justify-end">
+        <Create{{ properCase name }} />
+      </div>
+      <div className="mt-4">
+        <{{ properCase name }}List />
+      </div>
+    </ContentLayout>
+  );
+};

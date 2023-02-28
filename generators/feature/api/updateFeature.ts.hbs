@@ -1,0 +1,18 @@
+import type { {{ properCase name }} } from '../types';
+
+export type Update{{ properCase name }}DTO = {
+  id: string;
+  data: {
+    body: string;
+  };
+};
+
+type UseUpdate{{ properCase name }}Options = {
+  config?: {
+    // ...
+  };
+};
+
+export const useUpdate{{ properCase name }} = ({ config }: UseUpdate{{ properCase name }}Options = {}) => {
+  return // ...
+};

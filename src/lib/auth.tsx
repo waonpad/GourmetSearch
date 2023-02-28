@@ -1,5 +1,5 @@
 import type { FC, ReactNode } from 'react';
-import React, { useEffect, createContext, useContext } from 'react';
+import React, { createContext, useContext } from 'react';
 
 import { signInWithPopup, signOut as firebaseSignOut } from 'firebase/auth';
 
@@ -13,10 +13,6 @@ import type { User, UserCredential } from 'firebase/auth';
 
 export const useAuth = () => {
   const { user, isLoading: isAuthLoading } = useGetAuthUser();
-
-  useEffect(() => {
-    console.log('ef');
-  }, []);
 
   const { userDocData, isLoading: isDocLoading } = useObserveUserDoc(user);
 
@@ -49,9 +45,9 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   if (auth.isAuthLoading) {
     return <SuspenseFallback />;
-  } else {
-    return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
   }
+
+  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 };
 
 export const useAuthContext = () => useContext(AuthContext);

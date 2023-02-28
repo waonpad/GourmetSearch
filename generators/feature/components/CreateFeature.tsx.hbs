@@ -1,0 +1,57 @@
+import { PlusIcon } from '@heroicons/react/outline';
+import * as z from 'zod';
+
+import { Button } from '@/components/Elements';
+import { Form, FormDrawer, TextAreaField } from '@/components/Form';
+
+import { useCreate{{ properCase name }} } from '../api/create{{ properCase name }}';
+
+import type { Create{{ properCase name }}DTO } from '../api/create{{ properCase name }}';
+
+const schema = z.object({
+  body: z.string().min(1, 'Required'),
+});
+
+export const Create{{ properCase name }} = () => {
+  const create{{ properCase name }}Mutation = useCreate{{ properCase name }}();
+
+  return (
+    <FormDrawer
+      isDone={create{{ properCase name }}Mutation.isSuccess}
+      triggerButton={
+        <Button size="sm" startIcon={<PlusIcon className="h-4 w-4" />}>
+          Create {{ properCase name }}
+        </Button>
+      }
+      title="Create {{ properCase name }}"
+      submitButton={
+        <Button
+          form="create-{{ dashCase name }}"
+          type="submit"
+          size="sm"
+          isLoading={create{{ properCase name }}Mutation.isLoading}
+        >
+          Submit
+        </Button>
+      }
+    >
+      <Form<Create{{ properCase name }}DTO['data'], typeof schema>
+        id="create-{{ dashCase name }}"
+        onSubmit={(values) => {
+          create{{ properCase name }}Mutation.mutate({ data: values });
+        }}
+        schema={schema}
+      >
+        {({ register, formState }) => (
+          <>
+            <TextAreaField
+              label="Body"
+              error={formState.errors['body']}
+              registration={register('body')}
+            />
+          </>
+        )}
+      </Form>
+    </FormDrawer>
+  );
+};

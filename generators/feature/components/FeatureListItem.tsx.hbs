@@ -1,0 +1,31 @@
+import type { User } from '@/features/users';
+import { useAuthContext } from '@/lib/auth';
+import { POLICIES, Authorization } from '@/lib/authorization';
+import { formatDate } from '@/utils/format';
+
+import { Delete{{ properCase name }} } from './Delete{{ properCase name }}';
+
+import type { {{ properCase name }} as {{ properCase name }}Type } from '../types';
+
+type {{ properCase name }}ListItemProps = {
+  data: {{ properCase name }}Type;
+};
+
+export const {{ properCase name }}ListItem = ({ data }: {{ properCase name }}ListItemProps) => {
+  const auth = useAuthContext();
+
+  return (
+    <div className="w-full bg-white shadow-sm p-4">
+      <Authorization policyCheck={POLICIES['{{ camelCase name }}:delete'](auth?.userDocData as User, data)}>
+        <div className="flex justify-between">
+          <span className="text-xs font-semibold">{formatDate(data.createdAt)}</span>
+          <Delete{{ properCase name }} id={data.id} />
+        </div>
+      </Authorization>
+
+      <div>
+        <span>{data.body}</span>
+      </div>
+    </div>
+  );
+};
