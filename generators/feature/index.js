@@ -89,7 +89,7 @@ module.exports = {
       },
       {
         type: 'add',
-        path: featuresDir + '/{{dashCase name}}/types/index.tsx',
+        path: featuresDir + '/{{dashCase name}}/types/index.ts',
         templateFile: 'generators/feature/types/index.ts.hbs',
       },
     ];

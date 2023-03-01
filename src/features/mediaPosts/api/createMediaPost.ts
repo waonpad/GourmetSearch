@@ -1,6 +1,5 @@
 import { useFirestoreCollectionMutation } from '@react-query-firebase/firestore';
 import { collection, doc, serverTimestamp } from 'firebase/firestore';
-import _ from 'lodash';
 
 import { db } from '@/config/firebase';
 import { useFireStorageDeletion } from '@/hooks/useFireStorageDeletion';
@@ -62,10 +61,11 @@ export const useCreateMediaPost = () => {
       customMetadata: {
         owner: auth?.user?.uid as string,
       },
+      pickFields: PICK_FILE_DATA,
       onSuccess: (data) => {
         console.log(FILE_UPLOAD_SUCCESS);
         console.log(data);
-        createPost(config, data);
+        createPost(config, data as MediaData[]);
       },
       onError: (error) => console.log(FILE_UPLOAD_FAILED, error),
     });
@@ -73,14 +73,10 @@ export const useCreateMediaPost = () => {
 
   // 投稿作成関数に入力データとアップロードしたファイルの情報を渡す
   const createPost = (config: CreateMediaPostDTO, files: MediaData[]) => {
-    const pickedFileData = files.map((file) => _.pick(file, PICK_FILE_DATA));
-
-    console.log('pickedFileData', pickedFileData);
-
     mutateDTO({
       data: {
         body: config.data.body,
-        files: pickedFileData,
+        files: files,
       },
       options: {
         onSuccess: (data) => console.log(POST_CREATE_SUCCESS, data),

@@ -108,5 +108,11 @@ service cloud.firestore {
     match /{path=**}/mediaPosts/{mediaPostId} {
       allow read;
     }
+
+    // videos
+    match /videos/{videoId} {
+      allow read;
+      allow write: if isAuthenticated();
+    }
   }
 }

@@ -2,17 +2,19 @@ import { useEffect, useState } from 'react';
 
 import { uuidv4 } from '@firebase/util';
 import { uploadBytesResumable, ref, getDownloadURL, getMetadata } from 'firebase/storage';
+import _ from 'lodash';
 
 import { storage } from '@/config/firebase';
+import type { FullMetadataWithDownloadUrl } from '@/types';
 
-import type { StorageError, TaskState, FullMetadata } from 'firebase/storage';
+import type { StorageError, TaskState } from 'firebase/storage';
 
 type FileData = {
   file: File | undefined;
   error: Error | StorageError | null;
   status: TaskState | null;
   progress: number;
-  data?: (FullMetadata & { downloadUrl: string }) | undefined;
+  data?: Partial<FullMetadataWithDownloadUrl> | undefined;
 };
 
 type FireStorageMutation = {
@@ -20,6 +22,17 @@ type FireStorageMutation = {
   isLoading: boolean;
   error: Error | StorageError | null;
 };
+
+// type MutateConfig = {
+//   path: string;
+//   options?: {
+//     ignoreInvalidFile?: boolean;
+//     customMetadata?: { [key: string]: string & { owner?: string } };
+//     pickFields: string[];
+//     onSuccess?: (data: FullMetadataWithDownloadUrl[]) => void;
+//     onError?: (error?: StorageError) => void;
+//   };
+// };
 
 const FILE_TYPE_ERROR_MESSAGE = 'Unsupported file type';
 const FILE_NOT_SELECTED_ERROR_MESSAGE = 'File not selected';
@@ -37,7 +50,7 @@ export const useFireStorageMutation = (
   });
   const [options, setOptions] = useState<
     | {
-        onSuccess?: (data: (FullMetadata & { downloadUrl: string })[]) => void;
+        onSuccess?: (data: Partial<FullMetadataWithDownloadUrl>[]) => void;
         onError?: (error?: StorageError) => void;
       }
     | undefined
@@ -102,7 +115,8 @@ export const useFireStorageMutation = (
     options?: {
       ignoreInvalidFile?: boolean;
       customMetadata?: { [key: string]: string & { owner?: string } };
-      onSuccess?: (data: (FullMetadata & { downloadUrl: string })[]) => void;
+      pickFields?: string[];
+      onSuccess?: (data: Partial<FullMetadataWithDownloadUrl>[]) => void;
       onError?: (error?: StorageError) => void;
     }
   ) => {
@@ -198,13 +212,14 @@ export const useFireStorageMutation = (
                 ...prevState,
                 files: prevState.files.map((prev, index) => {
                   if (fileIndex === index) {
+                    // pickするフィールドが指定されている場合は指定されたフィールドのみを返す
+                    const data = options?.pickFields
+                      ? _.pick({ ...metadata, downloadUrl }, options?.pickFields)
+                      : { ...metadata, downloadUrl };
                     return {
                       ...prev,
                       status: 'success',
-                      data: {
-                        ...metadata,
-                        downloadUrl,
-                      },
+                      data: data,
                     };
                   }
                   return prev;
@@ -231,31 +246,6 @@ export const useFireStorageMutation = (
 
       return uploadTask;
     });
-
-    // Promise.all(uploadTasks.map((task) => task?.snapshot))
-    //   .then(() => {
-    //     setFireStorageMutation((prevState) => ({
-    //       ...prevState,
-    //       isLoading: false,
-    //     }));
-
-    //     if (options?.onSuccess) {
-    //       console.log(fireStorageMutation.files);
-    //       const successFiles = fireStorageMutation.files.filter((file) => file.data);
-
-    //       console.log(successFiles);
-    //       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    //       options.onSuccess(successFiles.map((file) => file.data!));
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     setFireStorageMutation((prevState) => ({
-    //       ...prevState,
-    //       isLoading: false,
-    //       error: error,
-    //     }));
-    //     options?.onError && options.onError(error);
-    //   });
   };
 
   useEffect(() => {
