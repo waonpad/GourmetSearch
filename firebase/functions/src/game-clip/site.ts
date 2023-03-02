@@ -13,7 +13,7 @@ import mkdirp from 'mkdirp';
 
 // const TARGET_MIME_TYPE = 'video/mp4';
 // const STORAGE_TARGET_DIR = 'files';
-const STORAGE_THUMBNAIL_DIR = 'files/thumbnail';
+const STORAGE_THUMBNAIL_DIR = 'gameClips/thumbnail';
 // const DATABASE_DESTINATION = 'videos';
 
 // const validateObject = (object: functions.storage.ObjectMetadata) => {

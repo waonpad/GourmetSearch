@@ -54,26 +54,71 @@ service cloud.firestore {
     /////////////////////////////////////////////////////////////////////////
 
     // validate user
-    function isValidUser(user) {
+    function isValidUser(data) {
       return
-      isValidString(user.displayName) &&
-      isValidEmail(user.email) &&
-      isValidInArray(['ADMIN', 'USER'], user.role);
+      isValidString(data.displayName) &&
+      isValidEmail(data.email) &&
+      isValidInArray(['ADMIN', 'USER'], data.role);
     }
 
     // validate post
-    function isValidPost(post) {
+    function isValidPost(data) {
       return
-      isValidString(post.body) &&
-      isValidTimestamp(post.createdAt);
+      isValidString(data.body) &&
+      isValidTimestamp(data.createdAt);
     }
 
     // validate mediaPost
-    function isValidMediaPost(post) {
+    function isValidMediaPost(data) {
       return
-      isValidString(post.body) &&
-      isValidObject(post.file) &&
-      isValidTimestamp(post.createdAt);
+      isValidString(data.body) &&
+      isValidObject(data.file) &&
+      isValidTimestamp(data.createdAt);
+    }
+
+    // validate gameClip
+    function isValidGameClip(data) {
+      return
+      isValidSiteGameClip(data) ||
+      isValidTwitterGameClip(data) ||
+      isValidYoutubeGameClip(data);
+    }
+
+    // validate siteGameClip
+    function isValidSiteGameClip(data) {
+      return
+      isValidString(data.title) &&
+      isValidString(data.body) &&
+      (data.author == null) &&
+      (data.type == 'site') &&
+      isValidObject(data.videoData) &&
+      (isValidObject(data.thumbnailData) || data.thumbnailData == null) &&
+      isValidTimestamp(data.createdAt) &&
+      isValidTimestamp(data.updatedAt);
+    }
+
+    // validate twitterGameClip
+    function isValidTwitterGameClip(data) {
+      return
+      isValidString(data.title) &&
+      isValidString(data.body) &&
+      (data.author == null) &&
+      (data.type == 'twitter') &&
+      isValidString(data.tweetId) &&
+      isValidTimestamp(data.createdAt) &&
+      isValidTimestamp(data.updatedAt);
+    }
+
+    // validate youtubeGameClip
+    function isValidYoutubeGameClip(data) {
+      return
+      isValidString(data.title) &&
+      isValidString(data.body) &&
+      (data.author == null) &&
+      (data.type == 'youtube') &&
+      isValidString(data.videoId) &&
+      isValidTimestamp(data.createdAt) &&
+      isValidTimestamp(data.updatedAt);
     }
 
     // user
@@ -99,6 +144,14 @@ service cloud.firestore {
       allow delete: if isUserAuthenticated(userId);
     }
 
+    // user's gameClip
+    match /users/{userId}/gameClips/{gameClipId} {
+      allow read;
+      allow create: if isAuthenticated();
+      allow update: if isValidGameClip(request.resource.data) && isUserAuthenticated(userId);
+      allow delete: if isUserAuthenticated(userId);
+    }
+
     // post group
     match /{path=**}/posts/{postId} {
       allow read;
@@ -109,10 +162,9 @@ service cloud.firestore {
       allow read;
     }
 
-    // videos
-    match /videos/{videoId} {
+    // gameClip group
+    match /{path=**}/gameClips/{gameClipId} {
       allow read;
-      allow write: if isAuthenticated();
     }
   }
 }

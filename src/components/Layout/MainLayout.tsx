@@ -47,6 +47,11 @@ const SideNavigation = () => {
       to: './storage',
       icon: UsersIcon,
     },
+    {
+      name: 'GameClips',
+      to: './gameClips',
+      icon: UsersIcon,
+    },
   ] as SideNavigationItem[];
 
   return (
