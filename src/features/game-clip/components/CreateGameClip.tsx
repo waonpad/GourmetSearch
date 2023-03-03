@@ -1,30 +1,35 @@
+import { useState } from 'react';
+
 import { PlusIcon } from '@heroicons/react/outline';
-import * as z from 'zod';
 
 import { Button } from '@/components/Elements';
-import { Form, FormDrawer, InputField, TextAreaField } from '@/components/Form';
+import { FormDrawer } from '@/components/Form';
 
-import { useCreateSiteGameClip } from '../api/createSiteGameClip';
-
-import type { CreateSiteGameClipInput } from '../api/createSiteGameClip';
-
-const schema = z.object({
-  title: z.string().min(1, 'Required'),
-  body: z.string().min(1, 'Required'),
-});
-
-// テスト用にsiteからのみ作成できるようにしている
+import { CreateSiteGameClip } from './CreateSiteGameClip';
+import { CreateTwitterGameClip } from './CreateTwitterGameClip';
+import { CreateYoutubeGameClip } from './CreateYoutubeGameClip';
 
 export const CreateGameClip = () => {
-  const createGameClipMutation = useCreateSiteGameClip();
+  const [activeForm, setActiveForm] = useState<'site' | 'twitter' | 'youtube'>('site');
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleChangeFile = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    createGameClipMutation.fireStorageMutation.setFile(event.target.files, index);
+  const handleChangeForm = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    setActiveForm(event.currentTarget.value as 'site' | 'twitter' | 'youtube');
+  };
+
+  const handleSuccess = () => {
+    setIsSuccess(true);
+    setIsLoading(false);
+  };
+
+  const handleLoading = (loading: boolean) => {
+    setIsLoading(loading);
   };
 
   return (
     <FormDrawer
-      isDone={createGameClipMutation.isSuccess}
+      isDone={isSuccess}
       triggerButton={
         <Button size="sm" startIcon={<PlusIcon className="h-4 w-4" />}>
           Create GameClip
@@ -32,49 +37,33 @@ export const CreateGameClip = () => {
       }
       title="Create GameClip"
       submitButton={
-        <Button
-          form="create-game-clip"
-          type="submit"
-          size="sm"
-          isLoading={createGameClipMutation.isLoading}
-        >
+        <Button form="create-game-clip" type="submit" size="sm" isLoading={isLoading}>
           Submit
         </Button>
       }
     >
-      <Form<CreateSiteGameClipInput['data'], typeof schema>
-        id="create-game-clip"
-        onSubmit={(values) => {
-          createGameClipMutation.mutateTSX({ data: values });
-        }}
-        schema={schema}
-      >
-        {({ register, formState }) => (
-          <>
-            <div>
-              <input type="file" onChange={(event) => handleChangeFile(event, 0)} />
-              <span>
-                {createGameClipMutation.fireStorageMutation.error &&
-                  createGameClipMutation.fireStorageMutation.error.message}
-              </span>
-              <span>
-                {createGameClipMutation.fireStorageMutation.files[0] &&
-                  createGameClipMutation.fireStorageMutation.files[0].error?.message}
-              </span>
-            </div>
-            <InputField
-              label="Title"
-              error={formState.errors['title']}
-              registration={register('title')}
-            />
-            <TextAreaField
-              label="Body"
-              error={formState.errors['body']}
-              registration={register('body')}
-            />
-          </>
-        )}
-      </Form>
+      <div className="flex space-x-2">
+        {['site', 'twitter', 'youtube'].map((type) => (
+          <Button
+            key={type}
+            size="sm"
+            value={type}
+            onClick={handleChangeForm}
+            className={activeForm === type ? 'bg-blue-800 mb-4' : 'mb-4'}
+          >
+            {type}
+          </Button>
+        ))}
+      </div>
+      {activeForm === 'site' && (
+        <CreateSiteGameClip handleSuccess={handleSuccess} handleLoading={handleLoading} />
+      )}
+      {activeForm === 'twitter' && (
+        <CreateTwitterGameClip handleSuccess={handleSuccess} handleLoading={handleLoading} />
+      )}
+      {activeForm === 'youtube' && (
+        <CreateYoutubeGameClip handleSuccess={handleSuccess} handleLoading={handleLoading} />
+      )}
     </FormDrawer>
   );
 };

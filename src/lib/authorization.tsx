@@ -5,7 +5,7 @@ import type { User } from '@/features/users';
 
 // import type { User } from '@/features/users';
 
-import { useAuth } from './auth';
+import { useAuthContext } from './auth';
 
 export enum ROLES {
   ADMIN = 'ADMIN',
@@ -24,6 +24,15 @@ export const POLICIES = {
   //   }
   //   return false;
   // },
+  'gameClip:update': (user: User, gameClip: GameClip) => {
+    if (user.role === 'ADMIN') {
+      return true;
+    }
+    if (user.role === 'USER' && gameClip.author.path.split('/').pop() === user.id) {
+      return true;
+    }
+    return false;
+  },
   'gameClip:delete': (user: User, gameClip: GameClip) => {
     if (user.role === 'ADMIN') {
       return true;
@@ -36,24 +45,25 @@ export const POLICIES = {
 };
 
 export const useAuthorization = () => {
-  const { user, userDocData } = useAuth();
+  const auth = useAuthContext();
 
-  if (!user) {
+  if (!auth?.user) {
     throw Error('User does not exist!');
   }
 
   const checkAccess = React.useCallback(
     ({ allowedRoles }: { allowedRoles: RoleTypes[] }) => {
-      if (allowedRoles && allowedRoles.length > 0 && userDocData) {
-        return allowedRoles?.includes(userDocData?.role);
+      if (allowedRoles && allowedRoles.length > 0 && auth?.userDocData) {
+        return allowedRoles?.includes(auth?.userDocData?.role);
       }
 
       return true;
     },
-    [userDocData]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [auth?.userDocData]
   );
 
-  return { checkAccess, role: userDocData?.role };
+  return { checkAccess, role: auth?.userDocData?.role };
 };
 
 type AuthorizationProps = {

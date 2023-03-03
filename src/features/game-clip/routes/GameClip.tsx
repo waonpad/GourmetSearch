@@ -14,9 +14,9 @@ export const GameClip = () => {
   const { gameClipId } = useParams();
   const auth = useAuthContext();
 
-  const GameClipQuery = useGameClip({ id: gameClipId });
+  const gameClipQuery = useGameClip({ id: gameClipId });
 
-  if (GameClipQuery.isLoading) {
+  if (gameClipQuery.isLoading) {
     return (
       <div className="w-full h-48 flex justify-center items-center">
         <Spinner size="lg" />
@@ -24,21 +24,23 @@ export const GameClip = () => {
     );
   }
 
-  if (!GameClipQuery.data) return null;
+  if (!gameClipQuery.data) return null;
 
   return (
     <ContentLayout title="GameClip">
       <div className="mt-4">
         <div className="w-full bg-white shadow-sm p-4">
-          <Authorization policyCheck={POLICIES['gameClip:delete'](auth?.userDocData as User, gameClipQuery.data)}>
+          <span className="text-xs font-semibold">{formatDate(gameClipQuery.data.createdAt)}</span>
+          <Authorization
+            policyCheck={POLICIES['gameClip:delete'](auth?.userDocData as User, gameClipQuery.data)}
+          >
             <div className="flex justify-between">
-              <span className="text-xs font-semibold">{formatDate(GameClipQuery.data.createdAt)}</span>
-              <DeleteGameClip id={GameClipQuery.data.id} />
+              <DeleteGameClip data={gameClipQuery.data} />
             </div>
           </Authorization>
 
           <div>
-            <span>{GameClipQuery.data.body}</span>
+            <span>{gameClipQuery.data.body}</span>
           </div>
         </div>
       </div>

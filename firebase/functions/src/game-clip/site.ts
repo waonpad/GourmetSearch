@@ -3,17 +3,18 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 
+import * as ffmpegInstaller from '@ffmpeg-installer/ffmpeg';
 import * as storage from '@google-cloud/storage';
-import * as ffmpeg_static from 'ffmpeg-static';
+// import * as ffmpeg_static from 'ffmpeg-static';
 import * as ffprobe_static from 'ffprobe-static';
-// import * as admin from 'firebase-admin';
+import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import * as ffmpeg from 'fluent-ffmpeg';
 import mkdirp from 'mkdirp';
 
 // const TARGET_MIME_TYPE = 'video/mp4';
-// const STORAGE_TARGET_DIR = 'files';
-const STORAGE_THUMBNAIL_DIR = 'gameClips/thumbnail';
+const STORAGE_TARGET_DIR = 'gameClips';
+const STORAGE_THUMBNAIL_DIR = 'thumbnail';
 // const DATABASE_DESTINATION = 'videos';
 
 // const validateObject = (object: functions.storage.ObjectMetadata) => {
@@ -50,7 +51,9 @@ export const onGameClipCreate = functions.firestore
 
     const filePath = gameClip.videoData.fullPath;
     const fileName = path.basename(filePath);
-    const thumbnailPath = path.normalize(path.join(STORAGE_THUMBNAIL_DIR, fileName + '.jpg'));
+    const thumbnailPath = path
+      .normalize(path.join(STORAGE_TARGET_DIR, STORAGE_THUMBNAIL_DIR, fileName + '.jpg'))
+      .replace(/\\/g, '/');
 
     // Local temporary paths.
     const tmpPath = path.join(os.tmpdir(), filePath);
@@ -58,9 +61,11 @@ export const onGameClipCreate = functions.firestore
     const tmpThumbnailPath = path.join(os.tmpdir(), thumbnailPath);
     const tmpThumbnailDir = path.dirname(tmpThumbnailPath);
 
-    // Cloud Storage Bucket.
-    const client = new storage.Storage();
-    const bucket = client.bucket(gameClip.videoData.bucket);
+    // // Cloud Storage Bucket.
+    // const client = new storage.Storage();
+    // const bucket = client.bucket(gameClip.videoData.bucket);
+
+    const bucket = admin.storage().bucket(gameClip.videoData.bucket);
 
     // // Hash for Document ID.
     // const sha1 = crypto.createHash('sha1');
@@ -82,23 +87,38 @@ export const onGameClipCreate = functions.firestore
     // Uploading the Thumbnail.
     await bucket.upload(tmpThumbnailPath, {
       destination: thumbnailPath,
-      metadata: { contentType: 'image/jpeg' },
     });
     console.log('Thumbnail uploaded to Storage at', thumbnailPath);
+
+    // Set metadata
+    await bucket.file(thumbnailPath).setMetadata({
+      metadata: {
+        owner: gameClip.author.path.split('users/')[1],
+      },
+    });
+    console.log('Thumbnail metadata updated.');
 
     // Once the image has been uploaded delete the local files to free up disk space.
     fs.unlinkSync(tmpPath);
     fs.unlinkSync(tmpThumbnailPath);
 
-    // Get the Signed URLs for the video and thumbnail.
-    const results = await Promise.all([
-      // bucket.file(filePath).getSignedUrl({ action: 'read', expires: '03-01-2500' }),
-      bucket.file(thumbnailPath).getSignedUrl({ action: 'read', expires: '03-01-2500' }),
-    ]);
-    // const fileUrl = results[0][0];
-    // const thumbnailUrl = results[1][0];
-    const thumbnailUrl = results[0][0];
-    console.log('Got Signed URLs.');
+    // // Get the Signed URLs for the video and thumbnail.
+    // const results = await Promise.all([
+    //   // bucket.file(filePath).getSignedUrl({ action: 'read', expires: '03-01-2500' }),
+    //   bucket.file(thumbnailPath).getSignedUrl({ action: 'read', expires: '03-01-2500' }),
+    // ]);
+    // // const fileUrl = results[0][0];
+    // // const thumbnailUrl = results[1][0];
+    // const thumbnailUrl = results[0][0];
+    // console.log('Got Signed URLs.');
+
+    const thumbnailUrl =
+      gameClip.videoData.downloadUrl.split(gameClip.videoData.bucket)[0] +
+      gameClip.videoData.bucket +
+      '/o/' +
+      encodeURIComponent(thumbnailPath) +
+      '?alt=media';
+    console.log('Got thumbnailUrl.');
 
     // // Add the URLs to the Firestore.
     // await admin.firestore().collection(DATABASE_DESTINATION).doc(hash).set({
@@ -122,12 +142,13 @@ export const onGameClipCreate = functions.firestore
   });
 
 // ffmpeg
-ffmpeg.setFfmpegPath(ffmpeg_static.default as string);
-ffmpeg.setFfprobePath(ffprobe_static.path);
 
 const generateThumbnail = (inputFile: string, outputFile: string) => {
   const outputDir = path.dirname(outputFile);
   const outputFileName = path.basename(outputFile);
+
+  ffmpeg.setFfmpegPath(ffmpegInstaller.path);
+  ffmpeg.setFfprobePath(ffprobe_static.path);
 
   return new Promise<void>((resolve) => {
     ffmpeg(inputFile)
@@ -135,7 +156,7 @@ const generateThumbnail = (inputFile: string, outputFile: string) => {
         resolve();
       })
       .screenshots({
-        timestamps: [1],
+        timestamps: [0],
         filename: outputFileName,
         folder: outputDir,
       });
@@ -153,8 +174,9 @@ export const onGameClipDelete = functions.firestore
     }
 
     const filePath = gameClip.videoData.fullPath;
-    const fileName = path.basename(filePath);
-    const thumbnailPath = path.normalize(path.join(STORAGE_THUMBNAIL_DIR, fileName + '.jpg'));
+    // const fileName = path.basename(filePath);
+    // const thumbnailPath = path.normalize(path.join(STORAGE_THUMBNAIL_DIR, fileName + '.jpg'));
+    const thumbnailPath = gameClip.thumbnailData.fullPath;
 
     // Cloud Storage Bucket.
     const client = new storage.Storage();

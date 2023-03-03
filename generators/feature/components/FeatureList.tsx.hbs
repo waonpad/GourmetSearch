@@ -5,9 +5,9 @@ import { use{{ properCase name }}s } from '../api/get{{ properCase name }}s';
 import { {{ properCase name }}ListItem } from './{{ properCase name }}ListItem';
 
 export const {{ properCase name }}List = () => {
-  const {{ properCase name }}sQuery = use{{ properCase name }}s();
+  const {{ camelCase name }}sQuery = use{{ properCase name }}s();
 
-  if ({{ properCase name }}sQuery.isLoading) {
+  if ({{ camelCase name }}sQuery.isLoading) {
     return (
       <div className="w-full h-48 flex justify-center items-center">
         <Spinner size="lg" />
@@ -15,12 +15,12 @@ export const {{ properCase name }}List = () => {
     );
   }
 
-  if (!{{ properCase name }}sQuery.data) return null;
+  if (!{{ camelCase name }}sQuery.data) return null;
 
   return (
     <>
       {
-        {{~ properCase name }}sQuery.data.map((data) => (
+        {{~ camelCase name }}sQuery.data.map((data) => (
         <{{ properCase name }}ListItem key={data.id} data={data} />
       ))}
     </>

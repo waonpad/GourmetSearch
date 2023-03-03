@@ -14,9 +14,9 @@ export const {{ properCase name }} = () => {
   const { {{ camelCase name }}Id } = useParams();
   const auth = useAuthContext();
 
-  const {{ properCase name }}Query = use{{ properCase name }}({ id: {{ camelCase name }}Id });
+  const {{ camelCase name }}Query = use{{ properCase name }}({ id: {{ camelCase name }}Id });
 
-  if ({{ properCase name }}Query.isLoading) {
+  if ({{ camelCase name }}Query.isLoading) {
     return (
       <div className="w-full h-48 flex justify-center items-center">
         <Spinner size="lg" />
@@ -24,7 +24,7 @@ export const {{ properCase name }} = () => {
     );
   }
 
-  if (!{{ properCase name }}Query.data) return null;
+  if (!{{ camelCase name }}Query.data) return null;
 
   return (
     <ContentLayout title="{{ properCase name }}">
@@ -32,15 +32,15 @@ export const {{ properCase name }} = () => {
         <div className="w-full bg-white shadow-sm p-4">
           <Authorization policyCheck={POLICIES['{{ camelCase name }}:delete'](auth?.userDocData as User, {{ camelCase name }}Query.data)}>
             <div className="flex justify-between">
-              <span className="text-xs font-semibold">{formatDate({{ properCase name }}Query.data.createdAt)}</span>
+              <span className="text-xs font-semibold">{formatDate({{ camelCase name }}Query.data.createdAt)}</span>
               <Delete{{ properCase name }} id={
-                {{~ properCase name }}Query.data.id} />
+                {{~ camelCase name }}Query.data.id} />
             </div>
           </Authorization>
 
           <div>
             <span>{
-              {{~ properCase name }}Query.data.body}</span>
+              {{~ camelCase name }}Query.data.body}</span>
           </div>
         </div>
       </div>
