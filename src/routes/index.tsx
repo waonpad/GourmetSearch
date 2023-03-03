@@ -12,8 +12,6 @@ import { ProtectedRoute } from './ProtectedRoute';
 const { AuthRoutes } = lazyImport(() => import('@/features/auth'), 'AuthRoutes');
 
 const { Dashboard } = lazyImport(() => import('@/features/misc'), 'Dashboard');
-const { Posts } = lazyImport(() => import('@/features/posts'), 'Posts');
-const { MediaPosts } = lazyImport(() => import('@/features/mediaPosts'), 'MediaPosts');
 
 const { GameClipRoutes } = lazyImport(() => import('@/features/game-clip'), 'GameClipRoutes');
 
@@ -38,8 +36,6 @@ export const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/app" element={<App />}>
-        <ProtectedRoute path="/posts" element={<Posts />} />
-        <ProtectedRoute path="/mediaPosts" element={<MediaPosts />} />
         <ProtectedRoute path="/gameClips" element={<GameClipRoutes />} />
         <Route path="/" element={<Dashboard />} />
         <Route path="*" element={<Navigate to="/app" />} />

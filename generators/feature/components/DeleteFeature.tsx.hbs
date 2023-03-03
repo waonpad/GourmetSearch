@@ -9,7 +9,7 @@ type Delete{{ properCase name }}Props = {
 };
 
 export const Delete{{ properCase name }} = ({ id }: Delete{{ properCase name }}Props) => {
-  const delete{{ properCase name }}Mutation = useDelete{{ properCase name }}({ id });
+  const delete{{ properCase name }}Mutation = useDelete{{ properCase name }}();
 
   return (
     <ConfirmationDialog

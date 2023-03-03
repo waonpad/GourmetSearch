@@ -45,8 +45,10 @@ export const useCreateSiteGameClip = () => {
   const auth = useAuthContext();
   const userRef = doc(db, 'users', auth?.user ? auth?.user?.uid : '_');
   const createGameClipMutaion = useFirestoreCollectionMutation(collection(userRef, 'gameClips'));
-  const fireStorageMutation = useFireStorageMutation(undefined, false);
+  const fireStorageMutation = useFireStorageMutation(['video'], false);
   const fireStorageDeletion = useFireStorageDeletion();
+
+  const isLoading = fireStorageMutation.isLoading || createGameClipMutaion.isLoading;
 
   const mutateTSX = (config: MutateConfig) => {
     uploadFile(config);
@@ -104,5 +106,6 @@ export const useCreateSiteGameClip = () => {
     ...createGameClipMutaion,
     mutateTSX,
     fireStorageMutation,
+    isLoading,
   };
 };

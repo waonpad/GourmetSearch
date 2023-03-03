@@ -5,9 +5,9 @@ import { useGameClips } from '../api/getGameClips';
 import { GameClipListItem } from './GameClipListItem';
 
 export const GameClipList = () => {
-  const GameClipsQuery = useGameClips();
+  const gameClipsQuery = useGameClips();
 
-  if (GameClipsQuery.isLoading) {
+  if (gameClipsQuery.isLoading) {
     return (
       <div className="w-full h-48 flex justify-center items-center">
         <Spinner size="lg" />
@@ -15,13 +15,15 @@ export const GameClipList = () => {
     );
   }
 
-  if (!GameClipsQuery.data) return null;
+  if (!gameClipsQuery.data) return null;
 
   return (
     <>
-      {GameClipsQuery.data.map((data) => (
-        <GameClipListItem key={data.id} data={data} />
-      ))}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+        {gameClipsQuery.data.map((data) => (
+          <GameClipListItem key={data.id} data={data} />
+        ))}
+      </div>
     </>
   );
 };

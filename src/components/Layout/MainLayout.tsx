@@ -26,31 +26,15 @@ type SideNavigationItem = {
 const SideNavigation = () => {
   const navigation = [
     { name: 'Dashboard', to: '.', icon: HomeIcon },
-    { name: 'Discussions', to: './discussions', icon: FolderIcon },
     {
       name: 'Users',
       to: './users',
       icon: UsersIcon,
     },
     {
-      name: 'Posts',
-      to: './posts',
-      icon: UsersIcon,
-    },
-    {
-      name: 'MediaPosts',
-      to: './mediaPosts',
-      icon: UsersIcon,
-    },
-    {
-      name: 'Storage',
-      to: './storage',
-      icon: UsersIcon,
-    },
-    {
       name: 'GameClips',
       to: './gameClips',
-      icon: UsersIcon,
+      icon: FolderIcon,
     },
   ] as SideNavigationItem[];
 
