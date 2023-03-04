@@ -18,11 +18,12 @@ type MutateConfig = CreateYoutubeGameClipInput & {
 };
 
 export type CreateYoutubeGameClipInput = {
-  data: Pick<YoutubeGameClip, 'title' | 'body'> & { videoUrl: string };
+  data: Pick<YoutubeGameClip, 'title' | 'body' | 'gameTitle'> & { videoUrl: string };
 };
 
 export type CreateYoutubeGameClipDTO = {
-  data: Pick<YoutubeGameClip, 'title' | 'body' | 'type' | 'videoId' | 'author'> & TimeStampDTO;
+  data: Pick<YoutubeGameClip, 'title' | 'body' | 'gameTitle' | 'type' | 'videoId' | 'author'> &
+    TimeStampDTO;
 };
 
 const GAME_CLIP_TYPE = 'youtube';
@@ -47,6 +48,7 @@ export const useCreateYoutubeGameClip = () => {
     }
 
     const newGameClip: CreateYoutubeGameClipDTO['data'] = {
+      gameTitle: config.data.gameTitle,
       title: config.data.title,
       body: config.data.body,
       type: GAME_CLIP_TYPE,

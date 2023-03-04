@@ -56,21 +56,16 @@ export const GameClipListItem = ({ data }: GameClipListItemProps) => {
 
           {isMenuOpen && (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-            <div
-              className="fixed inset-0 h-full w-full z-10"
-              onClick={handleCloseMenu}
-              style={{ zIndex: 2 }}
-            />
+            <div className="fixed inset-0 h-full w-full z-10" onClick={handleCloseMenu} />
           )}
 
           <div
-            className={`absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 focus:outline-none ${
+            className={`absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 focus:outline-none z-10 ${
               isMenuOpen ? 'block' : 'hidden'
             }`}
             role="menu"
             aria-orientation="vertical"
             aria-labelledby="options-menu"
-            style={{ zIndex: 3 }}
           >
             <div className="py-1">
               <div className="py-1">

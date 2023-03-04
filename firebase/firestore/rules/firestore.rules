@@ -87,6 +87,7 @@ service cloud.firestore {
     // validate siteGameClip
     function isValidSiteGameClip(data) {
       return
+      isValidString(data.gameTitle) &&
       isValidString(data.title) &&
       isValidString(data.body) &&
       (data.author == null) &&
@@ -100,6 +101,7 @@ service cloud.firestore {
     // validate twitterGameClip
     function isValidTwitterGameClip(data) {
       return
+      isValidString(data.gameTitle) &&
       isValidString(data.title) &&
       isValidString(data.body) &&
       (data.author == null) &&
@@ -112,6 +114,7 @@ service cloud.firestore {
     // validate youtubeGameClip
     function isValidYoutubeGameClip(data) {
       return
+      isValidString(data.gameTitle) &&
       isValidString(data.title) &&
       isValidString(data.body) &&
       (data.author == null) &&

@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import * as z from 'zod';
 
+import { AutoCompleteInputField } from '@/components/Elements/AutoCompleteInputField';
 import { Form, InputField, TextAreaField } from '@/components/Form';
+import { useIgdbApi } from '@/hooks/useIgdbApi';
 import { isTweetUrl } from '@/utils/twitter';
 
 import { useCreateTwitterGameClip } from '../api/createTwitterGameClip';
@@ -15,6 +17,7 @@ type CreateTwitterGameClipProps = {
 };
 
 const schema = z.object({
+  gameTitle: z.string().min(1, 'Required'),
   title: z.string().min(1, 'Required'),
   body: z.string().min(1, 'Required'),
   tweetUrl: z.string().refine(isTweetUrl, 'Invalid TweetUrl'),
@@ -25,6 +28,8 @@ export const CreateTwitterGameClip = ({
   handleLoading,
 }: CreateTwitterGameClipProps) => {
   const createGameClipMutation = useCreateTwitterGameClip();
+  const igdbGame = useIgdbApi();
+  const [gameTitle, setGameTitle] = useState('');
 
   useEffect(() => {
     if (createGameClipMutation.isSuccess) {
@@ -36,6 +41,14 @@ export const CreateTwitterGameClip = ({
     handleLoading(createGameClipMutation.isLoading);
   }, [createGameClipMutation.isLoading, handleLoading]);
 
+  const handleChangeGameTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const gameTitle = event.target.value;
+    setGameTitle(gameTitle);
+    if (gameTitle.length > 1) {
+      igdbGame.search({ name: gameTitle }, { fields: ['id', 'name'] });
+    }
+  };
+
   return (
     <Form<CreateTwitterGameClipInput['data'], typeof schema>
       id="create-game-clip"
@@ -46,6 +59,16 @@ export const CreateTwitterGameClip = ({
     >
       {({ register, formState }) => (
         <>
+          <AutoCompleteInputField
+            label="Game Title"
+            error={formState.errors['gameTitle']}
+            registration={register('gameTitle')}
+            inputProps={{
+              value: gameTitle,
+              onChange: handleChangeGameTitle,
+            }}
+            suggestions={igdbGame.data}
+          />
           <InputField
             label="Title"
             error={formState.errors['title']}

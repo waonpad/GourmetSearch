@@ -1,3 +1,5 @@
+import type { DetailedHTMLProps, InputHTMLAttributes } from 'react';
+
 import clsx from 'clsx';
 
 import { FieldWrapper } from './FieldWrapper';
@@ -5,14 +7,17 @@ import { FieldWrapper } from './FieldWrapper';
 import type { FieldWrapperPassThroughProps } from './FieldWrapper';
 import type { UseFormRegisterReturn } from 'react-hook-form';
 
-type InputFieldProps = FieldWrapperPassThroughProps & {
+// AutoCompleteInputFieldで使用するために、Propsをexport
+// 利便性のため、inputPropsを追加
+export type InputFieldProps = FieldWrapperPassThroughProps & {
   type?: 'text' | 'email' | 'password';
   className?: string;
   registration: Partial<UseFormRegisterReturn>;
+  inputProps?: DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
 };
 
 export const InputField = (props: InputFieldProps) => {
-  const { type = 'text', label, className, registration, error } = props;
+  const { type = 'text', label, className, registration, error, inputProps } = props;
   return (
     <FieldWrapper label={label} error={error}>
       <input
@@ -22,6 +27,7 @@ export const InputField = (props: InputFieldProps) => {
           className
         )}
         {...registration}
+        {...inputProps}
       />
     </FieldWrapper>
   );
