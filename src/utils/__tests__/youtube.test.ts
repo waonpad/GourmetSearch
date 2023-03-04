@@ -1,24 +1,24 @@
-import { isYouTubeUrl, isYouTubeVideoUrl, getVideoId } from '../youtube';
+import { isYoutubeUrl, isYoutubeVideoUrl, getVideoId } from '../youtube';
 
 // 参考
 // https://takashiski.hatenablog.com/entry/2021/09/19/124500
 
-describe('isYouTubeUrl', () => {
+describe('isYoutubeUrl', () => {
   test('should return true for www.youtube.com', () => {
-    expect(isYouTubeUrl('https://www.youtube.com/watch?v=dQw4w9WgXcQ')).toBe(true);
-    expect(isYouTubeUrl('https://www.youtube.com/embed/dQw4w9WgXcQ')).toBe(true);
-    expect(isYouTubeUrl('https://www.youtube.com/channel/UC-lHJZR3Gqxm24_Vd_AJ5Yw')).toBe(true);
+    expect(isYoutubeUrl('https://www.youtube.com/watch?v=dQw4w9WgXcQ')).toBe(true);
+    expect(isYoutubeUrl('https://www.youtube.com/embed/dQw4w9WgXcQ')).toBe(true);
+    expect(isYoutubeUrl('https://www.youtube.com/channel/UC-lHJZR3Gqxm24_Vd_AJ5Yw')).toBe(true);
   });
   test('should return true for youtu.be', () => {
-    expect(isYouTubeUrl('https://youtu.be/dQw4w9WgXcQ')).toBe(true);
+    expect(isYoutubeUrl('https://youtu.be/dQw4w9WgXcQ')).toBe(true);
   });
   test('should return false for other URLs', () => {
-    expect(isYouTubeUrl('https://www.google.com/')).toBe(false);
+    expect(isYoutubeUrl('https://www.google.com/')).toBe(false);
   });
 });
 
-describe('isYouTubeVideoUrl', () => {
-  test('returns true for valid YouTube video URLs', () => {
+describe('isYoutubeVideoUrl', () => {
+  test('returns true for valid Youtube video URLs', () => {
     const validUrls = [
       'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
       'https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=10s',
@@ -28,11 +28,11 @@ describe('isYouTubeVideoUrl', () => {
       'https://www.youtube.com/watch?v=ngNhpdaT5V0&list=PLxai42gkPeMN1nTZFD4PEc96sMI8mdT03&index=3',
     ];
     validUrls.forEach((url) => {
-      expect(isYouTubeVideoUrl(url)).toBe(true);
+      expect(isYoutubeVideoUrl(url)).toBe(true);
     });
   });
 
-  test('returns false for invalid YouTube video URLs', () => {
+  test('returns false for invalid Youtube video URLs', () => {
     const invalidUrls = [
       'https://www.youtube.com/channel/UC_x5XG1OV2P6uZZ5FSM9Ttw',
       'https://www.youtube.com/results?search_query=cats',
@@ -40,20 +40,20 @@ describe('isYouTubeVideoUrl', () => {
       'https://youtu.be/',
     ];
     invalidUrls.forEach((url) => {
-      expect(isYouTubeVideoUrl(url)).toBe(false);
+      expect(isYoutubeVideoUrl(url)).toBe(false);
     });
   });
 
-  test('returns false for non-YouTube URLs', () => {
-    const nonYouTubeUrls = ['https://example.com', 'https://www.google.com/search?q=youtube'];
-    nonYouTubeUrls.forEach((url) => {
-      expect(isYouTubeVideoUrl(url)).toBe(false);
+  test('returns false for non-Youtube URLs', () => {
+    const nonYoutubeUrls = ['https://example.com', 'https://www.google.com/search?q=youtube'];
+    nonYoutubeUrls.forEach((url) => {
+      expect(isYoutubeVideoUrl(url)).toBe(false);
     });
   });
 });
 
 describe('getVideoId', () => {
-  test('returns video ID for valid YouTube video URLs', () => {
+  test('returns video ID for valid Youtube video URLs', () => {
     const urlsAndIds = [
       ['https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'dQw4w9WgXcQ'],
       ['https://youtu.be/dQw4w9WgXcQ', 'dQw4w9WgXcQ'],
@@ -71,7 +71,7 @@ describe('getVideoId', () => {
     });
   });
 
-  test('returns null for invalid or non-YouTube URLs', () => {
+  test('returns null for invalid or non-Youtube URLs', () => {
     const invalidUrls = [
       'https://www.youtube.com/channel/UC_x5XG1OV2P6uZZ5FSM9Ttw',
       'https://www.youtube.com/results?search_query=cats',

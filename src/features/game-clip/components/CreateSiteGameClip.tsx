@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import * as z from 'zod';
 
+import { AutoCompleteInputField } from '@/components/Elements/AutoCompleteInputField';
 import { Form, InputField, TextAreaField } from '@/components/Form';
+import { useIgdbApi } from '@/hooks/useIgdbApi';
 
 import { useCreateSiteGameClip } from '../api/createSiteGameClip';
 
@@ -14,12 +16,15 @@ type CreateSiteGameClipProps = {
 };
 
 const schema = z.object({
+  gameTitle: z.string().min(1, 'Required'),
   title: z.string().min(1, 'Required'),
   body: z.string().min(1, 'Required'),
 });
 
 export const CreateSiteGameClip = ({ handleSuccess, handleLoading }: CreateSiteGameClipProps) => {
   const createGameClipMutation = useCreateSiteGameClip();
+  const igdbGame = useIgdbApi();
+  const [gameTitle, setGameTitle] = useState('');
 
   const handleChangeFile = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
     createGameClipMutation.fireStorageMutation.setFile(event.target.files, index);
@@ -35,6 +40,14 @@ export const CreateSiteGameClip = ({ handleSuccess, handleLoading }: CreateSiteG
     handleLoading(createGameClipMutation.isLoading);
   }, [createGameClipMutation.isLoading, handleLoading]);
 
+  const handleChangeGameTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const gameTitle = event.target.value;
+    setGameTitle(gameTitle);
+    if (gameTitle.length > 1) {
+      igdbGame.search({ name: gameTitle }, { fields: ['id', 'name'] });
+    }
+  };
+
   return (
     <Form<CreateSiteGameClipInput['data'], typeof schema>
       id="create-game-clip"
@@ -45,6 +58,16 @@ export const CreateSiteGameClip = ({ handleSuccess, handleLoading }: CreateSiteG
     >
       {({ register, formState }) => (
         <>
+          <AutoCompleteInputField
+            label="Game Title"
+            error={formState.errors['gameTitle']}
+            registration={register('gameTitle')}
+            inputProps={{
+              value: gameTitle,
+              onChange: handleChangeGameTitle,
+            }}
+            suggestions={igdbGame.data}
+          />
           <InputField
             label="Title"
             error={formState.errors['title']}

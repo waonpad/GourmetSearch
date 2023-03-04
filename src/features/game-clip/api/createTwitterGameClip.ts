@@ -18,11 +18,12 @@ type MutateConfig = CreateTwitterGameClipInput & {
 };
 
 export type CreateTwitterGameClipInput = {
-  data: Pick<TwitterGameClip, 'title' | 'body'> & { tweetUrl: string };
+  data: Pick<TwitterGameClip, 'title' | 'body' | 'gameTitle'> & { tweetUrl: string };
 };
 
 export type CreateTwitterGameClipDTO = {
-  data: Pick<TwitterGameClip, 'title' | 'body' | 'type' | 'tweetId' | 'author'> & TimeStampDTO;
+  data: Pick<TwitterGameClip, 'title' | 'body' | 'gameTitle' | 'type' | 'tweetId' | 'author'> &
+    TimeStampDTO;
 };
 
 const GAME_CLIP_TYPE = 'twitter';
@@ -47,6 +48,7 @@ export const useCreateTwitterGameClip = () => {
     }
 
     const newGameClip: CreateTwitterGameClipDTO['data'] = {
+      gameTitle: config.data.gameTitle,
       title: config.data.title,
       body: config.data.body,
       type: GAME_CLIP_TYPE,

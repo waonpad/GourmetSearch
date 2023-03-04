@@ -18,11 +18,14 @@ type MutateConfig = CreateSiteGameClipInput & {
 };
 
 export type CreateSiteGameClipInput = {
-  data: Pick<SiteGameClip, 'title' | 'body'>;
+  data: Pick<SiteGameClip, 'title' | 'body' | 'gameTitle'>;
 };
 
 export type CreateSiteGameClipDTO = {
-  data: Pick<SiteGameClip, 'title' | 'body' | 'type' | 'videoData' | 'thumbnailData' | 'author'> &
+  data: Pick<
+    SiteGameClip,
+    'title' | 'body' | 'gameTitle' | 'type' | 'videoData' | 'thumbnailData' | 'author'
+  > &
     TimeStampDTO;
 };
 
@@ -75,6 +78,7 @@ export const useCreateSiteGameClip = () => {
   // 投稿作成
   const createGameClip = (config: MutateConfig, file: FileData) => {
     const newGameClip: CreateSiteGameClipDTO['data'] = {
+      gameTitle: config.data.gameTitle,
       title: config.data.title,
       body: config.data.body,
       type: GAME_CLIP_TYPE,

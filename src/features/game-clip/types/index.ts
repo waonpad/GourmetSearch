@@ -9,11 +9,16 @@ export type FileData = Pick<
 
 export type GameClip = SiteGameClip | TwitterGameClip | YoutubeGameClip;
 
+type GameInfo = {
+  gameTitle: string;
+};
+
 type GameClipBaseEntity = {
   title: string;
   body: string;
   author: DocumentReference<DocumentData>;
-} & BaseEntity;
+} & BaseEntity &
+  GameInfo;
 
 export type SiteGameClip = {
   type: 'site';
