@@ -22,13 +22,6 @@ service firebase.storage {
     }
     /////////////////////////////////////////////////////////////////////////
 
-    match /files/{fileId} {
-      allow read;
-      allow create: if isOwner() && (isImage() || isVideo());
-      allow update: if isOwner() && (isImage() || isVideo());
-      allow delete: if isOwner();
-    }
-
     match /gameClips/{fileId} {
       allow read;
       allow create: if isOwner() && isVideo();

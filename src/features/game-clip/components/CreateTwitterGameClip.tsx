@@ -68,6 +68,7 @@ export const CreateTwitterGameClip = ({
               onChange: handleChangeGameTitle,
             }}
             suggestions={igdbGame.data}
+            suggestionValueKey="name"
           />
           <InputField
             label="Title"

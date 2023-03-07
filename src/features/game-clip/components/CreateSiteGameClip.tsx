@@ -67,6 +67,7 @@ export const CreateSiteGameClip = ({ handleSuccess, handleLoading }: CreateSiteG
               onChange: handleChangeGameTitle,
             }}
             suggestions={igdbGame.data}
+            suggestionValueKey="name"
           />
           <InputField
             label="Title"

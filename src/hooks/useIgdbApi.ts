@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { igdbClient } from '@/lib/igdb-api-node';
 
-type SearchGameQuery = {
+type IgdbSearchQuery = {
   name?: string;
   filter?: string;
 };
 
-type SearchGameOptions = {
+type IgdbSearchOptions = {
   fields?: string[];
   limit?: number;
   offset?: number;
@@ -24,20 +24,15 @@ const DEFAULT_LIMIT = 10;
 const DEFAULT_ENDPOINT = 'games';
 
 export const useIgdbApi = () => {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<{ [key: string]: any }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
   const prevSearchArgs = useRef<string | null>(null);
 
-  useEffect(() => {
-    console.log('Got games', data);
-  }, [data]);
-
-  const search = async (query: SearchGameQuery, options?: SearchGameOptions) => {
+  const search = async (query: IgdbSearchQuery, options?: IgdbSearchOptions) => {
     const searchArgs = JSON.stringify({ query, options });
     if (prevSearchArgs.current === searchArgs) {
-      console.log('Search args are the same, skipping');
       return;
     }
     prevSearchArgs.current = searchArgs;
@@ -71,7 +66,7 @@ export const useIgdbApi = () => {
       setIsLoading(false);
 
       return {
-        data: null,
+        data: [],
         error: new Error(response.statusText),
       };
     }

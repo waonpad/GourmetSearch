@@ -61,21 +61,6 @@ service cloud.firestore {
       isValidInArray(['ADMIN', 'USER'], data.role);
     }
 
-    // validate post
-    function isValidPost(data) {
-      return
-      isValidString(data.body) &&
-      isValidTimestamp(data.createdAt);
-    }
-
-    // validate mediaPost
-    function isValidMediaPost(data) {
-      return
-      isValidString(data.body) &&
-      isValidObject(data.file) &&
-      isValidTimestamp(data.createdAt);
-    }
-
     // validate gameClip
     function isValidGameClip(data) {
       return
@@ -131,38 +116,12 @@ service cloud.firestore {
       allow update: if isValidUser(request.resource.data) && isUserAuthenticated(userId);
     }
 
-    // user's post
-    match /users/{userId}/posts/{postId} {
-      allow read;
-      allow create: if isAuthenticated();
-      allow update: if isValidPost(request.resource.data) && isUserAuthenticated(userId);
-      allow delete: if isUserAuthenticated(userId);
-    }
-
-    // user's mediaPost
-    match /users/{userId}/mediaPosts/{mediaPostId} {
-      allow read;
-      allow create: if isAuthenticated();
-      allow update: if isValidMediaPost(request.resource.data) && isUserAuthenticated(userId);
-      allow delete: if isUserAuthenticated(userId);
-    }
-
     // user's gameClip
     match /users/{userId}/gameClips/{gameClipId} {
       allow read;
       allow create: if isAuthenticated();
       allow update: if isValidGameClip(request.resource.data) && isUserAuthenticated(userId);
       allow delete: if isUserAuthenticated(userId);
-    }
-
-    // post group
-    match /{path=**}/posts/{postId} {
-      allow read;
-    }
-
-    // mediaPost group
-    match /{path=**}/mediaPosts/{mediaPostId} {
-      allow read;
     }
 
     // gameClip group
