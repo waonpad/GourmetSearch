@@ -4,16 +4,16 @@
 import igdb from 'igdb-api-node';
 
 import {
-  APP_ENV,
+  FIREBASE_PROJECT_ID,
+  FIREBASE_EMULATE,
   TWITCH_CLIENT_ID,
   TWITCH_APP_ACCESS_TOKEN,
-  IGDB_API_URL,
   IGDB_API_PROXY,
 } from '@/config';
 
 export const igdbClient = igdb(TWITCH_CLIENT_ID, TWITCH_APP_ACCESS_TOKEN, {
   baseURL:
-    APP_ENV === 'development'
-      ? `${location.protocol}//${location.host}${IGDB_API_PROXY}`
-      : IGDB_API_URL,
+    FIREBASE_EMULATE === 'true'
+      ? `http://127.0.0.1:5001/${FIREBASE_PROJECT_ID}/us-central1/${IGDB_API_PROXY}`
+      : `https://us-central1-${FIREBASE_PROJECT_ID}.cloudfunctions.net/${IGDB_API_PROXY}`,
 });

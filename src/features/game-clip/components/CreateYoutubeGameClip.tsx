@@ -68,6 +68,7 @@ export const CreateYoutubeGameClip = ({
               onChange: handleChangeGameTitle,
             }}
             suggestions={igdbGame.data}
+            suggestionValueKey="name"
           />
           <InputField
             label="Title"

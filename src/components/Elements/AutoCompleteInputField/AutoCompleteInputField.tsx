@@ -4,15 +4,16 @@ import { InputField } from '@/components/Form';
 import type { InputFieldProps } from '@/components/Form';
 
 type AutoCompleteInputFieldProps = InputFieldProps & {
-  // 簡易的に実装
-  suggestions: {
-    id: string | number;
-    name: string;
-  }[];
+  suggestions: { [key: string]: string }[];
+  suggestionValueKey: string;
+  inputProps: {
+    value: string;
+  };
 };
 
 export const AutoCompleteInputField = ({
   suggestions,
+  suggestionValueKey,
   ...inputFieldProps
 }: AutoCompleteInputFieldProps) => {
   const [value, setValue] = useState('');
@@ -40,14 +41,21 @@ export const AutoCompleteInputField = ({
     }
   }, [suggestions]);
 
+  useEffect(() => {
+    setValue(inputFieldProps.inputProps.value);
+  }, [inputFieldProps.inputProps.value]);
+
   return (
     <div className="relative">
       <InputField
         {...inputFieldProps}
         inputProps={{
           ...inputFieldProps.inputProps,
-          value,
-          onFocus: handleFocusInputField,
+          value: value,
+          onFocus: () => {
+            handleFocusInputField();
+            inputFieldProps.inputProps.onFocus;
+          },
         }}
       />
       {isSuggestionsOpen && (
@@ -57,13 +65,13 @@ export const AutoCompleteInputField = ({
 
       {isSuggestionsOpen && (
         <ul className="absolute z-10 top-full left-0 w-full overflow-y-auto bg-white rounded-md shadow-lg border border-gray-200">
-          {suggestions.map((suggestion) => (
+          {suggestions.map((suggestion, index) => (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
             <li
-              key={suggestion.id}
+              key={suggestion.id ?? index}
               className="px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer"
               onClick={handleClickSuggestion}
-              data-value={suggestion.name}
+              data-value={suggestion[suggestionValueKey]}
             >
               {suggestion.name}
             </li>
