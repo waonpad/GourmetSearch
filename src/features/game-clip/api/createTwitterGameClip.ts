@@ -22,7 +22,10 @@ export type CreateTwitterGameClipInput = {
 };
 
 export type CreateTwitterGameClipDTO = {
-  data: Pick<TwitterGameClip, 'title' | 'body' | 'gameTitle' | 'type' | 'tweetId' | 'author'> &
+  data: Pick<
+    TwitterGameClip,
+    'title' | 'body' | 'gameTitle' | 'type' | 'tweetId' | 'author' | 'likeCount'
+  > &
     TimeStampDTO;
 };
 
@@ -54,6 +57,7 @@ export const useCreateTwitterGameClip = () => {
       type: GAME_CLIP_TYPE,
       tweetId: tweetId,
       author: userRef,
+      likeCount: 0,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     };

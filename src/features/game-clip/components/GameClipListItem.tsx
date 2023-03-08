@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
-import EditIcon from '@heroicons/react/outline/PencilAltIcon';
+// import EditIcon from '@heroicons/react/outline/PencilAltIcon';
 
 import type { User } from '@/features/users';
 import { useAuthContext } from '@/lib/auth';
@@ -9,6 +9,7 @@ import { POLICIES, Authorization } from '@/lib/authorization';
 import { formatDate } from '@/utils/format';
 
 import { DeleteGameClip } from './DeleteGameClip';
+import { LikeGameClip } from './LikeGameClip';
 import { SiteGameClipSource } from './SiteGameClipSource';
 import { TwitterGameClipSource } from './TwitterGameClipSource';
 import { YoutubeGameClipSource } from './YoutubeGameClipSource';
@@ -69,7 +70,7 @@ export const GameClipListItem = ({ data }: GameClipListItemProps) => {
           >
             <div className="py-1">
               <div className="py-1">
-                <Authorization
+                {/* <Authorization
                   policyCheck={POLICIES['gameClip:update'](auth?.userDocData as User, data)}
                 >
                   <Link
@@ -80,7 +81,7 @@ export const GameClipListItem = ({ data }: GameClipListItemProps) => {
                     <EditIcon className="w-5 h-5 mr-2" aria-hidden="true" />
                     Edit
                   </Link>
-                </Authorization>
+                </Authorization> */}
                 <Authorization
                   policyCheck={POLICIES['gameClip:delete'](auth?.userDocData as User, data)}
                 >
@@ -99,6 +100,13 @@ export const GameClipListItem = ({ data }: GameClipListItemProps) => {
         {data.type === 'site' && <SiteGameClipSource data={data} />}
         {data.type === 'twitter' && <TwitterGameClipSource data={data} />}
         {data.type === 'youtube' && <YoutubeGameClipSource data={data} />}
+      </div>
+      {/* ボタンエリア */}
+      <div className="flex justify-end">
+        {/* いいねボタン */}
+        <Authorization policyCheck={POLICIES['gameClip:like'](auth?.userDocData as User, data)}>
+          <LikeGameClip data={data} />
+        </Authorization>
       </div>
     </div>
   );

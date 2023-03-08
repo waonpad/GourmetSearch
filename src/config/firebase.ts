@@ -13,6 +13,10 @@ import {
   FIREBASE_APP_ID,
   FIREBASE_MEASUREMENT_ID,
 } from '@/config';
+import { Counter } from '@/lib/firestore-counter';
+
+import type firebase from 'firebase/compat';
+import type { DocumentReference, DocumentData } from 'firebase/firestore';
 
 const EMULATE_AUTH_URL = 'http://localhost:9099';
 const EMULATE_FIRESTORE_HOST = 'localhost';
@@ -30,7 +34,7 @@ const firebaseConfig = {
   measurementId: FIREBASE_MEASUREMENT_ID,
 };
 
-const firebase = initializeApp(firebaseConfig);
+const firebaseApp = initializeApp(firebaseConfig);
 
 const auth = getAuth();
 FIREBASE_EMULATE === 'true' && connectAuthEmulator(auth, EMULATE_AUTH_URL);
@@ -47,4 +51,8 @@ const firebaseAuthProviders = {
   google: new GoogleAuthProvider(),
 };
 
-export { firebase, auth, db, storage, firebaseAuthProviders };
+const getCounter = (doc: DocumentReference<DocumentData>, field: string) => {
+  return new Counter(doc as unknown as firebase.firestore.DocumentReference, field);
+};
+
+export { firebaseApp, auth, db, storage, firebaseAuthProviders, getCounter };

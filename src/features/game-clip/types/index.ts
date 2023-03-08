@@ -17,6 +17,7 @@ type GameClipBaseEntity = {
   title: string;
   body: string;
   author: DocumentReference<DocumentData>;
+  likeCount: number;
 } & BaseEntity &
   GameInfo;
 
