@@ -42,6 +42,15 @@ export const POLICIES = {
     }
     return false;
   },
+  'gameClip:like': (user: User, gameClip: GameClip) => {
+    if (user.role === 'ADMIN') {
+      return true;
+    }
+    if (user.role === 'USER' && gameClip.author.path.split('/').pop() !== user.id) {
+      return true;
+    }
+    return false;
+  },
 };
 
 export const useAuthorization = () => {

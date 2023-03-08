@@ -24,7 +24,7 @@ export type CreateSiteGameClipInput = {
 export type CreateSiteGameClipDTO = {
   data: Pick<
     SiteGameClip,
-    'title' | 'body' | 'gameTitle' | 'type' | 'videoData' | 'thumbnailData' | 'author'
+    'title' | 'body' | 'gameTitle' | 'type' | 'videoData' | 'thumbnailData' | 'author' | 'likeCount'
   > &
     TimeStampDTO;
 };
@@ -53,7 +53,7 @@ export const useCreateSiteGameClip = () => {
 
   const isLoading = fireStorageMutation.isLoading || createGameClipMutaion.isLoading;
 
-  const mutateTSX = (config: MutateConfig) => {
+  const mutateBatch = (config: MutateConfig) => {
     uploadFile(config);
     // if uploadFile is success, createGameClip is called
     // if createGameClip is failed, deleteFile is called
@@ -85,6 +85,7 @@ export const useCreateSiteGameClip = () => {
       videoData: file,
       thumbnailData: null,
       author: userRef,
+      likeCount: 0,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     };
@@ -108,7 +109,7 @@ export const useCreateSiteGameClip = () => {
 
   return {
     ...createGameClipMutaion,
-    mutateTSX,
+    mutateBatch,
     fireStorageMutation,
     isLoading,
   };

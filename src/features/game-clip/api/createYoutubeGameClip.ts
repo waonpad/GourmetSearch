@@ -22,7 +22,10 @@ export type CreateYoutubeGameClipInput = {
 };
 
 export type CreateYoutubeGameClipDTO = {
-  data: Pick<YoutubeGameClip, 'title' | 'body' | 'gameTitle' | 'type' | 'videoId' | 'author'> &
+  data: Pick<
+    YoutubeGameClip,
+    'title' | 'body' | 'gameTitle' | 'type' | 'videoId' | 'author' | 'likeCount'
+  > &
     TimeStampDTO;
 };
 
@@ -54,6 +57,7 @@ export const useCreateYoutubeGameClip = () => {
       type: GAME_CLIP_TYPE,
       videoId: videoId,
       author: userRef,
+      likeCount: 0,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     };

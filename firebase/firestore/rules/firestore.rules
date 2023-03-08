@@ -109,24 +109,40 @@ service cloud.firestore {
       isValidTimestamp(data.updatedAt);
     }
 
+    // function isLikeRequest(request) {
+    //   return
+    //   request.resource.data.keys() == ["likeCount"] &&
+    //   (resource == null || request.resource.data.likeCount ==
+    //   resource.data.likeCount + 1);
+    // }
+
     // user
     match /users/{userId} {
     	allow read;
-      allow create: if isValidUser(request.resource.data) && isAuthenticated();
-      allow update: if isValidUser(request.resource.data) && isUserAuthenticated(userId);
+      allow write;
+      // allow create: if isValidUser(request.resource.data) && isAuthenticated();
+      // allow update: if isValidUser(request.resource.data) && isUserAuthenticated(userId);
     }
 
     // user's gameClip
     match /users/{userId}/gameClips/{gameClipId} {
       allow read;
-      allow create: if isAuthenticated();
-      allow update: if isValidGameClip(request.resource.data) && isUserAuthenticated(userId);
-      allow delete: if isUserAuthenticated(userId);
+      allow write;
+      // allow create: if isAuthenticated();
+      // allow update: if (isValidGameClip(request.resource.data) && isUserAuthenticated(userId)) || isLikeRequest(request);
+      // allow delete: if isUserAuthenticated(userId);
+
+      match /_counter_shards_/{shardId} {
+        allow get;
+        allow write;
+        // allow write: if isLikeRequest(request);
+      }
     }
 
     // gameClip group
     match /{path=**}/gameClips/{gameClipId} {
       allow read;
+      allow write;
     }
   }
 }

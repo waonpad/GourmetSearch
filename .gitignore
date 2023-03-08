@@ -27,4 +27,6 @@ yarn-error.log*
 
 # firebase
 firestore-debug.log
+database-debug.log
+pubsub-debug.log
 ui-debug.log

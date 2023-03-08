@@ -52,7 +52,7 @@ export const CreateSiteGameClip = ({ handleSuccess, handleLoading }: CreateSiteG
     <Form<CreateSiteGameClipInput['data'], typeof schema>
       id="create-game-clip"
       onSubmit={(values) => {
-        createGameClipMutation.mutateTSX({ data: values });
+        createGameClipMutation.mutateBatch({ data: values });
       }}
       schema={schema}
     >

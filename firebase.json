@@ -3,6 +3,12 @@
     "rules": "firebase/firestore/rules/firestore.rules",
     "indexes": "firebase/firestore/indexes/firestore.indexes.json"
   },
+  "storage": {
+    "rules": "firebase/storage/storage.rules"
+  },
+  "extensions": {
+    "firestore-counter": "firebase/firestore-counter@0.2.6"
+  },
   "hosting": {
     "public": "build",
     "ignore": [
@@ -52,9 +58,18 @@
     },
     "storage": {
       "port": 9199
+    },
+    "extensions": {
+      "port": 8022
+    },
+    "database": {
+      "port": 9000
+    },
+    "pubsub": {
+      "port": 8085
+    },
+    "eventarc": {
+      "port": 9299
     }
-  },
-  "storage": {
-    "rules": "firebase/storage/storage.rules"
   }
 }

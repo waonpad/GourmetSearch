@@ -14,6 +14,6 @@ import {
 export const igdbClient = igdb(TWITCH_CLIENT_ID, TWITCH_APP_ACCESS_TOKEN, {
   baseURL:
     FIREBASE_EMULATE === 'true'
-      ? `http://127.0.0.1:5001/${FIREBASE_PROJECT_ID}/us-central1/${IGDB_API_PROXY}`
-      : `https://us-central1-${FIREBASE_PROJECT_ID}.cloudfunctions.net/${IGDB_API_PROXY}`,
+      ? `http://127.0.0.1:5001/${FIREBASE_PROJECT_ID}/us-central1${IGDB_API_PROXY}`
+      : `https://us-central1-${FIREBASE_PROJECT_ID}.cloudfunctions.net${IGDB_API_PROXY}`,
 });
