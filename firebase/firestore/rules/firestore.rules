@@ -33,7 +33,12 @@ service cloud.firestore {
     }
     // timestamp
     function isValidTimestamp(timestampVal) {
-      return timestampVal is timestamp && timestampVal.size() > 0;
+      return timestampVal is timestamp;
+    }
+    function isValidCreatedAtAndUpdatedAt(data) {
+      return
+      isValidTimestamp(data.createdAt) &&
+      isValidTimestamp(data.updatedAt);
     }
     // array
     function isValidArray(array) {
@@ -49,7 +54,7 @@ service cloud.firestore {
     }
     // path
     function isValidPath(path) {
-      return path is path && path.size() > 0;
+      return path is path;
     }
     /////////////////////////////////////////////////////////////////////////
 
@@ -76,11 +81,11 @@ service cloud.firestore {
       isValidString(data.title) &&
       isValidString(data.body) &&
       (data.author == null) &&
+      isValidNumber(data.likeCount) &&
       (data.type == 'site') &&
       isValidObject(data.videoData) &&
       (isValidObject(data.thumbnailData) || data.thumbnailData == null) &&
-      isValidTimestamp(data.createdAt) &&
-      isValidTimestamp(data.updatedAt);
+      isValidCreatedAtAndUpdatedAt(data);
     }
 
     // validate twitterGameClip
@@ -90,10 +95,10 @@ service cloud.firestore {
       isValidString(data.title) &&
       isValidString(data.body) &&
       (data.author == null) &&
+      isValidNumber(data.likeCount) &&
       (data.type == 'twitter') &&
       isValidString(data.tweetId) &&
-      isValidTimestamp(data.createdAt) &&
-      isValidTimestamp(data.updatedAt);
+      isValidCreatedAtAndUpdatedAt(data);
     }
 
     // validate youtubeGameClip
@@ -103,39 +108,51 @@ service cloud.firestore {
       isValidString(data.title) &&
       isValidString(data.body) &&
       (data.author == null) &&
+      isValidNumber(data.likeCount) &&
       (data.type == 'youtube') &&
       isValidString(data.videoId) &&
-      isValidTimestamp(data.createdAt) &&
-      isValidTimestamp(data.updatedAt);
+      isValidCreatedAtAndUpdatedAt(data);
     }
 
-    // function isLikeRequest(request) {
-    //   return
-    //   request.resource.data.keys() == ["likeCount"] &&
-    //   (resource == null || request.resource.data.likeCount ==
-    //   resource.data.likeCount + 1);
-    // }
+    // validate like
+    function isLikeRequest(request, userId) {
+      return
+      request.auth.uid != userId &&
+      request.resource.data.keys() == ["likeCount"] &&
+      (resource == null ||
+        (request.resource.data.likeCount ==resource.data.likeCount + 1) ||
+        (request.resource.data.likeCount == resource.data.likeCount - 1)
+      );
+    }
 
     // user
     match /users/{userId} {
     	allow read;
-      allow write;
-      // allow create: if isValidUser(request.resource.data) && isAuthenticated();
-      // allow update: if isValidUser(request.resource.data) && isUserAuthenticated(userId);
-    }
+      allow create: if isValidUser(request.resource.data) && isAuthenticated();
+      allow update: if isValidUser(request.resource.data) && isUserAuthenticated(userId);
+        
+      // user's gameClip
+      match /gameClips/{gameClipId} {
+        allow read;
+        allow create: if isValidGameClip(request.resource.data) && isUserAuthenticated(userId);
+        allow update: if (isValidGameClip(request.resource.data) && isUserAuthenticated(userId)) || isLikeRequest(request, userId);
+        allow delete: if isUserAuthenticated(userId);
 
-    // user's gameClip
-    match /users/{userId}/gameClips/{gameClipId} {
-      allow read;
-      allow write;
-      // allow create: if isAuthenticated();
-      // allow update: if (isValidGameClip(request.resource.data) && isUserAuthenticated(userId)) || isLikeRequest(request);
-      // allow delete: if isUserAuthenticated(userId);
+        // user's gameClip's likedUsers
+        match /likedUsers/{likedUserId} {
+          allow read;
+          allow create: if isUserAuthenticated(likedUserId) && isValidCreatedAtAndUpdatedAt(request.resource.data);
+          allow update: if false;
+          allow delete: if isUserAuthenticated(likedUserId);
+        }
+      }
 
-      match /_counter_shards_/{shardId} {
-        allow get;
-        allow write;
-        // allow write: if isLikeRequest(request);
+      // user's liked GameClip
+      match /likedGameClips/{likedGameClipId} {
+        allow read;
+        allow create: if isUserAuthenticated(userId) && isValidCreatedAtAndUpdatedAt(request.resource.data) && isValidPath(request.resource.data.originRef);
+        allow update: if false;
+        allow delete: if isUserAuthenticated(userId);
       }
     }
 

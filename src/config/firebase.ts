@@ -13,10 +13,6 @@ import {
   FIREBASE_APP_ID,
   FIREBASE_MEASUREMENT_ID,
 } from '@/config';
-import { Counter } from '@/lib/firestore-counter';
-
-import type firebase from 'firebase/compat';
-import type { DocumentReference, DocumentData } from 'firebase/firestore';
 
 const EMULATE_AUTH_URL = 'http://localhost:9099';
 const EMULATE_FIRESTORE_HOST = 'localhost';
@@ -51,8 +47,4 @@ const firebaseAuthProviders = {
   google: new GoogleAuthProvider(),
 };
 
-const getCounter = (doc: DocumentReference<DocumentData>, field: string) => {
-  return new Counter(doc as unknown as firebase.firestore.DocumentReference, field);
-};
-
-export { firebaseApp, auth, db, storage, firebaseAuthProviders, getCounter };
+export { firebaseApp, auth, db, storage, firebaseAuthProviders };

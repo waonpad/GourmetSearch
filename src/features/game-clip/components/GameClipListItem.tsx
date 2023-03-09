@@ -101,12 +101,22 @@ export const GameClipListItem = ({ data }: GameClipListItemProps) => {
         {data.type === 'twitter' && <TwitterGameClipSource data={data} />}
         {data.type === 'youtube' && <YoutubeGameClipSource data={data} />}
       </div>
-      {/* ボタンエリア */}
-      <div className="flex justify-end">
-        {/* いいねボタン */}
-        <Authorization policyCheck={POLICIES['gameClip:like'](auth?.userDocData as User, data)}>
-          <LikeGameClip data={data} />
-        </Authorization>
+      <div className="flex justify-between">
+        <div className="flex items-center gap-2">
+          <div>
+            <span className="text-xs font-semibold align-end">Game: {data.gameTitle}</span>
+          </div>
+        </div>
+        {/* ボタンエリア */}
+        <div className="flex items-center gap-2">
+          {/* いいねボタン */}
+          <Authorization
+            policyCheck={POLICIES['gameClip:like'](auth?.userDocData as User, data)}
+            forbiddenFallback={<LikeGameClip data={data} disabled />}
+          >
+            <LikeGameClip data={data} />
+          </Authorization>
+        </div>
       </div>
     </div>
   );

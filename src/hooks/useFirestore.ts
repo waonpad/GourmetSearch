@@ -29,44 +29,39 @@ export const useFirestore = <T>(
     if (docOrQuery.type === 'document') {
       unsubscribe = onSnapshot(docOrQuery as DocumentReference, {
         next(doc) {
-          if (doc.metadata.hasPendingWrites) {
-            console.log('pending writes');
-            return;
-          }
-
-          // if (initialLoad) {
-          //   console.log('initial data loaded');
-          //   initialLoad = false;
+          // if (doc.metadata.hasPendingWrites) {
+          //   console.log('pending writes');
+          //   return;
           // }
 
           if (doc.exists()) {
             const updatedData = formatDoc(doc) as unknown as T;
             setFirestore({ data: updatedData, isLoading: false, error: null });
           } else {
-            setFirestore((prev) => ({
-              ...prev,
+            setFirestore({
+              data: undefined,
               isLoading: false,
               error: {
                 code: 'not-found',
                 message: 'Document does not exist',
                 name: 'FirestoreError',
               },
-            }));
+            });
             unsubscribe;
           }
         },
         error(error) {
-          setFirestore((prev) => ({ ...prev, isLoading: false, error: error }));
+          setFirestore({ data: undefined, isLoading: false, error: error });
           unsubscribe;
         },
       });
     } else {
       unsubscribe = onSnapshot(docOrQuery as Query<DocumentData>, {
         next(snapshot) {
-          if (snapshot.metadata.hasPendingWrites) {
-            console.log('pending writes');
-            return;
-          }
+          // if (snapshot.metadata.hasPendingWrites) {
+          //   console.log('pending writes');
+          //   return;
+          // }
 
           if (initialLoad) {
             console.log('initial data loaded');
@@ -81,7 +76,7 @@ export const useFirestore = <T>(
           setFirestore({ data: updatedData, isLoading: false, error: null });
         },
         error(error) {
-          setFirestore((prev) => ({ ...prev, isLoading: false, error: error }));
+          setFirestore({ data: undefined, isLoading: false, error: error });
           unsubscribe;
         },
       });
