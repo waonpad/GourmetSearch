@@ -1,11 +1,12 @@
 import { useFirestoreCollectionMutation } from '@react-query-firebase/firestore';
-import { collection, doc, serverTimestamp } from 'firebase/firestore';
+import { collection, doc } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
 import { useFireStorageDeletion } from '@/hooks/useFireStorageDeletion';
 import { useFireStorageMutation } from '@/hooks/useFireStorageMutaion';
 import { useAuthContext } from '@/lib/auth';
 import type { TimeStampDTO, FullMetadataWithDownloadUrl } from '@/types';
+import { timestampTemp } from '@/utils/constants';
 
 import type { FileData, SiteGameClip } from '../types';
 import type { DocumentData, DocumentReference, FirestoreError } from 'firebase/firestore';
@@ -86,8 +87,7 @@ export const useCreateSiteGameClip = () => {
       thumbnailData: null,
       author: userRef,
       likeCount: 0,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
+      ...timestampTemp,
     };
 
     createGameClipMutaion.mutate(newGameClip, {

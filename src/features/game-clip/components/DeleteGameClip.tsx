@@ -13,6 +13,10 @@ type DeleteGameClipProps = {
 export const DeleteGameClip = ({ data }: DeleteGameClipProps) => {
   const deleteGameClipMutation = useDeleteGameClip({ data });
 
+  const handleClickDeleteButton = () => {
+    deleteGameClipMutation.mutate();
+  };
+
   return (
     <ConfirmationDialog
       isDone={deleteGameClipMutation.isSuccess}
@@ -34,7 +38,7 @@ export const DeleteGameClip = ({ data }: DeleteGameClipProps) => {
           isLoading={deleteGameClipMutation.isLoading}
           type="button"
           className="bg-red-600"
-          onClick={() => deleteGameClipMutation.mutate()}
+          onClick={handleClickDeleteButton}
         >
           Delete GameClip
         </Button>

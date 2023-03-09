@@ -1,10 +1,11 @@
 import { useFirestoreCollectionMutation } from '@react-query-firebase/firestore';
-import { collection, doc, serverTimestamp } from 'firebase/firestore';
+import { collection, doc } from 'firebase/firestore';
 import { useErrorHandler } from 'react-error-boundary';
 
 import { db } from '@/config/firebase';
 import { useAuthContext } from '@/lib/auth';
 import type { TimeStampDTO } from '@/types';
+import { timestampTemp } from '@/utils/constants';
 import { getTweetId } from '@/utils/twitter';
 
 import type { TwitterGameClip } from '../types';
@@ -58,8 +59,7 @@ export const useCreateTwitterGameClip = () => {
       tweetId: tweetId,
       author: userRef,
       likeCount: 0,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
+      ...timestampTemp,
     };
 
     createGameClipMutaion.mutate(newGameClip, {
