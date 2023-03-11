@@ -33,16 +33,10 @@ const STORAGE_THUMBNAIL_DIR = 'thumbnail';
 //   return true;
 // };
 
-export const onGameClipCreate = functions.firestore
+export const onCreateSiteGameClip = functions.firestore
   .document('/users/{userId}/gameClips/{gameClipId}')
-  .onWrite(async (snap) => {
-    // If the document was deleted, do nothing.
-    if (!snap.after.exists) {
-      return;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const gameClip = snap.after.data()!;
+  .onCreate(async (snap) => {
+    const gameClip = snap.data();
 
     // Validate gameClip type.
     if (gameClip.type !== 'site') {
@@ -128,7 +122,7 @@ export const onGameClipCreate = functions.firestore
     // });
 
     // ドキュメントのthumbnailDataを更新する
-    await snap.after.ref.update({
+    await snap.ref.update({
       thumbnailData: {
         bucket: gameClip.videoData.bucket,
         fullPath: thumbnailPath,
@@ -163,7 +157,7 @@ const generateThumbnail = (inputFile: string, outputFile: string) => {
   });
 };
 
-export const onGameClipDelete = functions.firestore
+export const onDeleteSiteGameClip = functions.firestore
   .document('/users/{userId}/gameClips/{gameClipId}')
   .onDelete(async (snap) => {
     const gameClip = snap.data();
@@ -191,7 +185,7 @@ export const onGameClipDelete = functions.firestore
     console.log('Thumbnail deleted from Storage at', thumbnailPath);
   });
 
-// export const onVideoDelete = functions
+// export const onDeleteVideo = functions
 //   .region('asia-northeast1')
 //   .storage.object()
 //   .onDelete(async (object) => {

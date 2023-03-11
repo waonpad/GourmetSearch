@@ -13,7 +13,7 @@ const { AuthRoutes } = lazyImport(() => import('@/features/auth'), 'AuthRoutes')
 
 const { Dashboard } = lazyImport(() => import('@/features/misc'), 'Dashboard');
 
-const { GameClipRoutes } = lazyImport(() => import('@/features/game-clip'), 'GameClipRoutes');
+const { GameClipRoutes } = lazyImport(() => import('@/features/gameClip'), 'GameClipRoutes');
 
 const App = () => {
   return (

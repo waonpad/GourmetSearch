@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import type { GameClip } from '@/features/game-clip';
+import type { GameClip } from '@/features/gameClip';
 import type { User } from '@/features/users';
 
 // import type { User } from '@/features/users';
