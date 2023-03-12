@@ -4,8 +4,12 @@ import { useGameClips } from '../api/getGameClips';
 
 import { GameClipListItem } from './GameClipListItem';
 
-export const GameClipList = () => {
-  const gameClipsQuery = useGameClips();
+import type { UseGameClipOptions } from '../api/getGameClips';
+
+type GameClipListProps = UseGameClipOptions;
+
+export const GameClipList = ({ config }: GameClipListProps) => {
+  const gameClipsQuery = useGameClips({ config });
 
   if (gameClipsQuery.isLoading) {
     return (
