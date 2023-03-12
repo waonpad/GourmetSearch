@@ -1,35 +1,46 @@
-import { query, orderBy, collectionGroup } from 'firebase/firestore';
+import { collectionGroup } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
+import type { CustomQuery } from '@/hooks/useFirestore';
 import { useFirestore } from '@/hooks/useFirestore';
 
 import type { GameClip } from '../types';
 
-type UseGameClipOptions = {
+export type UseGameClipOptions = {
   config?: {
-    orderBy?: {
-      field: 'createdAt' | 'updatedAt';
-      direction: 'asc' | 'desc';
-    };
+    query?: Omit<CustomQuery<GameClip>, 'target' | 'type'>;
   };
 };
 
 const DEFAULT_OPTIONS: UseGameClipOptions = {
   config: {
-    orderBy: {
-      field: 'createdAt',
-      direction: 'desc',
+    query: {
+      orderBy: [
+        {
+          field: 'gameTitle',
+          direction: 'asc',
+        },
+        {
+          field: 'createdAt',
+          direction: 'desc',
+        },
+      ],
+      start: {
+        cursor: 'at',
+        value: ['elden'],
+      },
+      limit: {
+        limit: 10,
+      },
     },
   },
 };
 
-export const useGameClips = ({ config }: UseGameClipOptions = DEFAULT_OPTIONS) => {
-  const gameClips = useFirestore<GameClip[]>(
-    query(
-      collectionGroup(db, 'gameClips'),
-      orderBy(config?.orderBy?.field as string, config?.orderBy?.direction)
-    )
-  );
+export const useGameClips = ({ config }: UseGameClipOptions) => {
+  const gameClips = useFirestore<GameClip[]>({
+    target: collectionGroup(db, 'gameClips'),
+    ...(config?.query ?? DEFAULT_OPTIONS.config?.query),
+  });
 
   return gameClips;
 };
