@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.1.2",
+    "@firebase/app-check": "^0.6.4",
     "@headlessui/react": "^1.2.0",
     "@heroicons/react": "^1.0.1",
     "@hookform/resolvers": "^2.5.2",

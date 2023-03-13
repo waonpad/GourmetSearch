@@ -16,19 +16,19 @@ const DEFAULT_OPTIONS: UseGameClipOptions = {
   config: {
     query: {
       orderBy: [
-        {
-          field: 'gameTitle',
-          direction: 'asc',
-        },
+        // {
+        //   field: 'gameTitle',
+        //   direction: 'asc',
+        // },
         {
           field: 'createdAt',
           direction: 'desc',
         },
       ],
-      start: {
-        cursor: 'at',
-        value: ['elden'],
-      },
+      // start: {
+      //   cursor: 'at',
+      //   value: ['elden'],
+      // },
       limit: {
         limit: 10,
       },

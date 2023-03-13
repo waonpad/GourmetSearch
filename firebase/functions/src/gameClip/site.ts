@@ -4,6 +4,7 @@ import * as os from 'os';
 import * as path from 'path';
 
 import * as ffmpegInstaller from '@ffmpeg-installer/ffmpeg';
+import { uuidv4 } from '@firebase/util';
 import * as storage from '@google-cloud/storage';
 // import * as ffmpeg_static from 'ffmpeg-static';
 import * as ffprobe_static from 'ffprobe-static';
@@ -84,9 +85,13 @@ export const onCreateSiteGameClip = functions.firestore
     });
     console.log('Thumbnail uploaded to Storage at', thumbnailPath);
 
+    // Generate a download token
+    const uuid = uuidv4();
+
     // Set metadata
     await bucket.file(thumbnailPath).setMetadata({
       metadata: {
+        firebaseStorageDownloadTokens: uuid,
         owner: gameClip.author.path.split('users/')[1],
       },
     });
@@ -111,7 +116,8 @@ export const onCreateSiteGameClip = functions.firestore
       gameClip.videoData.bucket +
       '/o/' +
       encodeURIComponent(thumbnailPath) +
-      '?alt=media';
+      '?alt=media' +
+      `&token=${uuid}`;
     console.log('Got thumbnailUrl.');
 
     // // Add the URLs to the Firestore.
