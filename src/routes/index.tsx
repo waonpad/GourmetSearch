@@ -36,7 +36,7 @@ export const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/app" element={<App />}>
-        <ProtectedRoute path="/gameClips" element={<GameClipRoutes />} />
+        <ProtectedRoute path="/gameClips/*" element={<GameClipRoutes />} />
         <Route path="/" element={<Dashboard />} />
         <Route path="*" element={<Navigate to="/app" />} />
       </Route>
