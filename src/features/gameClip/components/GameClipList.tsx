@@ -4,9 +4,9 @@ import { useGameClips } from '../api/getGameClips';
 
 import { GameClipListItem } from './GameClipListItem';
 
-import type { UseGameClipOptions } from '../api/getGameClips';
+import type { UseGameClipsOptions } from '../api/getGameClips';
 
-type GameClipListProps = UseGameClipOptions;
+type GameClipListProps = UseGameClipsOptions;
 
 export const GameClipList = ({ config }: GameClipListProps) => {
   const gameClipsQuery = useGameClips({ config });

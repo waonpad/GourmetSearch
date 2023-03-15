@@ -4,9 +4,10 @@ import { doc, increment, writeBatch } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 import { useFirestore } from '@/hooks/useFirestore';
 import { useAuthContext } from '@/lib/auth';
+import type { TimeStampDTO } from '@/types';
 import { timestampTemp } from '@/utils/constants';
 
-import type { GameClip } from '../types';
+import type { GameClip, LikedGameClip } from '../types';
 
 export type LikeGameClipDTO = {
   data: GameClip;
@@ -17,6 +18,10 @@ type UseLikeGameClipOptions = LikeGameClipDTO & {
     // ...
   };
 };
+
+type GameClipLikedUserDTO = TimeStampDTO;
+
+type LikedGameClipDTO = Pick<LikedGameClip, 'originRef'> & TimeStampDTO;
 
 export const useLikeGameClip = ({ data }: UseLikeGameClipOptions) => {
   const auth = useAuthContext();
@@ -41,13 +46,15 @@ export const useLikeGameClip = ({ data }: UseLikeGameClipOptions) => {
 
   const mutateLikeBatch = () => {
     // いいねをつけたユーザーのリストに自分を追加
-    batch.set(likedUserRef, { ...timestampTemp });
+    const likedUser: GameClipLikedUserDTO = { ...timestampTemp };
+    batch.set(likedUserRef, likedUser);
 
     // 自分のいいねした投稿リストに追加
-    batch.set(likedGameClipRef, {
+    const likedGameClip: LikedGameClipDTO = {
       originRef: gameClipRef,
       ...timestampTemp,
-    });
+    };
+    batch.set(likedGameClipRef, likedGameClip);
 
     batch.update(gameClipRef, { likeCount: increment(1) });
 
