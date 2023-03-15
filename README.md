@@ -1,5 +1,5 @@
-##  Temp Repo
-[https://github.com/alan2207/bulletproof-react]
+##  Base Repo
+https://github.com/alan2207/bulletproof-react
 
 ## License
 
