@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import * as z from 'zod';
 
@@ -29,7 +29,6 @@ export const CreateTwitterGameClip = ({
 }: CreateTwitterGameClipProps) => {
   const createGameClipMutation = useCreateTwitterGameClip();
   const igdbGame = useIgdbApi();
-  const [gameTitle, setGameTitle] = useState('');
 
   useEffect(() => {
     if (createGameClipMutation.isSuccess) {
@@ -41,9 +40,9 @@ export const CreateTwitterGameClip = ({
     handleLoading(createGameClipMutation.isLoading);
   }, [createGameClipMutation.isLoading, handleLoading]);
 
-  const handleChangeGameTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const gameTitle = event.target.value;
-    setGameTitle(gameTitle);
+  const handleChangeGameTitle = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const gameTitle = event.currentTarget.value;
+
     if (gameTitle.length > 1) {
       igdbGame.search({ name: gameTitle }, { fields: ['id', 'name'] });
     }
@@ -57,18 +56,15 @@ export const CreateTwitterGameClip = ({
       }}
       schema={schema}
     >
-      {({ register, formState }) => (
+      {({ register, formState, setValue }) => (
         <>
           <AutoCompleteInputField
             label="Game Title"
             error={formState.errors['gameTitle']}
-            registration={register('gameTitle')}
-            inputProps={{
-              value: gameTitle,
-              onChange: handleChangeGameTitle,
-            }}
+            registration={{ ...register('gameTitle'), onChange: handleChangeGameTitle }}
             suggestions={igdbGame.data}
             suggestionValueKey="name"
+            setValue={{ fn: setValue, name: 'gameTitle' }}
           />
           <InputField
             label="Title"
