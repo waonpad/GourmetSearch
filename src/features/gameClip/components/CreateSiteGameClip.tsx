@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import * as z from 'zod';
 
@@ -24,7 +24,6 @@ const schema = z.object({
 export const CreateSiteGameClip = ({ handleSuccess, handleLoading }: CreateSiteGameClipProps) => {
   const createGameClipMutation = useCreateSiteGameClip();
   const igdbGame = useIgdbApi();
-  const [gameTitle, setGameTitle] = useState('');
 
   const handleChangeFile = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
     createGameClipMutation.fireStorageMutation.setFile(event.target.files, index);
@@ -40,9 +39,9 @@ export const CreateSiteGameClip = ({ handleSuccess, handleLoading }: CreateSiteG
     handleLoading(createGameClipMutation.isLoading);
   }, [createGameClipMutation.isLoading, handleLoading]);
 
-  const handleChangeGameTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const gameTitle = event.target.value;
-    setGameTitle(gameTitle);
+  const handleChangeGameTitle = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const gameTitle = event.currentTarget.value;
+
     if (gameTitle.length > 1) {
       igdbGame.search({ name: gameTitle }, { fields: ['id', 'name'] });
     }
@@ -56,18 +55,15 @@ export const CreateSiteGameClip = ({ handleSuccess, handleLoading }: CreateSiteG
       }}
       schema={schema}
     >
-      {({ register, formState }) => (
+      {({ register, formState, setValue }) => (
         <>
           <AutoCompleteInputField
             label="Game Title"
             error={formState.errors['gameTitle']}
-            registration={register('gameTitle')}
-            inputProps={{
-              value: gameTitle,
-              onChange: handleChangeGameTitle,
-            }}
+            registration={{ ...register('gameTitle'), onChange: handleChangeGameTitle }}
             suggestions={igdbGame.data}
             suggestionValueKey="name"
+            setValue={{ fn: setValue, name: 'gameTitle' }}
           />
           <InputField
             label="Title"

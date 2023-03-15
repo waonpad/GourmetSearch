@@ -3,20 +3,27 @@ import React, { useState, useEffect } from 'react';
 import { InputField } from '@/components/Form';
 import type { InputFieldProps } from '@/components/Form';
 
+import type { SetValueConfig, UseFormSetValue } from 'react-hook-form';
+
 type AutoCompleteInputFieldProps = InputFieldProps & {
   suggestions: { [key: string]: string }[];
   suggestionValueKey: string;
-  inputProps: {
+  inputProps?: {
     value: string;
+  };
+  setValue: {
+    fn: UseFormSetValue<any>;
+    name: string;
+    options?: SetValueConfig;
   };
 };
 
 export const AutoCompleteInputField = ({
   suggestions,
   suggestionValueKey,
+  setValue,
   ...inputFieldProps
 }: AutoCompleteInputFieldProps) => {
-  const [value, setValue] = useState('');
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
 
   const handleFocusInputField = () => {
@@ -31,7 +38,7 @@ export const AutoCompleteInputField = ({
 
   const handleClickSuggestion = (event: React.MouseEvent<HTMLLIElement>) => {
     const newValue = event.currentTarget.getAttribute('data-value') ?? '';
-    setValue(newValue);
+    setValue.fn(setValue.name, newValue, setValue.options);
     setIsSuggestionsOpen(false);
   };
 
@@ -41,20 +48,15 @@ export const AutoCompleteInputField = ({
     }
   }, [suggestions]);
 
-  useEffect(() => {
-    setValue(inputFieldProps.inputProps.value);
-  }, [inputFieldProps.inputProps.value]);
-
   return (
     <div className="relative">
       <InputField
         {...inputFieldProps}
         inputProps={{
           ...inputFieldProps.inputProps,
-          value: value,
           onFocus: () => {
             handleFocusInputField();
-            inputFieldProps.inputProps.onFocus;
+            inputFieldProps.inputProps?.onFocus;
           },
         }}
       />
