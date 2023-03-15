@@ -36,3 +36,9 @@ export type YoutubeGameClip = {
   type: 'youtube';
   videoId: string;
 } & GameClipBaseEntity;
+
+export type GameClipLikedUser = BaseEntity;
+
+export type LikedGameClip = {
+  originRef: DocumentReference<DocumentData>;
+} & BaseEntity;

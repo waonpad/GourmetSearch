@@ -9,8 +9,8 @@ import {
   MenuAlt2Icon,
   // UsersIcon,
   XIcon,
+  ThumbUpIcon,
 } from '@heroicons/react/outline';
-import { UsersIcon } from '@heroicons/react/solid';
 import clsx from 'clsx';
 
 import logo from '@/assets/logo.svg';
@@ -26,15 +26,20 @@ type SideNavigationItem = {
 const SideNavigation = () => {
   const navigation = [
     { name: 'Dashboard', to: '.', icon: HomeIcon },
-    {
-      name: 'Users',
-      to: './users',
-      icon: UsersIcon,
-    },
+    // {
+    //   name: 'Users',
+    //   to: './users',
+    //   icon: UsersIcon,
+    // },
     {
       name: 'GameClips',
       to: './gameClips',
       icon: FolderIcon,
+    },
+    {
+      name: 'Liked GameClips',
+      to: './gameclips/likes',
+      icon: ThumbUpIcon,
     },
   ] as SideNavigationItem[];
 

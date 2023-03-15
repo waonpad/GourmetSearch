@@ -6,13 +6,13 @@ import { useFirestore } from '@/hooks/useFirestore';
 
 import type { GameClip } from '../types';
 
-export type UseGameClipOptions = {
+export type UseGameClipsOptions = {
   config?: {
     query?: Omit<CustomQuery<GameClip>, 'target' | 'type'>;
   };
 };
 
-const DEFAULT_OPTIONS: UseGameClipOptions = {
+const DEFAULT_OPTIONS: UseGameClipsOptions = {
   config: {
     query: {
       orderBy: [
@@ -36,7 +36,7 @@ const DEFAULT_OPTIONS: UseGameClipOptions = {
   },
 };
 
-export const useGameClips = ({ config }: UseGameClipOptions) => {
+export const useGameClips = ({ config }: UseGameClipsOptions) => {
   const gameClips = useFirestore<GameClip[]>({
     target: collectionGroup(db, 'gameClips'),
     ...(config?.query ?? DEFAULT_OPTIONS.config?.query),
