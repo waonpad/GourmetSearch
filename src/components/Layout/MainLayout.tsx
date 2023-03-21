@@ -14,6 +14,7 @@ import {
 import clsx from 'clsx';
 
 import logo from '@/assets/logo.svg';
+import { GameClipsSearchField } from '@/components/Elements';
 import { APP_NAME } from '@/config';
 import { useAuthContext } from '@/lib/auth';
 
@@ -24,6 +25,8 @@ type SideNavigationItem = {
 };
 
 const SideNavigation = () => {
+  const auth = useAuthContext();
+
   const navigation = [
     { name: 'Dashboard', to: '.', icon: HomeIcon },
     // {
@@ -38,8 +41,13 @@ const SideNavigation = () => {
     },
     {
       name: 'Liked GameClips',
-      to: './gameclips/likes',
+      to: `./gameClips/likes/${auth?.user?.uid}`,
       icon: ThumbUpIcon,
+    },
+    {
+      name: 'Users GameClips',
+      to: `./gameClips/users/${auth?.user?.uid}`,
+      icon: UserIcon,
     },
   ] as SideNavigationItem[];
 
@@ -80,7 +88,7 @@ const UserNavigation = () => {
   const auth = useAuthContext();
 
   const userNavigation = [
-    { name: 'Your Profile', to: './profile' },
+    // { name: 'Your Profile', to: './profile' },
     {
       name: 'Sign out',
       to: '',
@@ -257,7 +265,14 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             <span className="sr-only">Open sidebar</span>
             <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
           </button>
-          <div className="flex-1 px-4 flex justify-end">
+
+          <div className="flex-1 px-4 flex items-center">
+            <div className="w-full lg:max-w-lg -mt-1">
+              <GameClipsSearchField />
+            </div>
+          </div>
+
+          <div className="flex-none px-4 flex justify-end">
             <div className="ml-4 flex items-center md:ml-6">
               <UserNavigation />
             </div>

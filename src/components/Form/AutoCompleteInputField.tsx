@@ -8,9 +8,6 @@ import type { SetValueConfig, UseFormSetValue } from 'react-hook-form';
 type AutoCompleteInputFieldProps = InputFieldProps & {
   suggestions: { [key: string]: string }[];
   suggestionValueKey: string;
-  inputProps?: {
-    value: string;
-  };
   setValue: {
     fn: UseFormSetValue<any>;
     name: string;

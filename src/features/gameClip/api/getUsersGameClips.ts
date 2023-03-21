@@ -6,16 +6,16 @@ import { db } from '@/config/firebase';
 import type { CustomQuery } from '@/hooks/useFirestore';
 import { useFirestore } from '@/hooks/useFirestore';
 
-import type { LikedGameClip } from '../types';
+import type { GameClip } from '../types';
 
-export type UseLikedGameClipsOptions = {
+export type UseUsersGameClipsOptions = {
   userId: string;
   config?: {
-    query?: Omit<CustomQuery<LikedGameClip>, 'target' | 'type'>;
+    query?: Omit<CustomQuery<GameClip>, 'target' | 'type'>;
   };
 };
 
-const DEFAULT_OPTIONS: UseLikedGameClipsOptions = {
+const DEFAULT_OPTIONS: UseUsersGameClipsOptions = {
   userId: '',
   config: {
     query: {
@@ -32,13 +32,13 @@ const DEFAULT_OPTIONS: UseLikedGameClipsOptions = {
   },
 };
 
-export const useLikedGameClips = ({ config, userId }: UseLikedGameClipsOptions) => {
+export const useUsersGameClips = ({ config, userId }: UseUsersGameClipsOptions) => {
   const userRef = doc(db, 'users', userId);
 
   const [userIsExist, setUserIsExist] = useState(true);
 
-  const likedGameClips = useFirestore<LikedGameClip[]>({
-    target: collection(userRef, 'likedGameClips'),
+  const usersGameClips = useFirestore<GameClip[]>({
+    target: collection(userRef, 'gameClips'),
     where: [...(DEFAULT_OPTIONS.config?.query?.where ?? []), ...(config?.query?.where ?? [])],
     orderBy: [...(DEFAULT_OPTIONS.config?.query?.orderBy ?? []), ...(config?.query?.orderBy ?? [])],
     start: config?.query?.start ?? DEFAULT_OPTIONS.config?.query?.start,
@@ -55,7 +55,7 @@ export const useLikedGameClips = ({ config, userId }: UseLikedGameClipsOptions) 
   }, [userRef]);
 
   return {
-    ...likedGameClips,
+    ...usersGameClips,
     userIsExist,
   };
 };

@@ -1,4 +1,5 @@
-import { ThumbUpIcon } from '@heroicons/react/outline';
+import { ThumbUpIcon as OutlineThumbUpIcon } from '@heroicons/react/outline';
+import { ThumbUpIcon as SolidThumbUpIcon } from '@heroicons/react/solid';
 
 import { Button } from '@/components/Elements';
 
@@ -27,7 +28,11 @@ export const LikeGameClip = ({ data, disabled }: LikeGameClipProps) => {
       onClick={handleClickLIkeButton}
     >
       <div className="flex items-center">
-        <ThumbUpIcon className="w-5 h-5 mr-2" aria-hidden="true" />
+        {likeGameClipMutation.isLiked ? (
+          <SolidThumbUpIcon className="w-5 h-5 mr-2" aria-hidden="true" />
+        ) : (
+          <OutlineThumbUpIcon className="w-5 h-5 mr-2" aria-hidden="true" />
+        )}
         {data.likeCount}
       </div>
     </Button>

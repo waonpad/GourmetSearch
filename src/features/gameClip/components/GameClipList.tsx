@@ -11,6 +11,10 @@ type GameClipListProps = UseGameClipsOptions;
 export const GameClipList = ({ config }: GameClipListProps) => {
   const gameClipsQuery = useGameClips({ config });
 
+  if (config?.query) {
+    console.log(config.query);
+  }
+
   if (gameClipsQuery.isLoading) {
     return (
       <div className="w-full h-48 flex justify-center items-center">

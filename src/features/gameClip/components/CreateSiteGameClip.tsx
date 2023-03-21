@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 
 import * as z from 'zod';
 
-import { AutoCompleteInputField } from '@/components/Elements/AutoCompleteInputField';
-import { Form, InputField, TextAreaField } from '@/components/Form';
+import { Form, InputField, TextAreaField, AutoCompleteInputField } from '@/components/Form';
 import { useIgdbApi } from '@/hooks/useIgdbApi';
 
 import { useCreateSiteGameClip } from '../api/createSiteGameClip';
