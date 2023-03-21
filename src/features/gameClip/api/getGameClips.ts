@@ -29,9 +29,9 @@ const DEFAULT_OPTIONS: UseGameClipsOptions = {
       //   cursor: 'at',
       //   value: ['elden'],
       // },
-      limit: {
-        limit: 10,
-      },
+      // limit: {
+      //   limit: 10,
+      // },
     },
   },
 };
@@ -39,7 +39,11 @@ const DEFAULT_OPTIONS: UseGameClipsOptions = {
 export const useGameClips = ({ config }: UseGameClipsOptions) => {
   const gameClips = useFirestore<GameClip[]>({
     target: collectionGroup(db, 'gameClips'),
-    ...(config?.query ?? DEFAULT_OPTIONS.config?.query),
+    where: [...(DEFAULT_OPTIONS.config?.query?.where ?? []), ...(config?.query?.where ?? [])],
+    orderBy: [...(DEFAULT_OPTIONS.config?.query?.orderBy ?? []), ...(config?.query?.orderBy ?? [])],
+    start: config?.query?.start ?? DEFAULT_OPTIONS.config?.query?.start,
+    end: config?.query?.end ?? DEFAULT_OPTIONS.config?.query?.end,
+    limit: config?.query?.limit ?? DEFAULT_OPTIONS.config?.query?.limit,
   });
 
   return gameClips;

@@ -3,18 +3,18 @@ import { useParams } from 'react-router-dom';
 import { ContentLayout } from '@/components/Layout';
 
 import { CreateGameClip } from '../components/CreateGameClip';
-import { LikedGameClipList } from '../components/LikedGameClipList';
+import { UsersGameClipList } from '../components/UsersGameClipList';
 
-export const LikedGameClips = () => {
+export const UsersGameClips = () => {
   const { userId } = useParams();
 
   return (
-    <ContentLayout title="Liked GameClips">
+    <ContentLayout title="Users GameClips">
       <div className="flex justify-end">
         <CreateGameClip />
       </div>
       <div className="mt-4">
-        <LikedGameClipList userId={userId} />
+        <UsersGameClipList userId={userId} />
       </div>
     </ContentLayout>
   );
