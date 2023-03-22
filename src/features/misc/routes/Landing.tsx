@@ -27,7 +27,7 @@ export const Landing = () => {
             <span className="block">{APP_NAME}</span>
           </h2>
           <img src={logo} alt="react" />
-          <p>Showcasing Best Practices For Building React Applications</p>
+          {/* <p>Showcasing Best Practices For Building React Applications</p> */}
           <div className="mt-8 flex justify-center">
             <div className="inline-flex rounded-md shadow">
               <Button

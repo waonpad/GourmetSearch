@@ -16,7 +16,9 @@ export const Login = () => {
 
   return (
     <Layout title="Log in to your account">
-      <Button onClick={handleLoginClick}>Login</Button>
+      <div className="flex flex-col items-center justify-center h-full">
+        <Button onClick={handleLoginClick}>Login</Button>
+      </div>
     </Layout>
   );
 };
