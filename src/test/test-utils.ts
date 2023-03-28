@@ -1,14 +1,15 @@
-import type { FunctionComponent } from 'react';
+// import type { FunctionComponent } from 'react';
 
 import { render as rtlRender, screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { AppProvider } from '@/providers/app';
-import storage from '@/utils/storage';
+// import { AppProvider } from '@/providers/app';
+// import storage from '@/utils/storage';
 
 import { discussionGenerator, userGenerator } from './data-generators';
 import { db } from './server/db';
-import { authenticate, hash } from './server/utils';
+// import { authenticate, hash } from './server/utils';
+import { hash } from './server/utils';
 
 export const createUser = async (userProperties?: any) => {
   const user = userGenerator(userProperties);
@@ -22,11 +23,11 @@ export const createDiscussion = async (discussionProperties?: any) => {
   return res;
 };
 
-export const loginAsUser = async (user: any) => {
-  const authUser = await authenticate(user);
-  storage.setToken(authUser.jwt);
-  return authUser;
-};
+// export const loginAsUser = async (user: any) => {
+//   const authUser = await authenticate(user);
+//   storage.setToken(authUser.jwt);
+//   return authUser;
+// };
 
 export const waitForLoadingToFinish = () =>
   waitForElementToBeRemoved(
@@ -34,38 +35,38 @@ export const waitForLoadingToFinish = () =>
     { timeout: 4000 }
   );
 
-const initializeUser = async (user: any) => {
-  if (typeof user === 'undefined') {
-    return await loginAsUser(await createUser());
-  } else if (user) {
-    return await loginAsUser(user);
-  } else {
-    return null;
-  }
-};
+// const initializeUser = async (user: any) => {
+//   if (typeof user === 'undefined') {
+//     return await loginAsUser(await createUser());
+//   } else if (user) {
+//     return await loginAsUser(user);
+//   } else {
+//     return null;
+//   }
+// };
 
 // eslint-disable-next-line import/export
-export const render = async (
-  ui: any,
-  { route = '/', user, ...renderOptions }: Record<string, any> = {}
-) => {
-  // if you want to render the app unauthenticated then pass "null" as the user
-  user = await initializeUser(user);
+// export const render = async (
+//   ui: any,
+//   { route = '/', user, ...renderOptions }: Record<string, any> = {}
+// ) => {
+//   // if you want to render the app unauthenticated then pass "null" as the user
+//   user = await initializeUser(user);
 
-  window.history.pushState({}, 'Test page', route);
+//   window.history.pushState({}, 'Test page', route);
 
-  const returnValue = {
-    ...rtlRender(ui, {
-      wrapper: AppProvider as FunctionComponent<unknown>,
-      ...renderOptions,
-    }),
-    user,
-  };
+//   const returnValue = {
+//     ...rtlRender(ui, {
+//       wrapper: AppProvider as FunctionComponent<unknown>,
+//       ...renderOptions,
+//     }),
+//     user,
+//   };
 
-  await waitForLoadingToFinish();
+//   await waitForLoadingToFinish();
 
-  return returnValue;
-};
+//   return returnValue;
+// };
 
 // eslint-disable-next-line import/export
 export * from '@testing-library/react';
