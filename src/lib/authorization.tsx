@@ -1,8 +1,5 @@
 import * as React from 'react';
 
-import type { GameClip } from '@/features/gameClip';
-import type { User } from '@/features/users';
-
 // import type { User } from '@/features/users';
 
 import { useAuthContext } from './auth';
@@ -24,33 +21,6 @@ export const POLICIES = {
   //   }
   //   return false;
   // },
-  'gameClip:update': (user: User, gameClip: GameClip) => {
-    if (user.role === 'ADMIN') {
-      return true;
-    }
-    if (user.role === 'USER' && gameClip.author.path.split('/').pop() === user.id) {
-      return true;
-    }
-    return false;
-  },
-  'gameClip:delete': (user: User, gameClip: GameClip) => {
-    if (user.role === 'ADMIN') {
-      return true;
-    }
-    if (user.role === 'USER' && gameClip.author.path.split('/').pop() === user.id) {
-      return true;
-    }
-    return false;
-  },
-  'gameClip:like': (user: User, gameClip: GameClip) => {
-    if (user.role === 'ADMIN') {
-      return true;
-    }
-    if (user.role === 'USER' && gameClip.author.path.split('/').pop() !== user.id) {
-      return true;
-    }
-    return false;
-  },
 };
 
 export const useAuthorization = () => {
