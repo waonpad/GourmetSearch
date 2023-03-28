@@ -1,15 +1,29 @@
-import { Button } from '@/components/Elements';
+import { Box, Button, Typography } from '@mui/material';
+
+const message = 'Ooops, something went wrong :(';
+const refresh = 'Refresh';
 
 export const ErrorFallback = () => {
   return (
-    <div
-      className="text-red-500 w-screen h-screen flex flex-col justify-center items-center"
-      role="alert"
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%',
+      }}
     >
-      <h2 className="text-lg font-semibold">Ooops, something went wrong :( </h2>
-      <Button className="mt-4" onClick={() => window.location.assign(window.location.origin)}>
-        Refresh
+      <Typography variant="h4" gutterBottom>
+        {message}
+      </Typography>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => window.location.assign(window.location.origin)}
+      >
+        {refresh}
       </Button>
-    </div>
+    </Box>
   );
 };

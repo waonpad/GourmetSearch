@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
+// import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 import { connectAuthEmulator, getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 import { connectStorageEmulator, getStorage } from 'firebase/storage';
@@ -13,7 +13,7 @@ import {
   FIREBASE_MESSAGING_SENDER_ID,
   FIREBASE_APP_ID,
   FIREBASE_MEASUREMENT_ID,
-  RECAPTCHA_PUBLIC_KEY,
+  // RECAPTCHA_PUBLIC_KEY,
 } from '@/config';
 
 const EMULATE_AUTH_URL = 'http://localhost:9099';
@@ -52,10 +52,10 @@ const firebaseAuthProviders = {
 self.FIREBASE_APPCHECK_DEBUG_TOKEN = FIREBASE_EMULATE === 'true' ? true : undefined;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const appCheck = initializeAppCheck(firebaseApp, {
-  provider: new ReCaptchaV3Provider(RECAPTCHA_PUBLIC_KEY),
-  isTokenAutoRefreshEnabled: true,
-});
+// const appCheck = initializeAppCheck(firebaseApp, {
+//   provider: new ReCaptchaV3Provider(RECAPTCHA_PUBLIC_KEY),
+//   isTokenAutoRefreshEnabled: true,
+// });
 
 export { firebaseApp, auth, db, storage, firebaseAuthProviders };
 

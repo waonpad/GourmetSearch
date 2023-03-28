@@ -1,9 +1,9 @@
-import { Spinner } from '@/components/Elements';
+import { Backdrop, CircularProgress } from '@mui/material';
 
 export const SuspenseFallback = () => {
   return (
-    <div className="flex items-center justify-center w-screen h-screen">
-      <Spinner size="xl" />
-    </div>
+    <Backdrop open={true}>
+      <CircularProgress />
+    </Backdrop>
   );
 };

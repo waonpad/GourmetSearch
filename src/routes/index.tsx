@@ -1,7 +1,8 @@
 import { Suspense } from 'react';
 import { Navigate, Route, Routes, Outlet } from 'react-router-dom';
 
-import { Spinner } from '@/components/Elements';
+import { CircularProgress } from '@mui/material';
+
 import { MainLayout } from '@/components/Layout';
 import { Landing } from '@/features/misc';
 import { lazyImport } from '@/utils/lazyImport';
@@ -16,13 +17,7 @@ const { Dashboard } = lazyImport(() => import('@/features/misc'), 'Dashboard');
 const App = () => {
   return (
     <MainLayout>
-      <Suspense
-        fallback={
-          <div className="h-full w-full flex items-center justify-center">
-            <Spinner size="xl" />
-          </div>
-        }
-      >
+      <Suspense fallback={CircularProgress}>
         <Outlet />
       </Suspense>
     </MainLayout>
