@@ -6,14 +6,12 @@ import { MainLayout } from '@/components/Layout';
 import { Landing } from '@/features/misc';
 import { lazyImport } from '@/utils/lazyImport';
 
-import { ProtectedRoute } from './ProtectedRoute';
+// import { ProtectedRoute } from './ProtectedRoute';
 // import { PublicRoute } from './PublicRoute';
 
 const { AuthRoutes } = lazyImport(() => import('@/features/auth'), 'AuthRoutes');
 
 const { Dashboard } = lazyImport(() => import('@/features/misc'), 'Dashboard');
-
-const { GameClipRoutes } = lazyImport(() => import('@/features/gameClip'), 'GameClipRoutes');
 
 const App = () => {
   return (
@@ -36,7 +34,6 @@ export const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/app" element={<App />}>
-        <ProtectedRoute path="/gameClips/*" element={<GameClipRoutes />} />
         <Route path="/" element={<Dashboard />} />
         <Route path="*" element={<Navigate to="/app" />} />
       </Route>

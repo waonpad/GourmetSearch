@@ -2,19 +2,10 @@ import * as React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 
 import { Dialog, Menu, Transition } from '@headlessui/react';
-import {
-  UserIcon,
-  FolderIcon,
-  HomeIcon,
-  MenuAlt2Icon,
-  // UsersIcon,
-  XIcon,
-  ThumbUpIcon,
-} from '@heroicons/react/outline';
+import { UserIcon, HomeIcon, MenuAlt2Icon, XIcon } from '@heroicons/react/outline';
 import clsx from 'clsx';
 
 import logo from '@/assets/logo.svg';
-import { GameClipsSearchField } from '@/components/Elements';
 import { APP_NAME } from '@/config';
 import { useAuthContext } from '@/lib/auth';
 
@@ -25,31 +16,7 @@ type SideNavigationItem = {
 };
 
 const SideNavigation = () => {
-  const auth = useAuthContext();
-
-  const navigation = [
-    { name: 'Dashboard', to: '.', icon: HomeIcon },
-    // {
-    //   name: 'Users',
-    //   to: './users',
-    //   icon: UsersIcon,
-    // },
-    {
-      name: 'GameClips',
-      to: './gameClips',
-      icon: FolderIcon,
-    },
-    {
-      name: 'Liked GameClips',
-      to: `./gameClips/likes/${auth?.user?.uid}`,
-      icon: ThumbUpIcon,
-    },
-    {
-      name: 'Users GameClips',
-      to: `./gameClips/users/${auth?.user?.uid}`,
-      icon: UserIcon,
-    },
-  ] as SideNavigationItem[];
+  const navigation = [{ name: 'Dashboard', to: '.', icon: HomeIcon }] as SideNavigationItem[];
 
   return (
     <>
@@ -268,7 +235,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
 
           <div className="flex-1 px-4 flex items-center">
             <div className="w-full lg:max-w-lg -mt-1">
-              <GameClipsSearchField />
+              <></>
             </div>
           </div>
 
