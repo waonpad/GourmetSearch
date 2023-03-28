@@ -1,9 +1,10 @@
-import { ContentLayout } from '@/components/Layout';
+import { Head } from '@/components/Head';
 
 export const Dashboard = () => {
   return (
-    <ContentLayout title="Dashboard">
+    <>
+      <Head title="Dashboard" />
       <h1>Dashboard</h1>
-    </ContentLayout>
+    </>
   );
 };

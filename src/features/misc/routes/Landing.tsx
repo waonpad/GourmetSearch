@@ -1,7 +1,7 @@
+import { Button } from '@mui/material';
 import { useNavigate } from 'react-router';
 
 import logo from '@/assets/logo.svg';
-import { Button } from '@/components/Elements';
 import { Head } from '@/components/Head';
 import { APP_NAME, APP_GITHUB_REPO } from '@/config';
 import { useAuth } from '@/lib/auth';
@@ -55,7 +55,7 @@ export const Landing = () => {
             <div className="ml-3 inline-flex">
               <a href={APP_GITHUB_REPO} target="_blank" rel="noreferrer">
                 <Button
-                  variant="inverse"
+                  variant="contained"
                   startIcon={
                     <svg fill="currentColor" viewBox="0 0 24 24" className="h-6 w-6">
                       <path

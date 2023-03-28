@@ -16,8 +16,6 @@ export const FIREBASE_MEASUREMENT_ID = process.env.REACT_APP_FIREBASE_MEASUREMEN
 
 export const FIREBASE_EMULATE = process.env.REACT_APP_FIREBASE_EMULATE as string;
 
-export const TWITCH_CLIENT_ID = process.env.REACT_APP_TWITCH_CLIENT_ID as string;
-export const TWITCH_APP_ACCESS_TOKEN = process.env.REACT_APP_TWITCH_APP_ACCESS_TOKEN as string;
-export const IGDB_API_PROXY = process.env.REACT_APP_IGDB_API_PROXY as string;
-
 export const RECAPTCHA_PUBLIC_KEY = process.env.REACT_APP_RECAPTCHA_PUBLIC_KEY as string;
+
+export const DRAWER_WIDTH = 240;
