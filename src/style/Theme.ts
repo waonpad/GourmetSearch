@@ -53,4 +53,6 @@ export const appTheme = createTheme({
     //   },
     // },
   },
+
+  // sx={{ '&:focus': { outline: 'none' } }} を使うとクリックした後のフォーカスを消せる
 });

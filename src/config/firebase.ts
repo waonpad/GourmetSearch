@@ -2,7 +2,6 @@ import { initializeApp } from 'firebase/app';
 // import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 import { connectAuthEmulator, getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
-import { connectStorageEmulator, getStorage } from 'firebase/storage';
 
 import {
   FIREBASE_EMULATE,
@@ -19,8 +18,6 @@ import {
 const EMULATE_AUTH_URL = 'http://localhost:9099';
 const EMULATE_FIRESTORE_HOST = 'localhost';
 const EMULATE_FIRESTORE_PORT = 8080;
-const EMULATE_STORAGE_HOST = 'localhost';
-const EMULATE_STORAGE_PORT = 9199;
 
 const firebaseConfig = {
   apiKey: FIREBASE_API_KEY,
@@ -41,10 +38,6 @@ const db = getFirestore();
 FIREBASE_EMULATE === 'true' &&
   connectFirestoreEmulator(db, EMULATE_FIRESTORE_HOST, EMULATE_FIRESTORE_PORT);
 
-const storage = getStorage();
-FIREBASE_EMULATE === 'true' &&
-  connectStorageEmulator(storage, EMULATE_STORAGE_HOST, EMULATE_STORAGE_PORT);
-
 const firebaseAuthProviders = {
   google: new GoogleAuthProvider(),
 };
@@ -57,7 +50,7 @@ self.FIREBASE_APPCHECK_DEBUG_TOKEN = FIREBASE_EMULATE === 'true' ? true : undefi
 //   isTokenAutoRefreshEnabled: true,
 // });
 
-export { firebaseApp, auth, db, storage, firebaseAuthProviders };
+export { firebaseApp, auth, db, firebaseAuthProviders };
 
 declare let self: {
   FIREBASE_APPCHECK_DEBUG_TOKEN: boolean | undefined;

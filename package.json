@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.1.2",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
     "@firebase/app-check": "^0.6.4",
     "@headlessui/react": "^1.2.0",
     "@heroicons/react": "^1.0.1",

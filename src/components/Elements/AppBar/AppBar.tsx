@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import { APP_NAME, DRAWER_WIDTH } from '@/config';
+import { APP_NAME } from '@/config';
 
 import { Drawer } from '../Drawer';
 import {
@@ -131,7 +131,7 @@ export const AppBar = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <StyledAppBar position="fixed" open={open} drawerWidth={DRAWER_WIDTH}>
+      <StyledAppBar position="fixed" open={open}>
         <Toolbar>
           <IconButton
             color="inherit"

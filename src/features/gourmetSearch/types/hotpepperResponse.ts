@@ -1,6 +1,8 @@
+// TODO: リクエストのtypeによって返ってくるレスポンスの形式が違うのに対応しないといけない
+
 export interface BaseHotpepperResponse {
   results: {
-    api_version: string;
+    api_version: number;
     results_available: number;
     results_returned: number;
     results_start: number;
@@ -8,7 +10,9 @@ export interface BaseHotpepperResponse {
 }
 
 export interface HotpepperGourmetResponse extends BaseHotpepperResponse {
-  shop: Shop[];
+  results: {
+    shop: Shop[];
+  } & BaseHotpepperResponse['results'];
 }
 
 export interface Shop {

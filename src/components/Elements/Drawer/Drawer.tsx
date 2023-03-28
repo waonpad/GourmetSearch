@@ -1,6 +1,6 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
 import {
   IconButton,
   Divider,
@@ -31,9 +31,9 @@ type NavigationItem = {
 
 const navigation: NavigationItem[] = [
   {
-    name: 'Inbox',
-    to: '/inbox',
-    icon: <InboxIcon />,
+    name: 'Gourmet Search',
+    to: '/app/gourmet-search',
+    icon: <RestaurantIcon />,
   },
 ];
 
