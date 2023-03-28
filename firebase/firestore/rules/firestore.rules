@@ -66,100 +66,11 @@ service cloud.firestore {
       isValidInArray(['ADMIN', 'USER'], data.role);
     }
 
-    // validate gameClip
-    function isValidGameClip(data) {
-      return
-      isValidSiteGameClip(data) ||
-      isValidTwitterGameClip(data) ||
-      isValidYoutubeGameClip(data);
-    }
-
-    // validate siteGameClip
-    function isValidSiteGameClip(data) {
-      return
-      isValidString(data.gameTitle) &&
-      isValidString(data.title) &&
-      isValidString(data.body) &&
-      (data.author == null) &&
-      isValidNumber(data.likeCount) &&
-      (data.type == 'site') &&
-      isValidObject(data.videoData) &&
-      (isValidObject(data.thumbnailData) || data.thumbnailData == null) &&
-      isValidCreatedAtAndUpdatedAt(data);
-    }
-
-    // validate twitterGameClip
-    function isValidTwitterGameClip(data) {
-      return
-      isValidString(data.gameTitle) &&
-      isValidString(data.title) &&
-      isValidString(data.body) &&
-      (data.author == null) &&
-      isValidNumber(data.likeCount) &&
-      (data.type == 'twitter') &&
-      isValidString(data.tweetId) &&
-      isValidCreatedAtAndUpdatedAt(data);
-    }
-
-    // validate youtubeGameClip
-    function isValidYoutubeGameClip(data) {
-      return
-      isValidString(data.gameTitle) &&
-      isValidString(data.title) &&
-      isValidString(data.body) &&
-      (data.author == null) &&
-      isValidNumber(data.likeCount) &&
-      (data.type == 'youtube') &&
-      isValidString(data.videoId) &&
-      isValidCreatedAtAndUpdatedAt(data);
-    }
-
-    // validate like
-    function isLikeRequest(request, userId) {
-      return
-      request.auth.uid != userId &&
-      request.resource.data.keys() == ["likeCount"] &&
-      (resource == null ||
-        (request.resource.data.likeCount ==resource.data.likeCount + 1) ||
-        (request.resource.data.likeCount == resource.data.likeCount - 1)
-      );
-    }
-
     // user
     match /users/{userId} {
     	allow read;
       allow create: if isValidUser(request.resource.data) && isAuthenticated();
       allow update: if isValidUser(request.resource.data) && isUserAuthenticated(userId);
-        
-      // user's gameClip
-      match /gameClips/{gameClipId} {
-        allow read;
-        allow create: if isValidGameClip(request.resource.data) && isUserAuthenticated(userId);
-        allow update: if (isValidGameClip(request.resource.data) && isUserAuthenticated(userId)) || isLikeRequest(request, userId);
-        allow delete: if isUserAuthenticated(userId);
-
-        // user's gameClip's likedUsers
-        match /likedUsers/{likedUserId} {
-          allow read;
-          allow create: if isUserAuthenticated(likedUserId) && isValidCreatedAtAndUpdatedAt(request.resource.data);
-          allow update: if false;
-          allow delete: if isUserAuthenticated(likedUserId);
-        }
-      }
-
-      // user's liked GameClip
-      match /likedGameClips/{likedGameClipId} {
-        allow read;
-        allow create: if isUserAuthenticated(userId) && isValidCreatedAtAndUpdatedAt(request.resource.data) && isValidPath(request.resource.data.originRef);
-        allow update: if false;
-        allow delete: if isUserAuthenticated(userId);
-      }
-    }
-
-    // gameClip group
-    match /{path=**}/gameClips/{gameClipId} {
-      allow read;
-      allow write;
     }
   }
 }

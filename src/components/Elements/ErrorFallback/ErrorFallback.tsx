@@ -11,7 +11,7 @@ export const ErrorFallback = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '100%',
+        height: '100vh',
       }}
     >
       <Typography variant="h4" gutterBottom>

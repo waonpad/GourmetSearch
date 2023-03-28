@@ -3,9 +3,6 @@
     "rules": "firebase/firestore/rules/firestore.rules",
     "indexes": "firebase/firestore/indexes/firestore.indexes.json"
   },
-  "storage": {
-    "rules": "firebase/storage/storage.rules"
-  },
   "hosting": {
     "public": "build",
     "ignore": [
@@ -52,9 +49,6 @@
     },
     "functions": {
       "port": 5001
-    },
-    "storage": {
-      "port": 9199
     }
   }
 }

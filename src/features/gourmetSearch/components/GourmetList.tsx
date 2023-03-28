@@ -19,7 +19,7 @@ export const GourmetList = () => {
 
   return (
     <Box>
-      {gourmetsQuery.data.shop.map((shop) => (
+      {gourmetsQuery.data.results.shop.map((shop) => (
         <GourmetListItem key={shop.id} shop={shop} />
       ))}
     </Box>
