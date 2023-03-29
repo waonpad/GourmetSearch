@@ -1,3 +1,5 @@
+import { Link } from '@/components/Elements';
+
 import type { Shop } from '../types';
 
 type GourmetListItemProps = {
@@ -7,7 +9,7 @@ type GourmetListItemProps = {
 export const GourmetListItem = ({ shop }: GourmetListItemProps) => {
   return (
     <div>
-      <h2>{shop.name}</h2>
+      <Link to={`/app/gourmet-search/gourmet/${shop.id}`}>{shop.name}</Link>
     </div>
   );
 };

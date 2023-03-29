@@ -29,8 +29,8 @@ import {
 export const AppBar = ({ children }: { children: React.ReactNode }) => {
   const [open, setOpen] = React.useState(false);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
+  const handleDrawerToggle = () => {
+    setOpen(!open);
   };
 
   const handleDrawerClose = () => {
@@ -131,14 +131,15 @@ export const AppBar = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <StyledAppBar position="fixed" open={open}>
+      <StyledAppBar position="fixed">
         <Toolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={handleDrawerOpen}
+            onClick={handleDrawerToggle}
             edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
+            // sx={{ mr: 2, ...(open && { display: 'none' }) }}
+            sx={{ mr: 2 }}
           >
             <MenuIcon />
           </IconButton>

@@ -77,7 +77,7 @@ export interface HotpepperGourmetRequest extends BaseHotpepperRequest {
    * 指定なし: credit_cardとspecial以外全て    
    * +で繋いで複数指定可能
    */
-  type?: 'lite' | 'credit_card' | 'special';
+  // type?: 'lite' | 'credit_card' | 'special'; // レスポンスの型を限定するために設定不可にする
   /**
    * 1: 店名かな順    
    * 2: ジャンルコード順    

@@ -4,8 +4,16 @@ import { useGourmets } from '../api/getGourmets';
 
 import { GourmetListItem } from './GourmetListItem';
 
-export const GourmetList = () => {
-  const gourmetsQuery = useGourmets();
+import type { HotpepperGourmetRequest } from '../types';
+
+type GourmetListProps = {
+  SearchGourmetParams?: Omit<HotpepperGourmetRequest, 'key'>;
+};
+
+export const GourmetList = ({ SearchGourmetParams }: GourmetListProps) => {
+  const gourmetsQuery = useGourmets({
+    requestParams: SearchGourmetParams,
+  });
 
   if (gourmetsQuery.isLoading) {
     return (

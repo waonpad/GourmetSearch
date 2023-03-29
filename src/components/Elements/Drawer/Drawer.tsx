@@ -60,7 +60,7 @@ export const Drawer = ({ open, handleDrawerClose }: DrawerProps) => {
         </IconButton>
       </StyledDrawerHeader>
       <Divider />
-      <List>
+      <List disablePadding>
         {navigation.map((item) => (
           <ListItem key={item.name} disablePadding>
             <ListItemButton component={Link} to={item.to}>

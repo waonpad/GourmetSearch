@@ -2,9 +2,9 @@
 
 export interface BaseHotpepperResponse {
   results: {
-    api_version: number;
+    api_version: string;
     results_available: number;
-    results_returned: number;
+    results_returned: string;
     results_start: number;
   };
 }
@@ -71,8 +71,8 @@ export interface Shop {
   photo: Photo;
   lunch: string;
   midnight: string;
-  special?: special;
-  credit_card?: CreditCard;
+  // special?: special;
+  // credit_card?: CreditCard;
 }
 
 export interface Budget {
@@ -122,19 +122,19 @@ export interface Urls {
   pc: string;
 }
 
-export interface special {
-  code: string;
-  name: string;
-  special_category: SpecialCategory;
-  title: string;
-}
+// export interface special {
+//   code: string;
+//   name: string;
+//   special_category: SpecialCategory;
+//   title: string;
+// }
 
-export interface SpecialCategory {
-  code: string;
-  name: string;
-}
+// export interface SpecialCategory {
+//   code: string;
+//   name: string;
+// }
 
-export interface CreditCard {
-  code: string;
-  name: string;
-}
+// export interface CreditCard {
+//   code: string;
+//   name: string;
+// }
