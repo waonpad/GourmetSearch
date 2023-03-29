@@ -5,10 +5,14 @@ import { RECRUIT_API_URL, RECRUIT_API_KEY, HEROKU_PROXY_URL } from '@/config';
 import { axios } from '@/lib/axios';
 import type { ExtractFnReturnType, QueryConfig } from '@/lib/react-query';
 
-import type { HotpepperGourmetRequest, HotpepperGourmetResponse } from '../types';
+import type {
+  HotpepperGourmetRequest,
+  OmittedHotpepperGourmetRequest,
+  HotpepperGourmetResponse,
+} from '../types';
 
 export const getGourmets = (
-  requestParams: Omit<HotpepperGourmetRequest, 'key'>
+  requestParams: OmittedHotpepperGourmetRequest
 ): Promise<HotpepperGourmetResponse> => {
   const params: HotpepperGourmetRequest = {
     ...requestParams,
@@ -25,11 +29,11 @@ export const getGourmets = (
 type QueryFnType = typeof getGourmets;
 
 export type UseGourmetsOptions = {
-  requestParams?: Omit<HotpepperGourmetRequest, 'key'>;
+  requestParams?: OmittedHotpepperGourmetRequest;
   config?: QueryConfig<QueryFnType>;
 };
 
-const defaultRequestParams: Omit<HotpepperGourmetRequest, 'key'> = {
+const defaultRequestParams: OmittedHotpepperGourmetRequest = {
   keyword: '東京', // テスト用
 };
 
