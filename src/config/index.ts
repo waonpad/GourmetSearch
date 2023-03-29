@@ -22,3 +22,7 @@ export const DRAWER_WIDTH = 240;
 
 export const RECRUIT_API_URL = process.env.REACT_APP_RECRUIT_API_URL as string;
 export const RECRUIT_API_KEY = process.env.REACT_APP_RECRUIT_API_KEY as string;
+
+export const HEROKU_PROXY_URL = process.env.REACT_APP_HEROKU_PROXY_URL as string;
+
+export const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY as string;
