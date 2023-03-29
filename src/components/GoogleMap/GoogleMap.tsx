@@ -43,6 +43,10 @@ export const GoogleMap = ({
     }
   };
 
+  /**
+   * パラメータからdefaultCenterを取得している場合現在地に戻らない
+   * そのようにする？
+   */
   const resetCenter = () => {
     if (!defaultCenter) {
       return;

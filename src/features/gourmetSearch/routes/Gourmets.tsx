@@ -7,20 +7,22 @@ import { Head } from '@/components/Head';
 
 import { GourmetList } from '../components/GourmetList';
 import { SearchGourmetForm } from '../components/SearchGourmetForm';
+import { hotpepperGourmetRequestConverter } from '../types';
 
-import type { HotpepperGourmetRequest } from '../types';
+import type { OmittedHotpepperGourmetRequest } from '../types';
 
 export const Gourmets = () => {
-  const { query } = useParams();
+  const { searchParams } = useParams();
 
-  const parsedQuery: Omit<HotpepperGourmetRequest, 'key'> | undefined = qs.parse(query);
+  const parsedSearchParams: OmittedHotpepperGourmetRequest | undefined =
+    hotpepperGourmetRequestConverter(qs.parse(searchParams));
 
   return (
     <>
       <Head title="Gourmets" />
-      <Box key={query}>
-        <SearchGourmetForm defaultValues={parsedQuery} />
-        <GourmetList SearchGourmetParams={parsedQuery} />
+      <Box key={searchParams}>
+        <SearchGourmetForm defaultValues={parsedSearchParams} />
+        <GourmetList SearchGourmetParams={parsedSearchParams} />
       </Box>
     </>
   );

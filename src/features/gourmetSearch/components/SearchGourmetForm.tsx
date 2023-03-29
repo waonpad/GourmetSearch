@@ -26,7 +26,7 @@ import { useGeolocated } from 'react-geolocated';
 import { useForm, Controller } from 'react-hook-form';
 
 import { GoogleMap } from '@/components/GoogleMap';
-import { REQUIRED, MIN_LENGTH, MIN, MAX } from '@/messages/validation';
+import { validMsg } from '@/messages/validation';
 import type { ReactHookFormValidationRules, LatLng } from '@/types';
 
 import type { UseGourmetsOptions } from '../api/getGourmets';
@@ -34,20 +34,20 @@ import type { HotpepperGourmetRequest } from '../types';
 import type { SubmitHandler } from 'react-hook-form';
 
 type SearchGourmetFormProps = {
-  defaultValues?: SearchGourmetInput;
+  defaultValues?: SearchGourmetInput & { lat?: number; lng?: number };
 };
 
 type SearchGourmetInput = Pick<HotpepperGourmetRequest, 'keyword' | 'range'>;
 
 const searchGourmetValidationRules: ReactHookFormValidationRules<SearchGourmetInput> = {
   keyword: {
-    required: REQUIRED,
-    minLength: MIN_LENGTH(1),
+    required: validMsg.required,
+    minLength: validMsg.minLength(1),
   },
   range: {
-    required: REQUIRED,
-    min: MIN(1),
-    max: MAX(5),
+    required: validMsg.required,
+    min: validMsg.min(1),
+    max: validMsg.max(5),
   },
 };
 
@@ -86,7 +86,11 @@ export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => 
     setActiveRange(parseInt((event.target as HTMLInputElement).value));
   };
 
-  const [latLng, setLatLng] = useState<LatLng | undefined>(undefined);
+  const [latLng, setLatLng] = useState<LatLng | undefined>(
+    defaultValues?.lat && defaultValues?.lng
+      ? { lat: defaultValues.lat, lng: defaultValues.lng }
+      : undefined
+  );
 
   const changeLatLng = (latLng: LatLng | undefined) => {
     setLatLng(latLng);
@@ -121,16 +125,16 @@ export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => 
 
     console.log('requestLatLng', requestLatLng);
 
-    const query: UseGourmetsOptions['requestParams'] = {
+    const searchParams: UseGourmetsOptions['requestParams'] = {
       ...data,
       ...requestLatLng,
     };
 
-    console.log('query', query);
+    console.log('searchParams', searchParams);
 
-    const queryString = qs.stringify(query);
+    const searchParamsString = qs.stringify(searchParams);
 
-    navigate(`/app/gourmet-search/gourmets/${queryString}`);
+    navigate(`/app/gourmet-search/gourmets/${searchParamsString}`);
   };
 
   useEffect(() => {
@@ -191,7 +195,9 @@ export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => 
                 paddingBottom: { xs: '100%', sm: '50%', md: '33.3%' },
               }}
               defaultCenter={
-                geolocated?.coords
+                defaultValues?.lat && defaultValues?.lng
+                  ? { lat: defaultValues.lat, lng: defaultValues.lng }
+                  : geolocated?.coords
                   ? { lat: geolocated.coords.latitude, lng: geolocated.coords.longitude }
                   : undefined
               }
@@ -217,7 +223,7 @@ export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => 
           variant="outlined"
           onClick={handleDisplayMap}
           startIcon={<FmdGoodIcon />}
-          sx={{ width: '170px' }}
+          sx={{ width: '180px' }}
         >
           {displayMap ? 'Hide Map' : 'Search by map'}
         </Button>

@@ -4,10 +4,10 @@ import { useGourmets } from '../api/getGourmets';
 
 import { GourmetListItem } from './GourmetListItem';
 
-import type { HotpepperGourmetRequest } from '../types';
+import type { OmittedHotpepperGourmetRequest } from '../types';
 
 type GourmetListProps = {
-  SearchGourmetParams?: Omit<HotpepperGourmetRequest, 'key'>;
+  SearchGourmetParams?: OmittedHotpepperGourmetRequest;
 };
 
 export const GourmetList = ({ SearchGourmetParams }: GourmetListProps) => {
