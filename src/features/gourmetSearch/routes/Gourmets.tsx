@@ -9,12 +9,12 @@ import { GourmetList } from '../components/GourmetList';
 import { SearchGourmetForm } from '../components/SearchGourmetForm';
 import { hotpepperGourmetRequestConverter } from '../types';
 
-import type { OmittedHotpepperGourmetRequest } from '../types';
+import type { CustomizedHotpepperGourmetRequest } from '../types';
 
 export const Gourmets = () => {
   const { searchParams } = useParams();
 
-  const parsedSearchParams: OmittedHotpepperGourmetRequest | undefined =
+  const parsedSearchParams: CustomizedHotpepperGourmetRequest | undefined =
     hotpepperGourmetRequestConverter(qs.parse(searchParams));
 
   return (
@@ -22,7 +22,7 @@ export const Gourmets = () => {
       <Head title="Gourmets" />
       <Box key={searchParams}>
         <SearchGourmetForm defaultValues={parsedSearchParams} />
-        <GourmetList SearchGourmetParams={parsedSearchParams} />
+        <GourmetList searchGourmetParams={parsedSearchParams} />
       </Box>
     </>
   );

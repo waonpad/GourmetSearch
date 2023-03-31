@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import ClearIcon from '@mui/icons-material/Clear';
@@ -26,42 +26,51 @@ import { useGeolocated } from 'react-geolocated';
 import { useForm, Controller } from 'react-hook-form';
 
 import { GoogleMap } from '@/components/GoogleMap';
+import { GEOLOCATION_DISABLED } from '@/messages';
 import { validMsg } from '@/messages/validation';
 import type { ReactHookFormValidationRules, LatLng } from '@/types';
 
-import type { UseGourmetsOptions } from '../api/getGourmets';
-import type { HotpepperGourmetRequest } from '../types';
+import { defStart, defRange } from '../api/getGourmets';
+
+import type { CustomizedHotpepperGourmetRequest } from '../types';
 import type { SubmitHandler } from 'react-hook-form';
 
 type SearchGourmetFormProps = {
-  defaultValues?: SearchGourmetInput & { lat?: number; lng?: number };
+  defaultValues?: CustomizedHotpepperGourmetRequest;
 };
 
-type SearchGourmetInput = Pick<HotpepperGourmetRequest, 'keyword' | 'range'>;
+type SearchGourmetInput = {
+  keyword?: CustomizedHotpepperGourmetRequest['keyword'];
+  range?: CustomizedHotpepperGourmetRequest['range'] | 0;
+};
 
 const searchGourmetValidationRules: ReactHookFormValidationRules<SearchGourmetInput> = {
-  keyword: {
-    required: validMsg.required,
-    minLength: validMsg.minLength(1),
-  },
+  keyword: {},
   range: {
     required: validMsg.required,
-    min: validMsg.min(1),
+    min: validMsg.min(0),
     max: validMsg.max(5),
   },
 };
 
-const searchGourmetDefaultValues: SearchGourmetInput = {
+const searchGourmetDefaultValues: {
+  [K in NonNullable<keyof SearchGourmetInput>]: NonNullable<SearchGourmetInput[K]>;
+} = {
   keyword: '',
-  range: 1,
+  range: defRange,
 };
 
-const ranges = [
-  { value: 1, label: '300m' },
-  { value: 2, label: '500m' },
-  { value: 3, label: '1000m' },
-  { value: 4, label: '2000m' },
-  { value: 5, label: '3000m' },
+const ranges: {
+  value: SearchGourmetInput['range'] | 0;
+  label: string;
+  range: number;
+}[] = [
+  { value: 1, label: '300m', range: 300 },
+  { value: 2, label: '500m', range: 500 },
+  { value: 3, label: '1000m', range: 1000 },
+  { value: 4, label: '2000m', range: 2000 },
+  { value: 5, label: '3000m', range: 3000 },
+  { value: 0, label: 'All Range', range: 0 }, // エリアで絞り込まないための設定
 ];
 
 export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => {
@@ -69,22 +78,15 @@ export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => 
 
   const geolocated = useGeolocated({
     watchPosition: true,
-    suppressLocationOnMount: true,
   });
 
   const [displayMap, setDisplayMap] = useState<boolean>(false);
 
-  const handleDisplayMap = () => {
-    setDisplayMap(!displayMap);
-  };
-
-  const [activeRange, setActiveRange] = useState<number>(
-    defaultValues?.range ?? searchGourmetDefaultValues.range ?? 1
+  const [activeRange, setActiveRange] = useState<SearchGourmetInput['range']>(
+    defaultValues?.allRange === 1
+      ? undefined
+      : defaultValues?.range ?? searchGourmetDefaultValues.range
   );
-
-  const handleClickRange = (event: React.MouseEvent<HTMLInputElement>) => {
-    setActiveRange(parseInt((event.target as HTMLInputElement).value));
-  };
 
   const [latLng, setLatLng] = useState<LatLng | undefined>(
     defaultValues?.lat && defaultValues?.lng
@@ -92,13 +94,27 @@ export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => 
       : undefined
   );
 
+  const [resetCenterTrigger, setResetCenterTrigger] = useState<boolean>(false);
+
   const changeLatLng = (latLng: LatLng | undefined) => {
     setLatLng(latLng);
   };
 
-  const [resetCenterTrigger, setResetCenterTrigger] = useState<boolean>(false);
+  const handleClickToggleDisplayMap = () => {
+    setDisplayMap(!displayMap);
+  };
 
-  const handleResetCenterTrigger = () => {
+  const handleClickRange = (event: React.MouseEvent<HTMLInputElement>) => {
+    const value = parseInt((event.target as HTMLInputElement).value);
+
+    setActiveRange(
+      value == 0
+        ? undefined
+        : (parseInt((event.target as HTMLInputElement).value) as SearchGourmetInput['range'])
+    );
+  };
+
+  const handleClickResetCenterTrigger = () => {
     setResetCenterTrigger(!resetCenterTrigger);
   };
 
@@ -109,37 +125,42 @@ export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => 
     formState: { errors },
   } = useForm<SearchGourmetInput>({
     mode: 'onBlur',
-    defaultValues: _.merge({}, searchGourmetDefaultValues, defaultValues),
+    defaultValues: _.merge({}, searchGourmetDefaultValues, {
+      ...defaultValues,
+      range:
+        defaultValues?.allRange === 1
+          ? 0
+          : defaultValues?.range ?? searchGourmetDefaultValues.range,
+    }),
   });
 
   const onSubmit: SubmitHandler<SearchGourmetInput> = (data: SearchGourmetInput) => {
-    console.log('onSubmit', data);
+    const requestLatLng =
+      data.range == 0
+        ? undefined
+        : latLng
+        ? { ...latLng }
+        : geolocated?.coords
+        ? { lat: geolocated.coords.latitude, lng: geolocated.coords.longitude }
+        : undefined;
 
-    console.log(latLng);
-
-    const requestLatLng = latLng
-      ? { ...latLng }
-      : geolocated?.coords
-      ? { lat: geolocated.coords.latitude, lng: geolocated.coords.longitude }
-      : undefined;
-
-    console.log('requestLatLng', requestLatLng);
-
-    const searchParams: UseGourmetsOptions['requestParams'] = {
+    const customSearchParams: CustomizedHotpepperGourmetRequest = {
       ...data,
+      start: defStart, // ページ繰りしたページから検索した時のために初期値をセット
       ...requestLatLng,
+      range: data.range == 0 ? undefined : data.range,
+      allRange: data.range == 0 ? 1 : undefined,
     };
 
-    console.log('searchParams', searchParams);
-
-    const searchParamsString = qs.stringify(searchParams);
+    const searchParamsString = qs.stringify(customSearchParams);
 
     navigate(`/app/gourmet-search/gourmets/${searchParamsString}`);
   };
 
-  useEffect(() => {
-    geolocated.getPosition();
-  }, [geolocated]);
+  const handleClickReset = () => {
+    reset();
+    setResetCenterTrigger(!resetCenterTrigger);
+  };
 
   return (
     <Card>
@@ -148,7 +169,6 @@ export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => 
         <Stack
           component="form"
           noValidate
-          onSubmit={handleSubmit(onSubmit)}
           spacing={2}
           // sx={{ m: 2, width: '25ch' }}
         >
@@ -202,26 +222,38 @@ export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => 
                   : undefined
               }
               defaultZoom={15}
-              circleRadius={Number(
-                ranges.find((range) => range.value === activeRange)?.label.replace('m', '') ?? 0
-              )}
+              circleRadius={
+                !activeRange
+                  ? 0
+                  : Number(ranges.find((range) => range.value === activeRange)?.range)
+              }
               changeLatLng={changeLatLng}
               resetCenterTrigger={resetCenterTrigger}
             />
-            <Button variant="text" onClick={handleResetCenterTrigger}>
-              Back to Current Location
+            <Button
+              variant="text"
+              onClick={handleClickResetCenterTrigger}
+              disabled={!geolocated?.coords}
+            >
+              {!geolocated.isGeolocationAvailable || !geolocated.isGeolocationEnabled
+                ? GEOLOCATION_DISABLED
+                : 'Back to Current Location'}
             </Button>
           </Collapse>
         </Stack>
       </CardContent>
       <CardActions sx={{ justifyContent: 'space-between' }}>
-        {/* reset時にmapも初期状態にする？ */}
-        <Button variant="outlined" type="reset" onClick={() => reset()} startIcon={<ClearIcon />}>
+        <Button
+          variant="outlined"
+          type="reset"
+          onClick={handleClickReset}
+          startIcon={<ClearIcon />}
+        >
           Reset
         </Button>
         <Button
           variant="outlined"
-          onClick={handleDisplayMap}
+          onClick={handleClickToggleDisplayMap}
           startIcon={<FmdGoodIcon />}
           sx={{ width: '180px' }}
         >

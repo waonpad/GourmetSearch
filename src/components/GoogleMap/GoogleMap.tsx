@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import { GoogleMap as ReactGoogleMaps, LoadScript, MarkerF, CircleF } from '@react-google-maps/api';
 import _ from 'lodash';
+import { useGeolocated } from 'react-geolocated';
 
 import { GOOGLE_MAP_API_KEY } from '@/config';
 import type { LatLng } from '@/types';
@@ -18,6 +19,13 @@ type GoogleMapProps = {
   resetCenterTrigger?: boolean;
 };
 
+const tokyoLatLng = {
+  lat: 35.681236,
+  lng: 139.767125,
+};
+
+const spareDefaultCenter: LatLng = tokyoLatLng;
+
 export const GoogleMap = ({
   sx,
   defaultCenter,
@@ -29,30 +37,37 @@ export const GoogleMap = ({
   const [mapref, setMapRef] = useState<google.maps.Map | null>(null);
   const [center, setCenter] = useState<LatLng | undefined>(defaultCenter);
 
+  const geolocated = useGeolocated({
+    watchPosition: true,
+  });
+
   const handleOnLoad = (map: google.maps.Map) => {
     setMapRef(map);
+    changeLatLng?.(map.getCenter()?.toJSON());
   };
 
   const handleCenterChanged = () => {
     if (mapref) {
       const newCenter = mapref.getCenter()?.toJSON();
+
       if (newCenter && !_.isEqual(newCenter, center)) {
         setCenter(newCenter);
-        changeLatLng?.(center);
+        changeLatLng?.(newCenter);
       }
     }
   };
 
-  /**
-   * パラメータからdefaultCenterを取得している場合現在地に戻らない
-   * そのようにする？
-   */
   const resetCenter = () => {
-    if (!defaultCenter) {
-      return;
+    // 取得出来なければdefaultCenter, spareDefaultCenterにする？
+    if (geolocated?.coords) {
+      const latLng = {
+        lat: geolocated.coords.latitude,
+        lng: geolocated.coords.longitude,
+      };
+
+      setCenter(latLng);
+      mapref?.setCenter(latLng);
     }
-    setCenter(defaultCenter);
-    mapref?.setCenter(defaultCenter);
   };
 
   useEffect(() => {
@@ -71,15 +86,14 @@ export const GoogleMap = ({
             top: 0,
             left: 0,
           }}
-          center={center ?? defaultCenter}
+          center={center ?? defaultCenter ?? spareDefaultCenter}
           zoom={defaultZoom ?? 15}
           onLoad={handleOnLoad}
           onCenterChanged={handleCenterChanged}
         >
-          <MarkerF visible={!!center} position={center ?? defaultCenter ?? { lat: 0, lng: 0 }} />
+          <MarkerF position={center ?? defaultCenter ?? spareDefaultCenter} />
           <CircleF
-            visible={!!center}
-            center={center}
+            center={center ?? defaultCenter ?? spareDefaultCenter}
             radius={circleRadius ?? 0}
             options={{
               strokeColor: '#FF0000',
