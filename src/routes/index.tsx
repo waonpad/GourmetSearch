@@ -1,8 +1,7 @@
 import { Suspense } from 'react';
 import { Navigate, Route, Routes, Outlet } from 'react-router-dom';
 
-import { CircularProgress } from '@mui/material';
-
+import { SuspenseFallback } from '@/components/Elements/SuspenseFallback';
 import { MainLayout } from '@/components/Layout';
 import { Landing } from '@/features/misc';
 import { lazyImport } from '@/utils/lazyImport';
@@ -22,7 +21,7 @@ const { GourmetSearchRoutes } = lazyImport(
 const App = () => {
   return (
     <MainLayout>
-      <Suspense fallback={<CircularProgress />}>
+      <Suspense fallback={<SuspenseFallback />}>
         <Outlet />
       </Suspense>
     </MainLayout>

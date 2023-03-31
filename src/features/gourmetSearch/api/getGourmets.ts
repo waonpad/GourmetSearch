@@ -22,7 +22,7 @@ export const getGourmets = (
 
   return axios.get('/gourmet/v1/', {
     baseURL: `${HEROKU_PROXY_URL}/${RECRUIT_API_URL}`,
-    params: params,
+    params,
   });
 };
 
@@ -33,21 +33,27 @@ export type UseGourmetsOptions = {
   config?: QueryConfig<QueryFnType>;
 };
 
-const defaultRequestParams: OmittedHotpepperGourmetRequest = {
-  keyword: '東京', // テスト用
-};
+export const defRange = 5;
+export const defCount = 10;
+export const defStart = 1;
 
-const defaultOptions: UseGourmetsOptions = {
-  requestParams: defaultRequestParams,
-};
+export const useGourmets = ({ requestParams, config }: UseGourmetsOptions) => {
+  const defaultConfig: UseGourmetsOptions['config'] = {};
 
-export const useGourmets = ({ requestParams, config }: UseGourmetsOptions = defaultOptions) => {
+  const defaultRequestParams: OmittedHotpepperGourmetRequest = {
+    range: defRange,
+    count: defCount,
+    start: defStart,
+  };
+
+  const mergedRequestParams = _.merge({}, defaultRequestParams, requestParams);
+
   return useQuery<ExtractFnReturnType<QueryFnType>>({
-    ...config,
-    queryKey: ['gourmets', _.merge({}, defaultRequestParams, requestParams)],
-    queryFn: () => getGourmets(_.merge({}, defaultRequestParams, requestParams)),
+    ..._.merge({}, defaultConfig, config),
+    queryKey: ['gourmets', mergedRequestParams],
+    queryFn: () => getGourmets(mergedRequestParams),
     onSettled(data, error) {
-      console.log(_.merge({}, defaultRequestParams, requestParams));
+      console.log(mergedRequestParams);
       console.log(data);
       console.log(error);
     },

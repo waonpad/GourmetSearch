@@ -1,19 +1,71 @@
-// TODO: リクエストのtypeによって返ってくるレスポンスの形式が違うのに対応しないといけない
-
+/**
+ * Hotpepper APIのレスポンスの基底型
+ */
 export interface BaseHotpepperResponse {
   results: {
     api_version: string;
-    results_available: number;
-    results_returned: string;
-    results_start: number;
   };
 }
 
-export interface HotpepperGourmetResponse extends BaseHotpepperResponse {
+/**
+ * Hotpepper APIの成功レスポンスの基底型
+ */
+export interface BaseHotpepperSuccessResponse extends BaseHotpepperResponse {
   results: {
-    shop: Shop[];
+    results_available: number;
+    results_returned: string;
+    results_start: number;
   } & BaseHotpepperResponse['results'];
 }
+
+/**
+ * Hotpepper APIのエラーレスポンスの型
+ */
+export interface HotpepperErrorResponse extends BaseHotpepperResponse {
+  results: {
+    error: {
+      code: number;
+      message: string;
+    }[];
+  } & BaseHotpepperResponse['results'];
+}
+
+/**
+ * Hotpepper APIのレスポンスの型
+ */
+export type HotpepperResponse = HotpepperGourmetResponse;
+
+/**
+ * Hotpepper APIのグルメサーチAPIの成功レスポンスの型
+ */
+export interface HotpepperGourmetSuccessResponse extends BaseHotpepperSuccessResponse {
+  results: {
+    shop: Shop[];
+  } & BaseHotpepperSuccessResponse['results'];
+}
+
+/**
+ * Hotpepper APIのグルメサーチAPIのレスポンスの型
+ */
+export type HotpepperGourmetResponse = HotpepperGourmetSuccessResponse | HotpepperErrorResponse;
+
+/**
+ * グルメサーチAPIの成功レスポンスの型ガード
+ */
+export const isHotpepperGourmetSuccessResponse = (
+  response: HotpepperGourmetResponse
+): response is HotpepperGourmetSuccessResponse => {
+  return (response as HotpepperGourmetSuccessResponse).results.shop !== undefined;
+};
+
+/**
+ * ホットペッパーAPIのエラーレスポンスの型ガード
+ */
+export const isHotpepperErrorResponse = (
+  response: HotpepperResponse
+): response is HotpepperErrorResponse => {
+  return (response as HotpepperErrorResponse).results.error !== undefined;
+};
 
 export interface Shop {
   id: string;
