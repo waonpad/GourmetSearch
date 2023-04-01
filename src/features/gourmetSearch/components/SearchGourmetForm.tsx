@@ -28,6 +28,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { GoogleMap } from '@/components/GoogleMap';
 import { GEOLOCATION_DISABLED } from '@/messages';
 import { validMsg } from '@/messages/validation';
+import { appTheme } from '@/styles/Theme';
 import type { ReactHookFormValidationRules, LatLng } from '@/types';
 
 import { defStart, defRange } from '../api/getGourmets';
@@ -163,8 +164,14 @@ export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => 
   };
 
   return (
-    <Card>
-      <CardHeader title="Search Gourmet" />
+    <Card
+      sx={{
+        [appTheme.breakpoints.down('md')]: {
+          borderRadius: 0,
+        },
+      }}
+    >
+      <CardHeader title="Search Gourmet" titleTypographyProps={{ variant: 'h6' }} />
       <CardContent sx={{ py: 0 }}>
         <Stack
           component="form"
@@ -255,7 +262,7 @@ export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => 
           variant="outlined"
           onClick={handleClickToggleDisplayMap}
           startIcon={<FmdGoodIcon />}
-          sx={{ width: '180px' }}
+          // sx={{ width: '180px' }}
         >
           {displayMap ? 'Hide Map' : 'Search by map'}
         </Button>

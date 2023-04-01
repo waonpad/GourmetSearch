@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from 'react';
 
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -147,16 +148,16 @@ export const AppBar = ({ children }: { children: React.ReactNode }) => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
+            // sx={{ display: { xs: 'none', sm: 'block' } }}
           >
             {APP_NAME}
           </Typography>
-          <StyledSearch>
+          {/* <StyledSearch>
             <StyledSearchIconWrapper>
               <SearchIcon />
             </StyledSearchIconWrapper>
             <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
-          </StyledSearch>
+          </StyledSearch> */}
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">

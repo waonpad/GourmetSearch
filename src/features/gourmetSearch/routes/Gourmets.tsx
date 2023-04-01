@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 
-import { Box } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 import qs from 'qs';
 
 import { Head } from '@/components/Head';
@@ -20,10 +20,16 @@ export const Gourmets = () => {
   return (
     <>
       <Head title="Gourmets" />
-      <Box key={searchParams}>
-        <SearchGourmetForm defaultValues={parsedSearchParams} />
-        <GourmetList searchGourmetParams={parsedSearchParams} />
-      </Box>
+      <Container>
+        <Grid container spacing={4}>
+          <Grid item xs={12}>
+            <SearchGourmetForm defaultValues={parsedSearchParams} />
+          </Grid>
+          <Grid item xs={12}>
+            <GourmetList searchGourmetParams={parsedSearchParams} />
+          </Grid>
+        </Grid>
+      </Container>
     </>
   );
 };
