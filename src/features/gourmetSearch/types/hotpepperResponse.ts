@@ -67,6 +67,9 @@ export const isHotpepperErrorResponse = (
   return (response as HotpepperErrorResponse).results.error !== undefined;
 };
 
+/**
+ * プロパティが無いものもある？
+ */
 export interface Shop {
   id: string;
   name: string;
@@ -83,7 +86,7 @@ export interface Shop {
   lat: number;
   lng: number;
   genre: Genre;
-  sub_genre: SubGenre;
+  sub_genre?: SubGenre;
   budget: Budget;
   budget_memo: string;
   catch: string;
@@ -190,3 +193,34 @@ export interface Urls {
 //   code: string;
 //   name: string;
 // }
+
+export const hotpepperGourmetShopPhotoSize = {
+  logo_image: {
+    width: 69,
+    height: 69,
+  },
+  pc: {
+    l: {
+      width: 238,
+      height: 238,
+    },
+    m: {
+      width: 168,
+      height: 168,
+    },
+    s: {
+      width: 58,
+      height: 58,
+    },
+  },
+  mobile: {
+    l: {
+      width: 168,
+      height: 168,
+    },
+    s: {
+      width: 100,
+      height: 100,
+    },
+  },
+};

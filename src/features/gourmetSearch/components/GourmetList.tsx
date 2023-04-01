@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Box, CircularProgress, Pagination, Typography } from '@mui/material';
+import { CircularProgress, Pagination, Typography, Grid, Container, Divider } from '@mui/material';
 import _ from 'lodash';
 import qs from 'qs';
 import { useGeolocated } from 'react-geolocated';
@@ -31,6 +31,13 @@ export const GourmetList = ({ searchGourmetParams }: GourmetListProps) => {
   );
 
   const gourmetsQuery = useGourmets({
+    config: {
+      enabled:
+        // geolocatedの読み込みが終わるまで待つ
+        !!geolocated?.coords ||
+        !geolocated?.isGeolocationAvailable ||
+        !geolocated?.isGeolocationEnabled,
+    },
     requestParams: {
       ..._.omit(searchGourmetParams, ['allRange']),
       lat:
@@ -69,52 +76,70 @@ export const GourmetList = ({ searchGourmetParams }: GourmetListProps) => {
     isHotpepperErrorResponse(gourmetsQuery.data)
   ) {
     return (
-      <Box sx={{ ...compositeStyle.centerBoth, my: 5 }}>
-        <Typography variant="h6">{GEOLOCATION_DISABLED}</Typography>
-      </Box>
+      <Container>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
+            <Typography variant="h6">{GEOLOCATION_DISABLED}</Typography>
+          </Grid>
+        </Grid>
+      </Container>
     );
   }
 
   // Hotpepper Error
   if (isHotpepperErrorResponse(gourmetsQuery.data)) {
     return (
-      <Box sx={{ ...compositeStyle.centerBoth, my: 5, gap: 2, flexDirection: 'column' }}>
-        {gourmetsQuery.data.results.error.map((error) => (
-          <Typography key={error.code} variant="h6">
-            {error.message}
-          </Typography>
-        ))}
-      </Box>
+      <Container>
+        <Grid container spacing={2}>
+          {gourmetsQuery.data.results.error.map((error) => (
+            <Grid item xs={12} key={error.code} sx={{ ...compositeStyle.centerBoth }}>
+              <Typography variant="h6">{error.message}</Typography>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
     );
   }
 
   // Success
   return (
-    <>
+    <Container>
       {isHotpepperGourmetSuccessResponse(gourmetsQuery.data) && (
-        <>
-          {gourmetsQuery.data.results.shop.map((shop) => (
-            <GourmetListItem key={shop.id} shop={shop} />
-          ))}
-          <Box sx={{ mt: 5, mb: 5, ...compositeStyle.centerBoth }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Typography variant="h6">
+              {gourmetsQuery.data.results.results_available} Results
+            </Typography>
+          </Grid>
+          <Grid item container spacing={{ xs: 0, md: 2 }}>
+            {gourmetsQuery.data.results.shop.map((shop) => (
+              <Grid item xs={12} key={shop.id}>
+                <Divider sx={{ display: { xs: 'block', md: 'none' } }} />
+                <GourmetListItem shop={shop} />
+              </Grid>
+            ))}
+          </Grid>
+          <Grid item container spacing={0}>
             {gourmetsQuery.data.results.shop.length > 0 && (
-              <Pagination
-                count={getTotalPages(
-                  gourmetsQuery.data.results.results_available,
-                  searchGourmetParams?.count ?? defCount
-                )}
-                page={page}
-                onChange={handleClickPaginte}
-              />
+              <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
+                <Pagination
+                  count={getTotalPages(
+                    gourmetsQuery.data.results.results_available,
+                    searchGourmetParams?.count ?? defCount
+                  )}
+                  page={page}
+                  onChange={handleClickPaginte}
+                />
+              </Grid>
             )}
             {gourmetsQuery.data.results.shop.length === 0 && (
-              <Box sx={{ ...compositeStyle.centerBoth }}>
+              <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
                 <Typography variant="h6">No Results</Typography>
-              </Box>
+              </Grid>
             )}
-          </Box>
-        </>
+          </Grid>
+        </Grid>
       )}
-    </>
+    </Container>
   );
 };
