@@ -1,11 +1,13 @@
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import { Stack, Chip } from '@mui/material';
 
+import { ShopDetailTempleteStackDefaultProps } from './ShopDetailTempleteStack';
+
 import type { Shop } from '../../types';
 
 export const ShopGenre = ({ shop }: { shop: Shop }) => {
   return (
-    <Stack direction="row" gap={0.5} alignItems={'center'}>
+    <Stack {...ShopDetailTempleteStackDefaultProps?.stack}>
       <RestaurantIcon />
       <Stack direction="row" flexWrap={'wrap'} gap={0.5}>
         <Chip label={shop.genre.name} size="small" />

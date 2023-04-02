@@ -3,14 +3,18 @@ import { Button } from '@mui/material';
 
 import type { Shop } from '../../types';
 
-const navigateShopPageLabel = 'Go to shop page';
+const navigateShopUrlButtonLabel = 'Go to shop page';
 
 export const NavigateShopUrlButton = ({ shop }: { shop: Shop }) => {
   return (
-    <a href={shop.urls.pc} target="_blank" rel="noreferrer">
-      <Button size="small" startIcon={<CottageIcon />}>
-        {navigateShopPageLabel}
-      </Button>
-    </a>
+    <Button
+      size="small"
+      startIcon={<CottageIcon />}
+      href={shop.urls.pc}
+      target="_blank"
+      rel="noreferrer"
+    >
+      {navigateShopUrlButtonLabel}
+    </Button>
   );
 };

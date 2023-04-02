@@ -5,7 +5,7 @@ import { Link } from '@/components/Elements';
 
 import type { Shop } from '../../types';
 
-const navigateShopDetailLabel = 'Learn more';
+const navigateShopDetailButtonLabel = 'Learn more';
 
 export const NavigateShopDetailButton = ({ shop }: { shop: Shop }) => {
   return (
@@ -15,7 +15,7 @@ export const NavigateShopDetailButton = ({ shop }: { shop: Shop }) => {
       to={`/app/gourmet-search/gourmet/${shop.id}`}
       endIcon={<NavigateNextIcon />}
     >
-      {navigateShopDetailLabel}
+      {navigateShopDetailButtonLabel}
     </Button>
   );
 };

@@ -201,7 +201,8 @@ export const AppBar = ({ children }: { children: React.ReactNode }) => {
       {renderMenu}
       <StyledMain open={open}>
         <StyledDrawerHeader />
-        {children}
+        {/* テスト用下padding */}
+        <Box pb={10}>{children}</Box>
       </StyledMain>
     </Box>
   );
