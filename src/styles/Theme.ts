@@ -47,7 +47,7 @@ export const appTheme = createTheme({
     },
     MuiContainer: {
       defaultProps: {
-        sx: { px: 0, '@media (min-width: 600px)': { px: 0 } },
+        disableGutters: true,
       },
     },
     MuiGrid: {

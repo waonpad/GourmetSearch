@@ -1,10 +1,18 @@
 import { useNavigate } from 'react-router-dom';
 
-import { CircularProgress, Pagination, Typography, Grid, Container, Divider } from '@mui/material';
+import {
+  CircularProgress,
+  Pagination,
+  Typography,
+  Grid,
+  Container,
+  Divider,
+  Box,
+} from '@mui/material';
 import _ from 'lodash';
 import qs from 'qs';
-import { useGeolocated } from 'react-geolocated';
 
+import { useGeolocated } from '@/lib/react-geolocated';
 import { GEOLOCATION_DISABLED } from '@/messages';
 import { compositeStyle } from '@/styles/compositeStyle';
 import { getOffset, getPage, getTotalPages } from '@/utils/pagination';
@@ -32,22 +40,18 @@ export const GourmetList = ({ searchGourmetParams }: GourmetListProps) => {
 
   const gourmetsQuery = useGourmets({
     config: {
-      enabled:
-        // geolocatedの読み込みが終わるまで待つ
-        !!geolocated?.coords ||
-        !geolocated?.isGeolocationAvailable ||
-        !geolocated?.isGeolocationEnabled,
+      enabled: !geolocated.isLoading || geolocated.isStatusChecked,
     },
     requestParams: {
       ..._.omit(searchGourmetParams, ['allRange']),
       lat:
         searchGourmetParams?.allRange === 1
           ? undefined
-          : searchGourmetParams?.lat ?? geolocated?.coords?.latitude,
+          : searchGourmetParams?.lat ?? geolocated.initialCoords?.latitude,
       lng:
         searchGourmetParams?.allRange === 1
           ? undefined
-          : searchGourmetParams?.lng ?? geolocated?.coords?.longitude,
+          : searchGourmetParams?.lng ?? geolocated?.initialCoords?.longitude,
       range: searchGourmetParams?.allRange === 1 ? undefined : searchGourmetParams?.range,
       start: getOffset(page, searchGourmetParams?.count ?? defCount) + 1,
     },
@@ -105,11 +109,13 @@ export const GourmetList = ({ searchGourmetParams }: GourmetListProps) => {
   return (
     <Container>
       {isHotpepperGourmetSuccessResponse(gourmetsQuery.data) && (
-        <Grid container spacing={2}>
+        <Grid container spacing={1}>
           <Grid item xs={12}>
-            <Typography variant="h6">
-              {gourmetsQuery.data.results.results_available} Results
-            </Typography>
+            <Box px={{ xs: 1, md: 0 }}>
+              <Typography variant="h6">
+                {gourmetsQuery.data.results.results_available} Results
+              </Typography>
+            </Box>
           </Grid>
           <Grid item container spacing={{ xs: 0, md: 2 }}>
             {gourmetsQuery.data.results.shop.map((shop) => (

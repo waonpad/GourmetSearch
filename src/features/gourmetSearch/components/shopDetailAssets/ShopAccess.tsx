@@ -1,15 +1,9 @@
-import FmdGoodIcon from '@mui/icons-material/FmdGood';
-import { Stack, Typography } from '@mui/material';
+import NearMeIcon from '@mui/icons-material/NearMe';
+
+import { ShopDetailTempleteStack } from './ShopDetailTempleteStack';
 
 import type { Shop } from '../../types';
 
 export const ShopAccess = ({ shop }: { shop: Shop }) => {
-  return (
-    <Stack direction="row" gap={0.5} alignItems={'center'}>
-      <FmdGoodIcon />
-      <Typography variant="body2" color="text.secondary">
-        {shop.access}
-      </Typography>
-    </Stack>
-  );
+  return <ShopDetailTempleteStack icon={NearMeIcon} typography={shop.access} />;
 };

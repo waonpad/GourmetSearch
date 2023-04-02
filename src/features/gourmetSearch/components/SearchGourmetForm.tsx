@@ -22,10 +22,10 @@ import {
 } from '@mui/material';
 import _ from 'lodash';
 import qs from 'qs';
-import { useGeolocated } from 'react-geolocated';
 import { useForm, Controller } from 'react-hook-form';
 
 import { GoogleMap } from '@/components/GoogleMap';
+import { useGeolocated } from '@/lib/react-geolocated';
 import { GEOLOCATION_DISABLED } from '@/messages';
 import { validMsg } from '@/messages/validation';
 import { appTheme } from '@/styles/Theme';
@@ -78,7 +78,9 @@ export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => 
   const navigate = useNavigate();
 
   const geolocated = useGeolocated({
-    watchPosition: true,
+    config: {
+      watchPosition: true,
+    },
   });
 
   const [displayMap, setDisplayMap] = useState<boolean>(false);
@@ -171,8 +173,23 @@ export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => 
         },
       }}
     >
-      <CardHeader title="Search Gourmet" titleTypographyProps={{ variant: 'h6' }} />
-      <CardContent sx={{ py: 0 }}>
+      <CardHeader
+        title="Search Gourmet"
+        titleTypographyProps={{ variant: 'h6' }}
+        sx={{
+          [appTheme.breakpoints.down('md')]: {
+            padding: appTheme.spacing(1),
+          },
+        }}
+      />
+      <CardContent
+        sx={{
+          py: 0,
+          [appTheme.breakpoints.down('md')]: {
+            px: appTheme.spacing(1),
+          },
+        }}
+      >
         <Stack
           component="form"
           noValidate

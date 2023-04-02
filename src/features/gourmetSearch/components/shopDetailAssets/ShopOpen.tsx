@@ -1,15 +1,21 @@
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import { Stack, Typography } from '@mui/material';
+
+import { ShopDetailTempleteStack } from './ShopDetailTempleteStack';
 
 import type { Shop } from '../../types';
 
 export const ShopOpen = ({ shop }: { shop: Shop }) => {
   return (
-    <Stack direction="row" gap={0.5} alignItems={'center'}>
-      <CalendarMonthIcon />
-      <Typography variant="body2" color="text.secondary" whiteSpace="pre-wrap">
-        {shop.open.replace(/）/g, `）\n`)}
-      </Typography>
-    </Stack>
+    <ShopDetailTempleteStack
+      icon={CalendarMonthIcon}
+      typography={shop.open.replace(/）/g, `）\n`)}
+      overrideProps={{
+        typography: {
+          sx: {
+            whiteSpace: 'pre-wrap',
+          },
+        },
+      }}
+    />
   );
 };

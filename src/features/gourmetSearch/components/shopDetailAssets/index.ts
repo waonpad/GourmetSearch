@@ -1,4 +1,5 @@
 export * from './ShopAccess';
+export * from './ShopAddress';
 export * from './ShopBudget';
 export * from './ShopClose';
 export * from './NavigateShopCouponAndMapButton';
@@ -11,3 +12,6 @@ export * from './ShopPhoto';
 export * from './NavigateShopUrlButton';
 
 export * from './NavigateShopDetailButton';
+export * from './NavigateShopHotpepperUrlButton';
+
+export * from './ShopDetailTempleteStack';
