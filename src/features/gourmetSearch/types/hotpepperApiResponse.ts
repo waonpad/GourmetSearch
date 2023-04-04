@@ -1,7 +1,7 @@
 /**
  * Hotpepper APIのレスポンスの基底型
  */
-export interface BaseHotpepperResponse {
+export interface BaseHotpepperAPIResponse {
   results: {
     api_version: string;
   };
@@ -10,61 +10,63 @@ export interface BaseHotpepperResponse {
 /**
  * Hotpepper APIの成功レスポンスの基底型
  */
-export interface BaseHotpepperSuccessResponse extends BaseHotpepperResponse {
+export interface BaseHotpepperAPISuccessResponse extends BaseHotpepperAPIResponse {
   results: {
     results_available: number;
     results_returned: string;
     results_start: number;
-  } & BaseHotpepperResponse['results'];
+  } & BaseHotpepperAPIResponse['results'];
 }
 
 /**
  * Hotpepper APIのエラーレスポンスの型
  */
-export interface HotpepperErrorResponse extends BaseHotpepperResponse {
+export interface HotpepperAPIErrorResponse extends BaseHotpepperAPIResponse {
   results: {
     error: {
       code: number;
       message: string;
     }[];
-  } & BaseHotpepperResponse['results'];
+  } & BaseHotpepperAPIResponse['results'];
 }
 
 /**
  * Hotpepper APIのレスポンスの型
  */
-export type HotpepperResponse = HotpepperGourmetResponse;
+export type HotpepperAPIResponse = HotpepperGourmetSearchAPIResponse;
 
 /**
  * Hotpepper APIのグルメサーチAPIの成功レスポンスの型
  */
-export interface HotpepperGourmetSuccessResponse extends BaseHotpepperSuccessResponse {
+export interface HotpepperGourmetSearchAPISuccessResponse extends BaseHotpepperAPISuccessResponse {
   results: {
     shop: Shop[];
-  } & BaseHotpepperSuccessResponse['results'];
+  } & BaseHotpepperAPISuccessResponse['results'];
 }
 
 /**
  * Hotpepper APIのグルメサーチAPIのレスポンスの型
  */
-export type HotpepperGourmetResponse = HotpepperGourmetSuccessResponse | HotpepperErrorResponse;
+export type HotpepperGourmetSearchAPIResponse =
+  | HotpepperGourmetSearchAPISuccessResponse
+  | HotpepperAPIErrorResponse;
 
 /**
  * グルメサーチAPIの成功レスポンスの型ガード
  */
-export const isHotpepperGourmetSuccessResponse = (
-  response: HotpepperGourmetResponse
-): response is HotpepperGourmetSuccessResponse => {
-  return (response as HotpepperGourmetSuccessResponse).results.shop !== undefined;
+export const isHotpepperGourmetSearchAPISuccessResponse = (
+  response: HotpepperGourmetSearchAPIResponse
+): response is HotpepperGourmetSearchAPISuccessResponse => {
+  return (response as HotpepperGourmetSearchAPISuccessResponse).results.shop !== undefined;
 };
 
 /**
  * ホットペッパーAPIのエラーレスポンスの型ガード
  */
-export const isHotpepperErrorResponse = (
-  response: HotpepperResponse
-): response is HotpepperErrorResponse => {
-  return (response as HotpepperErrorResponse).results.error !== undefined;
+export const isHotpepperAPIErrorResponse = (
+  response: HotpepperAPIResponse
+): response is HotpepperAPIErrorResponse => {
+  return (response as HotpepperAPIErrorResponse).results.error !== undefined;
 };
 
 /**
@@ -194,7 +196,7 @@ export interface Urls {
 //   name: string;
 // }
 
-export const hotpepperGourmetShopPhotoSize = {
+export const hotpepperShopPhotoSize = {
   logo_image: {
     width: 69,
     height: 69,

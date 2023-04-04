@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import {
   Card,
@@ -35,19 +34,16 @@ import {
   NavigateShopCouponAndMapButton,
   NavigateShopDetailButton,
 } from './shopDetailAssets';
+import { BookmarkShopButton } from './shopDetailAssets/BookmarkShopButton';
 
 import type { Shop } from '../types';
 
-type GourmetListItemProps = {
+type ShopListItemProps = {
   shop: Shop;
 };
 
-export const GourmetListItem = ({ shop }: GourmetListItemProps) => {
+export const ShopListItem = ({ shop }: ShopListItemProps) => {
   const [cardMediaIsExpanded, setCardMediaIsExpanded] = useState(false);
-
-  const handleFavoriteClick = () => {
-    console.log('handleFavoriteClick', shop.id);
-  };
 
   const handleClickToggleExpandCardMedia = () => {
     setCardMediaIsExpanded(!cardMediaIsExpanded);
@@ -66,11 +62,7 @@ export const GourmetListItem = ({ shop }: GourmetListItemProps) => {
         titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
         subheader={shop.catch !== '' ? shop.catch : shop.genre.catch}
         avatar={<Avatar alt={shop.name} src={shop.logo_image} />}
-        action={
-          <IconButton size="small" onClick={handleFavoriteClick}>
-            <FavoriteIcon />
-          </IconButton>
-        }
+        action={<BookmarkShopButton shop={shop} />}
         sx={{
           [appTheme.breakpoints.down('md')]: {
             padding: appTheme.spacing(1),
@@ -150,6 +142,7 @@ export const GourmetListItem = ({ shop }: GourmetListItemProps) => {
                   <Grid item xs={12}>
                     <ShopGenre shop={shop} />
                   </Grid>
+                  {/* 住所も表示する? */}
                   {/* アクセス */}
                   <Grid item xs={12}>
                     <ShopAccess shop={shop} />

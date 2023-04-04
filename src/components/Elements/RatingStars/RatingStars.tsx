@@ -32,9 +32,9 @@ export const RatingStars = ({ rating, max, overrideProps }: RatingStarsProps) =>
     <Stack {...assetProps.stack}>
       {[...Array(max)].map((_, i) =>
         i < rating ? (
-          <StarIcon {...assetProps.filledStar} />
+          <StarIcon {...assetProps.filledStar} key={i} />
         ) : (
-          <StarBorderIcon {...assetProps.emptyStar} />
+          <StarBorderIcon {...assetProps.emptyStar} key={i} />
         )
       )}
     </Stack>

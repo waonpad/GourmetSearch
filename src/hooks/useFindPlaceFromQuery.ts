@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 
 import _ from 'lodash';
 
-type UseFindPlaceFromQueryRequest = google.maps.places.FindPlaceFromQueryRequest & {
+type UseFindPlaceFromQueryRequest = Omit<google.maps.places.FindPlaceFromQueryRequest, 'fields'> & {
   fields: (keyof google.maps.places.PlaceResult)[];
 };
 
-type UseFindPlaceFromQueryOptions = {
+export type UseFindPlaceFromQueryOptions = {
   request: UseFindPlaceFromQueryRequest;
   callback?: (
     results: google.maps.places.PlaceResult[] | null,
@@ -17,7 +17,7 @@ type UseFindPlaceFromQueryOptions = {
   };
 };
 
-const defaultFindPlaceFromQueryRequest: UseFindPlaceFromQueryOptions['request'] = {
+export const defaultFindPlaceFromQueryRequest: UseFindPlaceFromQueryOptions['request'] = {
   query: '',
   fields: ['name', 'formatted_address', 'place_id', 'geometry'],
 };

@@ -17,67 +17,64 @@ import { GEOLOCATION_DISABLED } from '@/messages';
 import { compositeStyle } from '@/styles/compositeStyle';
 import { getOffset, getPage, getTotalPages } from '@/utils/pagination';
 
-import { useGourmets, defCount, defStart } from '../api/getGourmets';
-import { isHotpepperGourmetSuccessResponse, isHotpepperErrorResponse } from '../types';
+import { useShops, defCount, defStart } from '../api/getShops';
+import { isHotpepperGourmetSearchAPISuccessResponse, isHotpepperAPIErrorResponse } from '../types';
 
-import { GourmetListItem } from './GourmetListItem';
+import { ShopListItem } from './ShopListItem';
 
-import type { CustomizedHotpepperGourmetRequest } from '../types';
+import type { CustomizedHotpepperGourmetSearchAPIRequest } from '../types';
 
-type GourmetListProps = {
-  searchGourmetParams?: CustomizedHotpepperGourmetRequest;
+type ShopListProps = {
+  searchShopParams?: CustomizedHotpepperGourmetSearchAPIRequest;
 };
 
-export const GourmetList = ({ searchGourmetParams }: GourmetListProps) => {
+export const ShopList = ({ searchShopParams }: ShopListProps) => {
   const navigate = useNavigate();
 
   const geolocated = useGeolocated();
 
-  const page = getPage(
-    searchGourmetParams?.start ?? defStart,
-    searchGourmetParams?.count ?? defCount
-  );
+  const page = getPage(searchShopParams?.start ?? defStart, searchShopParams?.count ?? defCount);
 
-  const gourmetsQuery = useGourmets({
+  const shopsQuery = useShops({
     config: {
       enabled: !geolocated.isLoading || geolocated.isStatusChecked,
     },
     requestParams: {
-      ..._.omit(searchGourmetParams, ['allRange']),
+      ..._.omit(searchShopParams, ['allRange']),
       lat:
-        searchGourmetParams?.allRange === 1
+        searchShopParams?.allRange === 1
           ? undefined
-          : searchGourmetParams?.lat ?? geolocated.initialCoords?.latitude,
+          : searchShopParams?.lat ?? geolocated.initialCoords?.latitude,
       lng:
-        searchGourmetParams?.allRange === 1
+        searchShopParams?.allRange === 1
           ? undefined
-          : searchGourmetParams?.lng ?? geolocated?.initialCoords?.longitude,
-      range: searchGourmetParams?.allRange === 1 ? undefined : searchGourmetParams?.range,
-      start: getOffset(page, searchGourmetParams?.count ?? defCount) + 1,
+          : searchShopParams?.lng ?? geolocated?.initialCoords?.longitude,
+      range: searchShopParams?.allRange === 1 ? undefined : searchShopParams?.range,
+      start: getOffset(page, searchShopParams?.count ?? defCount) + 1,
     },
   });
 
   const handleClickPaginte = (event: React.ChangeEvent<unknown>, value: number) => {
     navigate(
-      `/app/gourmet-search/gourmets/${qs.stringify({
-        ...searchGourmetParams,
-        start: getOffset(value, searchGourmetParams?.count ?? defCount) + 1,
+      `/app/gourmet-search/shops/${qs.stringify({
+        ...searchShopParams,
+        start: getOffset(value, searchShopParams?.count ?? defCount) + 1,
       })}`
     );
   };
 
   // Loading
-  if (gourmetsQuery.isLoading) {
+  if (shopsQuery.isLoading) {
     return <CircularProgress sx={{ display: 'block', mx: 'auto', my: 5 }} />;
   }
 
   // Fetch Error
-  if (!gourmetsQuery.data) return null;
+  if (!shopsQuery.data) return null;
 
   // GeoLocation Error
   if (
     (!geolocated?.isGeolocationAvailable || !geolocated?.isGeolocationEnabled) &&
-    isHotpepperErrorResponse(gourmetsQuery.data)
+    isHotpepperAPIErrorResponse(shopsQuery.data)
   ) {
     return (
       <Container>
@@ -91,11 +88,11 @@ export const GourmetList = ({ searchGourmetParams }: GourmetListProps) => {
   }
 
   // Hotpepper Error
-  if (isHotpepperErrorResponse(gourmetsQuery.data)) {
+  if (isHotpepperAPIErrorResponse(shopsQuery.data)) {
     return (
       <Container>
         <Grid container spacing={2}>
-          {gourmetsQuery.data.results.error.map((error) => (
+          {shopsQuery.data.results.error.map((error) => (
             <Grid item xs={12} key={error.code} sx={{ ...compositeStyle.centerBoth }}>
               <Typography variant="h6">{error.message}</Typography>
             </Grid>
@@ -108,37 +105,37 @@ export const GourmetList = ({ searchGourmetParams }: GourmetListProps) => {
   // Success
   return (
     <Container>
-      {isHotpepperGourmetSuccessResponse(gourmetsQuery.data) && (
+      {isHotpepperGourmetSearchAPISuccessResponse(shopsQuery.data) && (
         <Grid container spacing={1}>
           <Grid item xs={12}>
             <Box px={{ xs: 1, md: 0 }}>
               <Typography variant="h6">
-                {gourmetsQuery.data.results.results_available} Results
+                {shopsQuery.data.results.results_available} Results
               </Typography>
             </Box>
           </Grid>
           <Grid item container spacing={{ xs: 0, md: 2 }}>
-            {gourmetsQuery.data.results.shop.map((shop) => (
+            {shopsQuery.data.results.shop.map((shop) => (
               <Grid item xs={12} key={shop.id}>
-                <Divider sx={{ display: { xs: 'block', md: 'none' } }} />
-                <GourmetListItem shop={shop} />
+                <Divider sx={{ display: { xs: 'block', md: 'none' }, borderColor: 'inherit' }} />
+                <ShopListItem shop={shop} />
               </Grid>
             ))}
           </Grid>
           <Grid item container spacing={0}>
-            {gourmetsQuery.data.results.shop.length > 0 && (
+            {shopsQuery.data.results.shop.length > 0 && (
               <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
                 <Pagination
                   count={getTotalPages(
-                    gourmetsQuery.data.results.results_available,
-                    searchGourmetParams?.count ?? defCount
+                    shopsQuery.data.results.results_available,
+                    searchShopParams?.count ?? defCount
                   )}
                   page={page}
                   onChange={handleClickPaginte}
                 />
               </Grid>
             )}
-            {gourmetsQuery.data.results.shop.length === 0 && (
+            {shopsQuery.data.results.shop.length === 0 && (
               <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
                 <Typography variant="h6">No Results</Typography>
               </Grid>

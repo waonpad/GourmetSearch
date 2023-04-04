@@ -1,18 +1,18 @@
 import _ from 'lodash';
 
 /* eslint-disable prettier/prettier */
-export interface BaseHotpepperRequest {
+export interface BaseHotpepperAPIRequest {
   key: string;
   format?: 'xml' | 'json' | 'jsonp';
 }
 
-export type OmittedHotpepperGourmetRequest = Omit<HotpepperGourmetRequest, 'key'>;
+export type OmittedHotpepperGourmetSearchAPIRequest = Omit<HotpepperGourmetSearchAPIRequest, 'key'>;
 
-export type CustomizedHotpepperGourmetRequest = OmittedHotpepperGourmetRequest & {
+export type CustomizedHotpepperGourmetSearchAPIRequest = OmittedHotpepperGourmetSearchAPIRequest & {
   allRange?: 0 | 1;
 };
 
-export interface HotpepperGourmetRequest extends BaseHotpepperRequest {
+export interface HotpepperGourmetSearchAPIRequest extends BaseHotpepperAPIRequest {
   id?: string; // 20つまで id=1&id=2&id=3 or id=1,2,3
   name?: string; // 部分一致
   name_kana?: string; // 部分一致
@@ -108,10 +108,10 @@ export interface HotpepperGourmetRequest extends BaseHotpepperRequest {
 /**
  * urlからパラメータを取得すると全てsrting型になるので、型を変換する
  */
-export const hotpepperGourmetRequestConverter = (request: {
-  [key in keyof CustomizedHotpepperGourmetRequest]: string;
-}): CustomizedHotpepperGourmetRequest => {
-  const convertedRequest: CustomizedHotpepperGourmetRequest = {
+export const hotpepperGourmetSearchAPIRequestConverter = (request: {
+  [key in keyof CustomizedHotpepperGourmetSearchAPIRequest]: string;
+}): CustomizedHotpepperGourmetSearchAPIRequest => {
+  const convertedRequest: CustomizedHotpepperGourmetSearchAPIRequest = {
     // Customized Parameters
     allRange: request.allRange === '1' ? 1 : undefined,
 

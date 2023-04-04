@@ -36,7 +36,7 @@ export const appTheme = createTheme({
     // text: { primary: '#e1e1e1' },
   },
   typography: {
-    fontFamily: ['Roboto', 'Noto Sans'].join(','),
+    fontFamily: ['Roboto', 'Noto Sans JP'].join(','),
     // fontSize: 14,
   },
   components: {
