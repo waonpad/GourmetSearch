@@ -12,7 +12,7 @@ export const NavigateShopDetailButton = ({ shop }: { shop: Shop }) => {
     <Button
       size="small"
       component={Link}
-      to={`/app/gourmet-search/gourmet/${shop.id}`}
+      to={`/app/gourmet-search/shop/${shop.id}`}
       endIcon={<NavigateNextIcon />}
     >
       {navigateShopDetailButtonLabel}

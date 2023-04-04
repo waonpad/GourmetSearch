@@ -66,11 +66,46 @@ service cloud.firestore {
       isValidInArray(['ADMIN', 'USER'], data.role);
     }
 
+    // validate bookmark
+    function isShopBookmarkRequest(request) {
+      return
+      isAuthenticated() &&
+      request.resource.data.keys() == ["bookmarkCount"] &&
+      (resource == null ||
+        (request.resource.data.bookmarkCount == resource.data.bookmarkCount + 1) ||
+        (request.resource.data.bookmarkCount == resource.data.bookmarkCount - 1)
+      );
+    }
+
     // user
     match /users/{userId} {
     	allow read;
       allow create: if isValidUser(request.resource.data) && isAuthenticated();
       allow update: if isValidUser(request.resource.data) && isUserAuthenticated(userId);
+
+      // bookmarkd shops
+      match /bookmarkedShops/{bookmarkedShopId} {
+        allow read;
+        allow create: if isUserAuthenticated(userId) && isValidCreatedAtAndUpdatedAt(request.resource.data);
+        allow update: if false;
+        allow delete: if isUserAuthenticated(userId);
+      }
+    }
+
+    // shop
+    match /shops/{shopId} {
+      allow read;
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() && isShopBookmarkRequest(request);
+      allow delete: if isAuthenticated();
+
+      // bookmarkd users
+      match /bookmarkedUsers/{bookmarkedUserId} {
+        allow read;
+        allow create: if request.auth.uid == bookmarkedUserId && isValidCreatedAtAndUpdatedAt(request.resource.data);
+        allow update: if false;
+        allow delete: if request.auth.uid == bookmarkedUserId;
+      }
     }
   }
 }

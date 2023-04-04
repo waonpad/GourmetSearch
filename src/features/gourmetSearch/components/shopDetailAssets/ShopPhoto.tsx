@@ -3,7 +3,7 @@ import type { ImgHTMLAttributes } from 'react';
 import { Box } from '@mui/material';
 import _ from 'lodash';
 
-import { hotpepperGourmetShopPhotoSize } from '../../types';
+import { hotpepperShopPhotoSize } from '../../types';
 
 import type { Shop } from '../../types';
 import type { BoxProps } from '@mui/material';
@@ -20,12 +20,12 @@ export const shopPhotoDefaultProps: ShopPhotoProps['overrideProps'] = {
   wrapper: {
     sx: {
       width: {
-        xs: hotpepperGourmetShopPhotoSize.pc.m.width,
-        smd: hotpepperGourmetShopPhotoSize.pc.l.width,
+        xs: hotpepperShopPhotoSize.pc.m.width,
+        smd: hotpepperShopPhotoSize.pc.l.width,
       },
       // maxWidth: {
-      //   xs: hotpepperGourmetShopPhotoSize.pc.m.width,
-      //   smd: hotpepperGourmetShopPhotoSize.pc.l.width,
+      //   xs: hotpepperShopPhotoSize.pc.m.width,
+      //   smd: hotpepperShopPhotoSize.pc.l.width,
       // },
     },
   },

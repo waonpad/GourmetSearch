@@ -31,21 +31,21 @@ import { validMsg } from '@/messages/validation';
 import { appTheme } from '@/styles/Theme';
 import type { ReactHookFormValidationRules, LatLng } from '@/types';
 
-import { defStart, defRange } from '../api/getGourmets';
+import { defStart, defRange } from '../api/getShops';
 
-import type { CustomizedHotpepperGourmetRequest } from '../types';
+import type { CustomizedHotpepperGourmetSearchAPIRequest } from '../types';
 import type { SubmitHandler } from 'react-hook-form';
 
-type SearchGourmetFormProps = {
-  defaultValues?: CustomizedHotpepperGourmetRequest;
+type SearchShopFormProps = {
+  defaultValues?: CustomizedHotpepperGourmetSearchAPIRequest;
 };
 
-type SearchGourmetInput = {
-  keyword?: CustomizedHotpepperGourmetRequest['keyword'];
-  range?: CustomizedHotpepperGourmetRequest['range'] | 0;
+type SearchShopInput = {
+  keyword?: CustomizedHotpepperGourmetSearchAPIRequest['keyword'];
+  range?: CustomizedHotpepperGourmetSearchAPIRequest['range'] | 0;
 };
 
-const searchGourmetValidationRules: ReactHookFormValidationRules<SearchGourmetInput> = {
+const searchShopValidationRules: ReactHookFormValidationRules<SearchShopInput> = {
   keyword: {},
   range: {
     required: validMsg.required,
@@ -54,15 +54,15 @@ const searchGourmetValidationRules: ReactHookFormValidationRules<SearchGourmetIn
   },
 };
 
-const searchGourmetDefaultValues: {
-  [K in NonNullable<keyof SearchGourmetInput>]: NonNullable<SearchGourmetInput[K]>;
+const searchShopDefaultValues: {
+  [K in NonNullable<keyof SearchShopInput>]: NonNullable<SearchShopInput[K]>;
 } = {
   keyword: '',
   range: defRange,
 };
 
 const ranges: {
-  value: SearchGourmetInput['range'] | 0;
+  value: SearchShopInput['range'] | 0;
   label: string;
   range: number;
 }[] = [
@@ -74,7 +74,7 @@ const ranges: {
   { value: 0, label: 'All Range', range: 0 }, // エリアで絞り込まないための設定
 ];
 
-export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => {
+export const GourmetSearchAPIForm = ({ defaultValues }: SearchShopFormProps) => {
   const navigate = useNavigate();
 
   const geolocated = useGeolocated({
@@ -85,10 +85,10 @@ export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => 
 
   const [displayMap, setDisplayMap] = useState<boolean>(false);
 
-  const [activeRange, setActiveRange] = useState<SearchGourmetInput['range']>(
+  const [activeRange, setActiveRange] = useState<SearchShopInput['range']>(
     defaultValues?.allRange === 1
       ? undefined
-      : defaultValues?.range ?? searchGourmetDefaultValues.range
+      : defaultValues?.range ?? searchShopDefaultValues.range
   );
 
   const [latLng, setLatLng] = useState<LatLng | undefined>(
@@ -113,7 +113,7 @@ export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => 
     setActiveRange(
       value == 0
         ? undefined
-        : (parseInt((event.target as HTMLInputElement).value) as SearchGourmetInput['range'])
+        : (parseInt((event.target as HTMLInputElement).value) as SearchShopInput['range'])
     );
   };
 
@@ -126,18 +126,16 @@ export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => 
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<SearchGourmetInput>({
+  } = useForm<SearchShopInput>({
     mode: 'onBlur',
-    defaultValues: _.merge({}, searchGourmetDefaultValues, {
+    defaultValues: _.merge({}, searchShopDefaultValues, {
       ...defaultValues,
       range:
-        defaultValues?.allRange === 1
-          ? 0
-          : defaultValues?.range ?? searchGourmetDefaultValues.range,
+        defaultValues?.allRange === 1 ? 0 : defaultValues?.range ?? searchShopDefaultValues.range,
     }),
   });
 
-  const onSubmit: SubmitHandler<SearchGourmetInput> = (data: SearchGourmetInput) => {
+  const onSubmit: SubmitHandler<SearchShopInput> = (data: SearchShopInput) => {
     const requestLatLng =
       data.range == 0
         ? undefined
@@ -147,7 +145,7 @@ export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => 
         ? { lat: geolocated.coords.latitude, lng: geolocated.coords.longitude }
         : undefined;
 
-    const customSearchParams: CustomizedHotpepperGourmetRequest = {
+    const customSearchParams: CustomizedHotpepperGourmetSearchAPIRequest = {
       ...data,
       start: defStart, // ページ繰りしたページから検索した時のために初期値をセット
       ...requestLatLng,
@@ -157,7 +155,7 @@ export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => 
 
     const searchParamsString = qs.stringify(customSearchParams);
 
-    navigate(`/app/gourmet-search/gourmets/${searchParamsString}`);
+    navigate(`/app/gourmet-search/shops/${searchParamsString}`);
   };
 
   const handleClickReset = () => {
@@ -174,7 +172,7 @@ export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => 
       }}
     >
       <CardHeader
-        title="Search Gourmet"
+        title="Search Shop"
         titleTypographyProps={{ variant: 'h6' }}
         sx={{
           [appTheme.breakpoints.down('md')]: {
@@ -199,7 +197,7 @@ export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => 
           <Controller
             name="keyword"
             control={control}
-            rules={searchGourmetValidationRules.keyword}
+            rules={searchShopValidationRules.keyword}
             render={({ field }) => (
               <TextField
                 {...field}
@@ -213,7 +211,7 @@ export const SearchGourmetForm = ({ defaultValues }: SearchGourmetFormProps) => 
           <Controller
             name="range"
             control={control}
-            rules={searchGourmetValidationRules.range}
+            rules={searchShopValidationRules.range}
             render={({ field }) => (
               <FormControl error={errors.range !== undefined}>
                 <FormLabel>Range</FormLabel>

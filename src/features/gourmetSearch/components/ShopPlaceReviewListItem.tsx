@@ -5,17 +5,25 @@ import { appTheme } from '@/styles/Theme';
 
 type Review = google.maps.places.PlaceReview;
 
-type GourmetReviewListItemProps = {
+type ShopReviewListItemProps = {
   review: Review;
 };
 
 const reviewRatingMax = 5;
 
-export const GourmetReviewListItem = ({ review }: GourmetReviewListItemProps) => {
+export const ShopPlaceReviewListItem = ({ review }: ShopReviewListItemProps) => {
   return (
     <Card sx={{ width: '100%' }} square>
       <CardHeader
-        title={review.author_name}
+        title={
+          review.author_url ? (
+            <a href={review.author_url} target="_blank" rel="noreferrer">
+              {review.author_name}
+            </a>
+          ) : (
+            review.author_name
+          )
+        }
         titleTypographyProps={{ variant: 'subtitle1', fontWeight: 'bold' }}
         subheader={
           <Box display="flex" alignItems="center" gap={1}>
@@ -25,7 +33,15 @@ export const GourmetReviewListItem = ({ review }: GourmetReviewListItemProps) =>
             </Typography>
           </Box>
         }
-        avatar={<Avatar alt={review.author_name} src={review.profile_photo_url} />}
+        avatar={
+          <Avatar
+            alt={review.author_name}
+            src={review.profile_photo_url}
+            {...(review.author_url
+              ? { component: 'a', href: review.author_url, target: '_blank', rel: 'noreferrer' }
+              : {})}
+          />
+        }
         action={<></>}
         sx={{
           [appTheme.breakpoints.down('md')]: {

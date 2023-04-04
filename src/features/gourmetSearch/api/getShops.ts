@@ -6,15 +6,15 @@ import { axios } from '@/lib/axios';
 import type { ExtractFnReturnType, QueryConfig } from '@/lib/react-query';
 
 import type {
-  HotpepperGourmetRequest,
-  OmittedHotpepperGourmetRequest,
-  HotpepperGourmetResponse,
+  HotpepperGourmetSearchAPIRequest,
+  OmittedHotpepperGourmetSearchAPIRequest,
+  HotpepperGourmetSearchAPIResponse,
 } from '../types';
 
-export const getGourmets = (
-  requestParams: OmittedHotpepperGourmetRequest
-): Promise<HotpepperGourmetResponse> => {
-  const params: HotpepperGourmetRequest = {
+export const getShops = (
+  requestParams: OmittedHotpepperGourmetSearchAPIRequest
+): Promise<HotpepperGourmetSearchAPIResponse> => {
+  const params: HotpepperGourmetSearchAPIRequest = {
     ...requestParams,
     key: RECRUIT_API_KEY,
     format: 'json',
@@ -26,10 +26,10 @@ export const getGourmets = (
   });
 };
 
-type QueryFnType = typeof getGourmets;
+type QueryFnType = typeof getShops;
 
-export type UseGourmetsOptions = {
-  requestParams?: OmittedHotpepperGourmetRequest;
+export type UseShopsOptions = {
+  requestParams?: OmittedHotpepperGourmetSearchAPIRequest;
   config?: QueryConfig<QueryFnType>;
 };
 
@@ -37,10 +37,10 @@ export const defRange = 5;
 export const defCount = 10;
 export const defStart = 1;
 
-export const useGourmets = ({ requestParams, config }: UseGourmetsOptions) => {
-  const defaultConfig: UseGourmetsOptions['config'] = {};
+export const useShops = ({ requestParams, config }: UseShopsOptions) => {
+  const defaultConfig: UseShopsOptions['config'] = {};
 
-  const defaultRequestParams: OmittedHotpepperGourmetRequest = {
+  const defaultRequestParams: OmittedHotpepperGourmetSearchAPIRequest = {
     range: defRange,
     count: defCount,
     start: defStart,
@@ -51,7 +51,7 @@ export const useGourmets = ({ requestParams, config }: UseGourmetsOptions) => {
   return useQuery<ExtractFnReturnType<QueryFnType>>({
     ..._.merge({}, defaultConfig, config),
     queryKey: ['gourmets', mergedRequestParams],
-    queryFn: () => getGourmets(mergedRequestParams),
+    queryFn: () => getShops(mergedRequestParams),
     onSettled(data, error) {
       console.log(mergedRequestParams);
       console.log(data);

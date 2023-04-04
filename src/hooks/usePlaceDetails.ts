@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 
 import _ from 'lodash';
 
-type UsePlaceDetailsRequest = google.maps.places.PlaceDetailsRequest & {
+type UsePlaceDetailsRequest = Omit<google.maps.places.PlaceDetailsRequest, 'fields'> & {
   fields: (keyof google.maps.places.PlaceResult)[];
 };
 
-type UsePlaceDetailsOptions = {
+export type UsePlaceDetailsOptions = {
   request: UsePlaceDetailsRequest;
   callback?: (
     results: google.maps.places.PlaceResult | null,
@@ -21,7 +21,7 @@ export const defaultPlaceId = '';
 
 const defaultPlaceDetailsRequest: UsePlaceDetailsOptions['request'] = {
   placeId: defaultPlaceId,
-  fields: ['name', 'formatted_address', 'place_id', 'geometry', 'reviews'],
+  fields: ['name', 'formatted_address', 'place_id', 'geometry'],
 };
 
 const defaultPlaceDetailsConfig: UsePlaceDetailsOptions['config'] = {

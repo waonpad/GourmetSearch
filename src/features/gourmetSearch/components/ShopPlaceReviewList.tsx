@@ -13,32 +13,22 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useFindPlaceFromQuery } from '@/hooks/useFindPlaceFromQuery';
-import { usePlaceDetails, defaultPlaceId } from '@/hooks/usePlaceDetails';
 import { appTheme } from '@/styles/Theme';
 import { compositeStyle } from '@/styles/compositeStyle';
 
-import { GourmetReviewListItem } from './GourmetReviewListItem';
+import { ShopPlaceReviewListItem } from './ShopPlaceReviewListItem';
 
-import type { Shop } from '../types';
+// import type { Shop } from '../types';
+import type { ShopPlaceDetailsSupplierData } from './ShopPlaceDetailsSupplier';
 
-export const GourmetSReviewList = ({ shop }: { shop: Shop }) => {
-  const findPlaceFromQuery = useFindPlaceFromQuery({
-    request: {
-      query: shop.address,
-      fields: [],
-    },
-  });
+type ShopReviewListProps = {
+  // shop: Shop;
+  reviews: google.maps.places.PlaceResult['reviews'];
+  queryStatus: ShopPlaceDetailsSupplierData;
+};
 
-  const placeDetails = usePlaceDetails({
-    config: {
-      enabled: !!findPlaceFromQuery.data?.[0].place_id,
-    },
-    request: {
-      placeId: findPlaceFromQuery.data?.[0].place_id ?? defaultPlaceId,
-      fields: [],
-    },
-  });
+export const ShopPlaceReviewList = ({ reviews, queryStatus }: ShopReviewListProps) => {
+  const { findPlaceFromQuery, placeDetails } = queryStatus;
 
   // loading
   if (findPlaceFromQuery.isLoading || placeDetails.isLoading) {
@@ -80,7 +70,7 @@ export const GourmetSReviewList = ({ shop }: { shop: Shop }) => {
             <Typography variant="h6">Reviews</Typography>
           </Box>
         </Grid>
-        {placeDetails.data.reviews && (
+        {reviews && (
           <Grid item xs={12}>
             <Card
               sx={{
@@ -91,17 +81,19 @@ export const GourmetSReviewList = ({ shop }: { shop: Shop }) => {
             >
               <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
                 <List disablePadding>
-                  {placeDetails.data.reviews.map((review, index) => (
+                  {reviews.map((review, index) => (
                     <Fragment key={review.author_name}>
                       <Divider
                         sx={{
                           [appTheme.breakpoints.up('md')]: {
                             display: index === 0 ? 'none' : 'block',
                           },
+                          // WHY: 色が濃くなってしまう
+                          // borderColor: 'inherit'で対応できない
                         }}
                       />
                       <ListItem sx={{ p: 0 }}>
-                        <GourmetReviewListItem review={review} />
+                        <ShopPlaceReviewListItem review={review} />
                       </ListItem>
                     </Fragment>
                   ))}
@@ -111,7 +103,7 @@ export const GourmetSReviewList = ({ shop }: { shop: Shop }) => {
           </Grid>
         )}
         <Grid item container spacing={0}>
-          {!placeDetails.data.reviews && (
+          {(!reviews || reviews.length === 0) && (
             <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
               <Typography variant="h6">No Reviews</Typography>
             </Grid>
