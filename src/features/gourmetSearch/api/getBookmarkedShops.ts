@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { collection, doc, getDoc } from 'firebase/firestore';
+import _ from 'lodash';
 
 import { db } from '@/config/firebase';
 import type { CustomQuery } from '@/hooks/useFirestore';
@@ -15,20 +16,17 @@ export type UseBookmarkedShopsOptions = {
   };
 };
 
-const DEFAULT_OPTIONS: UseBookmarkedShopsOptions = {
-  userId: '',
-  config: {
-    query: {
-      orderBy: [
-        {
-          field: 'createdAt',
-          direction: 'desc',
-        },
-      ],
-      // limit: {
-      //   limit: 10,
-      // },
-    },
+const defaultBookmarkShopsConfig: UseBookmarkedShopsOptions['config'] = {
+  query: {
+    orderBy: [
+      {
+        field: 'createdAt',
+        direction: 'desc',
+      },
+    ],
+    // limit: {
+    //   limit: 10,
+    // },
   },
 };
 
@@ -37,13 +35,11 @@ export const useBookmarkedShops = ({ config, userId }: UseBookmarkedShopsOptions
 
   const [userIsExist, setUserIsExist] = useState(true);
 
+  const mergedConfig = _.merge({}, defaultBookmarkShopsConfig, config);
+
   const bookmarkedShops = useFirestore<BookmarkedShop[]>({
+    ...mergedConfig,
     target: collection(userRef, 'bookmarkedShops'),
-    where: [...(DEFAULT_OPTIONS.config?.query?.where ?? []), ...(config?.query?.where ?? [])],
-    orderBy: [...(DEFAULT_OPTIONS.config?.query?.orderBy ?? []), ...(config?.query?.orderBy ?? [])],
-    start: config?.query?.start ?? DEFAULT_OPTIONS.config?.query?.start,
-    end: config?.query?.end ?? DEFAULT_OPTIONS.config?.query?.end,
-    limit: config?.query?.limit ?? DEFAULT_OPTIONS.config?.query?.limit,
   });
 
   useEffect(() => {

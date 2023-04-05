@@ -18,7 +18,7 @@ import { grey } from '@mui/material/colors';
 
 import { appTheme } from '@/styles/Theme';
 
-import { shopDetailHideTargetStrLength } from '../config';
+import { FEATURE_CONSTANTS } from '../constants';
 
 import {
   ShopGenre,
@@ -156,19 +156,21 @@ export const ShopListItem = ({ shop }: ShopListItemProps) => {
                     <ShopClose shop={shop} />
                   </Grid>
                   {/* 予算 */}
-                  {shop.budget.name.length > shopDetailHideTargetStrLength && (
+                  {shop.budget.name.length >
+                    FEATURE_CONSTANTS.SHOP_DETAIL_HIDE_TARGET_STR_LENGTH && (
                     <Grid item xs={12}>
                       <ShopBudget shop={shop} />
                     </Grid>
                   )}
                   {/* メモ */}
-                  {shop.shop_detail_memo.length > shopDetailHideTargetStrLength && (
+                  {shop.shop_detail_memo.length >
+                    FEATURE_CONSTANTS.SHOP_DETAIL_HIDE_TARGET_STR_LENGTH && (
                     <Grid item xs={12}>
                       <ShopDetailMemo shop={shop} />
                     </Grid>
                   )}
                   {/* その他のメモ */}
-                  {shop.other_memo.length > shopDetailHideTargetStrLength &&
+                  {shop.other_memo.length > FEATURE_CONSTANTS.SHOP_DETAIL_HIDE_TARGET_STR_LENGTH &&
                     shop.other_memo !== shop.shop_detail_memo && (
                       <Grid item xs={12}>
                         <ShopOtherMemo shop={shop} />

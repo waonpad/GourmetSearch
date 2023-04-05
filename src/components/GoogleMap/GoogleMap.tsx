@@ -9,7 +9,7 @@ import type { LatLng } from '@/types';
 
 import type { SxProps } from '@mui/material';
 
-type GoogleMapProps = {
+export type GoogleMapProps = {
   sx?: SxProps;
   defaultCenter?: LatLng;
   defaultZoom?: number;

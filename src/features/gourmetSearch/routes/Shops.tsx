@@ -1,3 +1,4 @@
+import React from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Container, Grid } from '@mui/material';
@@ -18,7 +19,7 @@ export const Shops = () => {
     hotpepperGourmetSearchAPIRequestConverter(qs.parse(searchParams));
 
   return (
-    <>
+    <React.Fragment key={searchParams}>
       <Head title="Shops" />
       <Container>
         <Grid container spacing={4}>
@@ -30,6 +31,6 @@ export const Shops = () => {
           </Grid>
         </Grid>
       </Container>
-    </>
+    </React.Fragment>
   );
 };

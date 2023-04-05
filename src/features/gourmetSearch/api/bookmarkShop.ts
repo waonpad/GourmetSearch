@@ -4,10 +4,10 @@ import { doc, increment, writeBatch } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 import { useFirestore } from '@/hooks/useFirestore';
 import { useAuthContext } from '@/lib/auth';
-import type { TimeStampDTO, BaseEntity } from '@/types';
+import type { TimeStampDTO } from '@/types';
 import { timestampTemp } from '@/utils/constants';
 
-import type { Shop } from '../types';
+import type { Shop, ShopDoc, ShopBookmarkedUser } from '../types';
 
 export type BookmarkShopDTO = {
   data: Shop;
@@ -34,18 +34,14 @@ export const useBookmarkShop = ({ data }: UseBookmarkShopOptions) => {
   const bookmarkedUserRef = doc(shopRef, 'bookmarkedUsers', auth?.user ? auth?.user?.uid : '_');
   const bookmarkedShopRef = doc(userRef, 'bookmarkedShops', data.id);
 
-  const shopDoc = useFirestore<BaseEntity & { bookmarkCount: number }>(shopRef);
-  const bookmarkedUserDoc = useFirestore<BaseEntity>(bookmarkedUserRef);
+  const shopDoc = useFirestore<ShopDoc>(shopRef);
+  const bookmarkedUserDoc = useFirestore<ShopBookmarkedUser>(bookmarkedUserRef);
   const isBookmarked = !!bookmarkedUserDoc.data && !bookmarkedUserDoc.isLoading; // 読み込み済みでデータがあればブクマ済み
   const canMutate = !shopDoc.isLoading && !bookmarkedUserDoc.isLoading; // 読み込み中はブクマできない
 
   const mutateToggle = () => {
     if (canMutate) {
-      console.log('canMutate');
-      console.log('isBookmarked', isBookmarked);
       isBookmarked ? mutateUnBookmarkBatch() : mutateBookmarkBatch();
-    } else {
-      console.log('can not mutate');
     }
   };
 

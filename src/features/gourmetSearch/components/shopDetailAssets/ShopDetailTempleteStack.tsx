@@ -1,5 +1,4 @@
 import { Stack, Typography, SvgIcon } from '@mui/material';
-import _ from 'lodash';
 
 import type { StackProps, SvgIconProps, TypographyProps } from '@mui/material';
 
@@ -26,19 +25,15 @@ export const ShopDetailTempleteStackDefaultProps: ShopDetailTempleteStackProps['
   },
 };
 
-const defaultProps = ShopDetailTempleteStackDefaultProps;
-
 export const ShopDetailTempleteStack = ({
   icon,
   typography,
-  overrideProps,
+  overrideProps = ShopDetailTempleteStackDefaultProps,
 }: ShopDetailTempleteStackProps) => {
-  const assetProps = _.merge({}, defaultProps, overrideProps);
-
   return (
-    <Stack {...assetProps.stack}>
-      <SvgIcon component={icon} {...assetProps.icon} />
-      <Typography {...assetProps.typography}>{typography}</Typography>
+    <Stack {...overrideProps.stack}>
+      <SvgIcon component={icon} {...overrideProps.icon} />
+      <Typography {...overrideProps.typography}>{typography}</Typography>
     </Stack>
   );
 };

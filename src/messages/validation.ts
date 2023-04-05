@@ -1,6 +1,6 @@
 import type { ValidationRule } from 'react-hook-form';
 
-type ValidMsg = {
+type Validations = {
   required: string | ValidationRule<boolean>;
   max: (max: number) => ValidationRule<number | string>;
   min: (min: number) => ValidationRule<number | string>;
@@ -10,7 +10,7 @@ type ValidMsg = {
   email: ValidationRule<RegExp>;
 };
 
-export const validMsg: ValidMsg = {
+export const validations: Validations = {
   required: 'Required',
   max: (max: number) => {
     return {
