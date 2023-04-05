@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 
 import type { GoogleMapProps } from '@/components/GoogleMap';
 
-import { CONSTANTS } from './constants';
+import { CONSTANTS } from './GourmetSearchAPIForm.constants';
 
 export const googleMapStyle: GoogleMapProps['sx'] = {
   width: '100%',

@@ -102,13 +102,11 @@ export const ShopPlaceReviewList = ({ reviews, queryStatus }: ShopReviewListProp
             </Card>
           </Grid>
         )}
-        <Grid item container spacing={0}>
-          {(!reviews || reviews.length === 0) && (
-            <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
-              <Typography variant="h6">No Reviews</Typography>
-            </Grid>
-          )}
-        </Grid>
+        {(!reviews || reviews.length === 0) && (
+          <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
+            <Typography variant="h6">No Reviews</Typography>
+          </Grid>
+        )}
       </Grid>
     </Container>
   );

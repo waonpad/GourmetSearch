@@ -9,36 +9,32 @@ import { ErrorFallback } from '@/components/Elements/ErrorFallback';
 import type { FallbackProps } from 'react-error-boundary';
 
 export type FallbackWrapperProps = {
-  suspense?: boolean;
-  susupenseFallback?: SuspenseProps['fallback'];
-  errorFallback?: boolean;
-  FallbackComponent?: React.ComponentType<FallbackProps>;
+  suspenseFallback?: SuspenseProps['fallback'];
+  errorFallback?: React.ComponentType<FallbackProps>;
   children?: JSX.Element;
 };
 
 export type WrapperedComponentProps = Omit<FallbackWrapperProps, 'children'>;
 
 export const FallbackWrapper = ({
-  suspense = true,
-  susupenseFallback = <StyledCircularProgress />,
-  errorFallback = true,
-  FallbackComponent = ErrorFallback,
+  suspenseFallback = <StyledCircularProgress />,
+  errorFallback = ErrorFallback,
   children: Component,
 }: FallbackWrapperProps) => {
-  if (errorFallback && suspense) {
+  if (errorFallback && suspenseFallback) {
     return (
-      <Suspense fallback={susupenseFallback}>
-        <ErrorBoundary FallbackComponent={FallbackComponent}>{Component}</ErrorBoundary>
+      <Suspense fallback={suspenseFallback}>
+        <ErrorBoundary FallbackComponent={errorFallback}>{Component}</ErrorBoundary>
       </Suspense>
     );
   }
 
-  if (suspense) {
-    return <Suspense fallback={susupenseFallback}>{Component}</Suspense>;
+  if (suspenseFallback) {
+    return <Suspense fallback={suspenseFallback}>{Component}</Suspense>;
   }
 
   if (errorFallback) {
-    return <ErrorBoundary FallbackComponent={FallbackComponent}>{Component}</ErrorBoundary>;
+    return <ErrorBoundary FallbackComponent={errorFallback}>{Component}</ErrorBoundary>;
   }
 
   return Component ?? null;

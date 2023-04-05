@@ -11,10 +11,13 @@ import type { LatLng } from '@/types';
 
 import { FEATURE_CONSTANTS } from '../../constants';
 
-import { CONSTANTS } from './constants';
+import { CONSTANTS } from './GourmetSearchAPIForm.constants';
 
 import type { CustomizedHotpepperGourmetSearchAPIRequest } from '../../types';
-import type { GourmetSearchAPIFormInput, GourmetSearchAPIFormProps } from './types';
+import type {
+  GourmetSearchAPIFormInput,
+  GourmetSearchAPIFormProps,
+} from './GourmetSearchAPIForm.types';
 import type { SubmitHandler } from 'react-hook-form';
 
 export const useLogics = ({ defaultValues }: GourmetSearchAPIFormProps) => {

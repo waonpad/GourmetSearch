@@ -1,24 +1,15 @@
-import type { WrapperedComponentProps } from '@/lib/FallbackWrapper';
-import { FallbackWrapper } from '@/lib/FallbackWrapper';
+import { FallbackWrapper } from '@/components/FallbackWrapper';
 
-import { ShopListView } from './ShopList.View';
+import { ShopListView } from './ShopList.view';
 
-import type { ShopListProps } from './types';
-
-type ExShopListProps = ShopListProps & WrapperedComponentProps;
+import type { ShopListProps } from './ShopList.types';
 
 /**
- * suspenseするかとかは外から決められない方がいいか？
+ * エラー画面まだ作っていない
  */
-export const ShopList = ({
-  suspense = true,
-  susupenseFallback,
-  errorFallback = true,
-  FallbackComponent,
-  ...props
-}: ExShopListProps) => {
+export const ShopList = (props: ShopListProps) => {
   return (
-    <FallbackWrapper {...{ suspense, susupenseFallback, errorFallback, FallbackComponent }}>
+    <FallbackWrapper>
       <ShopListView {...props} />
     </FallbackWrapper>
   );

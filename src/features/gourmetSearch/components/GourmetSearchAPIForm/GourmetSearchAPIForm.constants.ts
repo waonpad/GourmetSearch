@@ -1,6 +1,6 @@
 import { FEATURE_CONSTANTS } from '../../constants';
 
-import type { GourmetSearchAPIFormInput } from './types';
+import type { GourmetSearchAPIFormInput } from './GourmetSearchAPIForm.types';
 
 type ConstantsType = {
   GOURMET_SEARCH_API_FORM: {
