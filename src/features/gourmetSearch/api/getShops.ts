@@ -1,9 +1,13 @@
+// import { useErrorHandler } from 'react-error-boundary';
 import _ from 'lodash';
 import { useQuery } from 'react-query';
 
 import { RECRUIT_API_URL, RECRUIT_API_KEY, HEROKU_PROXY_URL } from '@/config';
 import { axios } from '@/lib/axios';
 import type { ExtractFnReturnType, QueryConfig } from '@/lib/react-query';
+
+import { FEATURE_CONSTANTS, GET_SHOPS_DEFAULT_REQUEST } from '../constants';
+// import { isHotpepperAPIErrorResponse } from '../types';
 
 import type {
   HotpepperGourmetSearchAPIRequest,
@@ -20,7 +24,7 @@ export const getShops = (
     format: 'json',
   };
 
-  return axios.get('/gourmet/v1/', {
+  return axios.get(FEATURE_CONSTANTS.HOTPEPPER_GOURMET_SEARCH_API_ENDPOINT, {
     baseURL: `${HEROKU_PROXY_URL}/${RECRUIT_API_URL}`,
     params,
   });
@@ -33,29 +37,30 @@ export type UseShopsOptions = {
   config?: QueryConfig<QueryFnType>;
 };
 
-export const defRange = 5;
-export const defCount = 10;
-export const defStart = 1;
+export const useShops = ({ requestParams, config = {} }: UseShopsOptions) => {
+  // const handleError = useErrorHandler();
 
-export const useShops = ({ requestParams, config }: UseShopsOptions) => {
-  const defaultConfig: UseShopsOptions['config'] = {};
+  const queryEnabled =
+    config.enabled && (!!requestParams?.keyword || !!requestParams?.lat || !!requestParams?.lng);
 
-  const defaultRequestParams: OmittedHotpepperGourmetSearchAPIRequest = {
-    range: defRange,
-    count: defCount,
-    start: defStart,
-  };
-
-  const mergedRequestParams = _.merge({}, defaultRequestParams, requestParams);
-
-  return useQuery<ExtractFnReturnType<QueryFnType>>({
-    ..._.merge({}, defaultConfig, config),
-    queryKey: ['gourmets', mergedRequestParams],
-    queryFn: () => getShops(mergedRequestParams),
+  const query = useQuery<ExtractFnReturnType<QueryFnType>>({
+    ...{
+      enabled: queryEnabled,
+    },
+    queryKey: [FEATURE_CONSTANTS.REACT_QUERY_KEYS.GET_SHOPS],
+    queryFn: () => getShops(_.merge({}, GET_SHOPS_DEFAULT_REQUEST, requestParams)), // マージしないとundefinedで消される
     onSettled(data, error) {
-      console.log(mergedRequestParams);
+      console.log(requestParams);
       console.log(data);
       console.log(error);
+
+      // if (error || !data || (data && isHotpepperAPIErrorResponse(data))) {
+      //   handleError('Error: Failed to get shops.');
+      // }
+
+      config.onSettled?.(data, error);
     },
   });
+
+  return query;
 };

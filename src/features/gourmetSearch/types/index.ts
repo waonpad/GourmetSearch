@@ -9,6 +9,10 @@ export type BookmarkedShop = BaseEntity;
 
 export type ShopBookmarkedUser = BaseEntity;
 
+export type ShopDoc = BaseEntity & {
+  bookmarkCount: number;
+};
+
 export type BookmarkShopsRequest = {
   start?: number;
   count?: number;

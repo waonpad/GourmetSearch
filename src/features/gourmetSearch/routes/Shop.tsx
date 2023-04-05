@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
@@ -42,7 +42,7 @@ import {
   NavigateShopCouponAndMapButton,
   NavigateShopHotpepperUrlButton,
 } from '../components/shopDetailAssets';
-import { shopDetailHideTargetStrLength } from '../config';
+import { FEATURE_CONSTANTS } from '../constants';
 import { isHotpepperGourmetSearchAPISuccessResponse } from '../types';
 
 export const Shop = () => {
@@ -79,7 +79,7 @@ export const Shop = () => {
 
   // success
   return (
-    <>
+    <React.Fragment key={shop.id}>
       <ShopPlaceDetailsSupplier shop={shop}>
         {(shopPlaceDetails) => (
           <>
@@ -200,19 +200,22 @@ export const Shop = () => {
                                   <ShopClose shop={shop} />
                                 </Grid>
                                 {/* 予算 */}
-                                {shop.budget.name.length > shopDetailHideTargetStrLength && (
+                                {shop.budget.name.length >
+                                  FEATURE_CONSTANTS.SHOP_DETAIL_HIDE_TARGET_STR_LENGTH && (
                                   <Grid item xs={12}>
                                     <ShopBudget shop={shop} />
                                   </Grid>
                                 )}
                                 {/* メモ */}
-                                {shop.shop_detail_memo.length > shopDetailHideTargetStrLength && (
+                                {shop.shop_detail_memo.length >
+                                  FEATURE_CONSTANTS.SHOP_DETAIL_HIDE_TARGET_STR_LENGTH && (
                                   <Grid item xs={12}>
                                     <ShopDetailMemo shop={shop} />
                                   </Grid>
                                 )}
                                 {/* その他のメモ */}
-                                {shop.other_memo.length > shopDetailHideTargetStrLength &&
+                                {shop.other_memo.length >
+                                  FEATURE_CONSTANTS.SHOP_DETAIL_HIDE_TARGET_STR_LENGTH &&
                                   shop.other_memo !== shop.shop_detail_memo && (
                                     <Grid item xs={12}>
                                       <ShopOtherMemo shop={shop} />
@@ -255,6 +258,6 @@ export const Shop = () => {
           </>
         )}
       </ShopPlaceDetailsSupplier>
-    </>
+    </React.Fragment>
   );
 };

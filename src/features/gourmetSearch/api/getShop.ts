@@ -4,6 +4,8 @@ import { RECRUIT_API_URL, RECRUIT_API_KEY, HEROKU_PROXY_URL } from '@/config';
 import { axios } from '@/lib/axios';
 import type { ExtractFnReturnType, QueryConfig } from '@/lib/react-query';
 
+import { FEATURE_CONSTANTS } from '../constants';
+
 import type { HotpepperGourmetSearchAPIRequest, HotpepperGourmetSearchAPIResponse } from '../types';
 
 export const getShop = (shopId: string): Promise<HotpepperGourmetSearchAPIResponse> => {
@@ -13,7 +15,7 @@ export const getShop = (shopId: string): Promise<HotpepperGourmetSearchAPIRespon
     format: 'json',
   };
 
-  return axios.get('/gourmet/v1/', {
+  return axios.get(FEATURE_CONSTANTS.HOTPEPPER_GOURMET_SEARCH_API_ENDPOINT, {
     baseURL: `${HEROKU_PROXY_URL}/${RECRUIT_API_URL}`,
     params: params,
   });
@@ -29,7 +31,7 @@ type UseShopsOptions = {
 export const useShop = ({ shopId, config }: UseShopsOptions) => {
   return useQuery<ExtractFnReturnType<QueryFnType>>({
     ...config,
-    queryKey: ['shops', shopId],
+    queryKey: [FEATURE_CONSTANTS.REACT_QUERY_KEYS.GET_SHOP, shopId],
     queryFn: () => getShop(shopId),
     onSuccess(data) {
       console.log('data', data);

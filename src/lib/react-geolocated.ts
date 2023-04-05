@@ -23,13 +23,19 @@ export const useGeolocated = ({ config }: UseGeolocatedOptions = {}) => {
    * true: if the geolocation is supported but not yet get the location
    */
   const isLoading =
-    !geolocated.coords && geolocated.isGeolocationAvailable && geolocated.isGeolocationEnabled;
+    !geolocated.coords &&
+    !initialCoords &&
+    geolocated.isGeolocationAvailable &&
+    geolocated.isGeolocationEnabled;
 
   /**
    * true: if the geolocation is not supported or the location is already got
    */
   const isStatusChecked =
-    !!geolocated.coords || !geolocated.isGeolocationAvailable || !geolocated.isGeolocationEnabled;
+    !!geolocated.coords ||
+    !!initialCoords ||
+    !geolocated.isGeolocationAvailable ||
+    !geolocated.isGeolocationEnabled;
 
   return {
     ...geolocated,
