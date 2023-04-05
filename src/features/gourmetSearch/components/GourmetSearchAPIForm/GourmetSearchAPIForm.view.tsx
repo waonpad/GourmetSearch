@@ -18,18 +18,18 @@ import { Controller } from 'react-hook-form';
 import { GoogleMap } from '@/components/GoogleMap';
 import { GEOLOCATION_DISABLED } from '@/messages';
 
-import { CONSTANTS } from './constants';
-import { useLogics } from './logics';
+import { CONSTANTS } from './GourmetSearchAPIForm.constants';
+import { useLogics } from './GourmetSearchAPIForm.logics';
 import {
   StyledFormCard,
   StyledFormCardActions,
   StyledFormCardHeader,
   StyledFormCardContent,
   googleMapStyle,
-} from './styled';
-import { validationSchema } from './validationSchema';
+} from './GourmetSearchAPIForm.styled';
+import { validationSchema } from './GourmetSearchAPIForm.validationSchema';
 
-import type { GourmetSearchAPIFormProps } from './types';
+import type { GourmetSearchAPIFormProps } from './GourmetSearchAPIForm.types';
 
 export const GourmetSearchAPIForm = ({ defaultValues }: GourmetSearchAPIFormProps) => {
   const {

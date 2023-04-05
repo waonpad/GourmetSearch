@@ -15,3 +15,5 @@ export * from './NavigateShopDetailButton';
 export * from './NavigateShopHotpepperUrlButton';
 
 export * from './ShopDetailTempleteStack';
+
+export * from './BookmarkShopButton';

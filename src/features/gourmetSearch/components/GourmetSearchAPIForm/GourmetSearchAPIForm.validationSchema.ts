@@ -1,7 +1,7 @@
 import { validations } from '@/messages/validation';
 import type { ReactHookFormValidationRules } from '@/types';
 
-import type { GourmetSearchAPIFormInput } from './types';
+import type { GourmetSearchAPIFormInput } from './GourmetSearchAPIForm.types';
 
 export const validationSchema: ReactHookFormValidationRules<GourmetSearchAPIFormInput> = {
   keyword: {},

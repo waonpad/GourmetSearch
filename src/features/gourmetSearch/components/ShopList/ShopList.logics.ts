@@ -9,7 +9,7 @@ import { getPage, getOffset } from '@/utils/pagination';
 import { useShops } from '../../api/getShops';
 import { FEATURE_CONSTANTS } from '../../constants';
 
-import type { ShopListProps } from './types';
+import type { ShopListProps } from './ShopList.types';
 
 export const useLogics = ({ searchShopParams }: ShopListProps) => {
   const navigate = useNavigate();
@@ -21,34 +21,40 @@ export const useLogics = ({ searchShopParams }: ShopListProps) => {
     searchShopParams?.count ?? FEATURE_CONSTANTS.GET_SHOPS_DEFAULT_REQUEST_COUNT
   );
 
-  const isQueryEnabled = geolocated.isStatusChecked === true || geolocated.isLoading === false;
+  const isShopsQueryEnabled = geolocated.isStatusChecked === true || geolocated.isLoading === false;
+
+  const shopsQueryRequestLatLng =
+    searchShopParams?.allRange === 1
+      ? undefined
+      : {
+          lat:
+            searchShopParams?.lat ??
+            geolocated.initialCoords?.latitude ??
+            geolocated.coords?.latitude,
+          lng:
+            searchShopParams?.lng ??
+            geolocated?.initialCoords?.longitude ??
+            geolocated?.coords?.longitude,
+        };
+
+  const shopsQueryRequestRange =
+    searchShopParams?.allRange === 1 ? undefined : searchShopParams?.range;
+
+  const shopsQueryRequestStart =
+    getOffset(page, searchShopParams?.count ?? FEATURE_CONSTANTS.GET_SHOPS_DEFAULT_REQUEST_COUNT) +
+    1;
 
   const shopsQuery = useShops({
     config: {
       suspense: true,
       useErrorBoundary: true,
-      enabled: isQueryEnabled,
+      enabled: isShopsQueryEnabled,
     },
     requestParams: {
-      ..._.omit(searchShopParams, ['allRange']),
-      lat:
-        searchShopParams?.allRange === 1
-          ? undefined
-          : searchShopParams?.lat ??
-            geolocated.initialCoords?.latitude ??
-            geolocated.coords?.latitude,
-      lng:
-        searchShopParams?.allRange === 1
-          ? undefined
-          : searchShopParams?.lng ??
-            geolocated?.initialCoords?.longitude ??
-            geolocated?.coords?.longitude,
-      range: searchShopParams?.allRange === 1 ? undefined : searchShopParams?.range,
-      start:
-        getOffset(
-          page,
-          searchShopParams?.count ?? FEATURE_CONSTANTS.GET_SHOPS_DEFAULT_REQUEST_COUNT
-        ) + 1,
+      ..._.omit(searchShopParams, FEATURE_CONSTANTS.HOTPEPPER_GOURMET_SEARCH_API_CUSTOM_PROPERTIES),
+      ...{ shopsQueryRequestLatLng },
+      range: shopsQueryRequestRange,
+      start: shopsQueryRequestStart,
     },
   });
 
@@ -66,7 +72,6 @@ export const useLogics = ({ searchShopParams }: ShopListProps) => {
   };
 
   return {
-    geolocated,
     page,
     shopsQuery,
     handleClickPaginte,

@@ -1,0 +1,9 @@
+const LITERAL_CONSTANTS = {
+  STYLE_CHANGE_TARGET_BREAKPOINT: 'md',
+  SHOP_LIST_RESULTS_LABEL: 'Results',
+  SHOP_LIST_NO_RESULTS_LABEL: 'No Results',
+} as const;
+
+export const CONSTANTS = {
+  ...LITERAL_CONSTANTS,
+};
