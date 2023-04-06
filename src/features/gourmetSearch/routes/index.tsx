@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 
-// import { BookmarkedShops } from './BookmarkedShops';
+import { BookmarkedShops } from './BookmarkedShops';
 import { Shop } from './Shop';
 import { Shops } from './Shops';
 
@@ -11,7 +11,7 @@ export const GourmetSearchRoutes = () => {
       <Route path="shops" element={<Shops />} />
       <Route path="shops/:searchParams" element={<Shops />} />
       <Route path="shop/:shopId" element={<Shop />} />
-      {/* <Route path="bookmarks/:searhParams" element={<BookmarkedShops />} /> */}
+      <Route path="bookmarks/:userId/:searhParams" element={<BookmarkedShops />} />
     </Routes>
   );
 };
