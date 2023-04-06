@@ -1,9 +1,11 @@
 import { Box, Button, Typography } from '@mui/material';
 
+import type { FallbackProps } from 'react-error-boundary';
+
 const message = 'Ooops, something went wrong :(';
 const refresh = 'Refresh';
 
-export const ErrorFallback = () => {
+export const ErrorFallback = ({ error }: FallbackProps) => {
   return (
     <Box
       sx={{
@@ -15,7 +17,7 @@ export const ErrorFallback = () => {
       }}
     >
       <Typography variant="h4" gutterBottom>
-        {message}
+        {error ?? message}
       </Typography>
       <Button
         variant="contained"

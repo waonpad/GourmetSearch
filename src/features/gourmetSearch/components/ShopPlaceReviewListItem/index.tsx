@@ -4,12 +4,9 @@ import { ShopPlaceReviewListItemView } from './ShopPlaceReviewListItem.view';
 
 import type { ShopPlaceReviewListItemProps } from './ShopPlaceReviewListItem.types';
 
-/**
- * エラー画面まだ作っていない
- */
 export const ShopPlaceReviewListItem = (props: ShopPlaceReviewListItemProps) => {
   return (
-    <FallbackWrapper>
+    <FallbackWrapper suspenseFallback={undefined} errorFallback={undefined}>
       <ShopPlaceReviewListItemView {...props} />
     </FallbackWrapper>
   );

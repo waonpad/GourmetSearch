@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, CardHeader, CardMedia, Collapse, IconButton } from '@mui/material';
+import { Box, Card, CardContent, CardHeader, Collapse, IconButton } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
 
@@ -33,16 +33,17 @@ StyledShopCardMediaCollapse.defaultProps = {
   collapsedSize: CONSTANTS.SHOP_CARD_MEDIA_COLLAPSED_SIZE,
 };
 
-export const StyledShopCardMedia = styled(CardMedia, {
+export const StyledShopCardMedia = styled('img', {
   shouldForwardProp: (prop) => prop !== 'isExpanded',
 })<{ isExpanded?: boolean }>(({ theme, isExpanded }) => ({
+  width: '100%',
   transition: theme.transitions.create('transform', {
     easing: theme.transitions.easing.easeInOut,
     duration: theme.transitions.duration.enteringScreen,
   }),
-  transform: 'translateY(0)',
+  transform: 'translateY(-50%)',
   ...(isExpanded && {
-    transform: 'translateY(-50%)',
+    transform: 'translateY(0)',
   }),
 }));
 
@@ -62,10 +63,13 @@ StyledShopCardMediaExpandButton.defaultProps = {
 };
 
 export const StyledShopCardContent = styled(CardContent)(({ theme }) => ({
-  paddingTop: 0,
-  paddingBottom: 0,
+  paddingTop: theme.spacing(1),
+  paddingBottom: theme.spacing(1),
+  [theme.breakpoints.down(CONSTANTS.SHOP_CARD_MEDIA_VISIBLE_CHANGE_TARGET_BREAKPOINT)]: {
+    paddingTop: theme.spacing(2),
+  },
   [theme.breakpoints.down(CONSTANTS.STYLE_CHANGE_TARGET_BREAKPOINT)]: {
-    paddingLef: theme.spacing(1),
+    paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
   },
 }));
@@ -77,8 +81,4 @@ export const StyledShopCardContentLeft = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const StyledShopCardContentRight = styled(Box)(({ theme }) => ({
-  [theme.breakpoints.down(CONSTANTS.SHOP_CARD_MEDIA_VISIBLE_CHANGE_TARGET_BREAKPOINT)]: {
-    paddingTopp: theme.spacing(2),
-  },
-}));
+export const StyledShopCardContentRight = styled(Box)(() => ({}));
