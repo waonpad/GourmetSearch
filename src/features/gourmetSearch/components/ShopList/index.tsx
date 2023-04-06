@@ -1,6 +1,6 @@
 import { FallbackWrapper } from '@/components/FallbackWrapper';
 
-import { ShopListView } from './ShopList.View';
+import { ShopListView } from './ShopList.view';
 
 import type { ShopListProps } from './ShopList.types';
 
