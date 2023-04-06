@@ -2,11 +2,11 @@ import { Box, Card, CardContent, CardHeader, CardMedia, Collapse, IconButton } f
 import { grey } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
 
-import { CONSTANTS } from './ShopListItem.constants';
+import { CONSTANTS } from './Shop.constants';
 
 export const StyledShopCard = styled(Card)(({ theme }) => ({
   [theme.breakpoints.down(CONSTANTS.STYLE_CHANGE_TARGET_BREAKPOINT)]: {
-    borderRadiu: 0,
+    borderRadius: 0,
   },
 }));
 
@@ -17,7 +17,10 @@ export const StyledShopCardHeader = styled(CardHeader)(({ theme }) => ({
 }));
 
 StyledShopCardHeader.defaultProps = {
-  titleTypographyProps: { variant: 'h6', fontWeight: 'bold' },
+  titleTypographyProps: {
+    variant: 'h6',
+    fontWeight: 'bold',
+  },
 };
 
 export const StyledShopCardMediaWrapper = styled(Box)(({ theme }) => ({

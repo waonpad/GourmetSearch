@@ -33,7 +33,7 @@ const defaultBookmarkShopsConfig: UseBookmarkedShopsOptions['config'] = {
 export const useBookmarkedShops = ({ config, userId }: UseBookmarkedShopsOptions) => {
   const userRef = doc(db, 'users', userId);
 
-  const [userIsExist, setUserIsExist] = useState(true);
+  const [isExistUser, setIsExistuser] = useState(true);
 
   const mergedConfig = _.merge({}, defaultBookmarkShopsConfig, config);
 
@@ -45,13 +45,13 @@ export const useBookmarkedShops = ({ config, userId }: UseBookmarkedShopsOptions
   useEffect(() => {
     const checkUserRef = async () => {
       const userRefDoc = await getDoc(userRef);
-      setUserIsExist(userRefDoc.exists());
+      setIsExistuser(userRefDoc.exists());
     };
     checkUserRef();
   }, [userRef]);
 
   return {
     ...bookmarkedShops,
-    userIsExist,
+    isExistUser,
   };
 };

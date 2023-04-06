@@ -31,7 +31,7 @@ import { validationSchema } from './GourmetSearchAPIForm.validationSchema';
 
 import type { GourmetSearchAPIFormProps } from './GourmetSearchAPIForm.types';
 
-export const GourmetSearchAPIForm = ({ defaultValues }: GourmetSearchAPIFormProps) => {
+export const GourmetSearchAPIFormView = ({ defaultValues }: GourmetSearchAPIFormProps) => {
   const {
     geolocated,
     isDisplayMap,

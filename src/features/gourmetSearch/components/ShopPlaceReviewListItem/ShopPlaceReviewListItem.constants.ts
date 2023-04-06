@@ -1,0 +1,8 @@
+const LITERAL_CONSTANTS = {
+  STYLE_CHANGE_TARGET_BREAKPOINT: 'md',
+  REVIEW_RATING_MAX: 5,
+} as const;
+
+export const CONSTANTS = {
+  ...LITERAL_CONSTANTS,
+};

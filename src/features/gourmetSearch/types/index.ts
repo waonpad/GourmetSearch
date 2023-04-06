@@ -13,7 +13,7 @@ export type ShopDoc = BaseEntity & {
   bookmarkCount: number;
 };
 
-export type BookmarkShopsRequest = {
+export type GetBookmarkedShopsRequest = {
   start?: number;
   count?: number;
 };
@@ -21,7 +21,7 @@ export type BookmarkShopsRequest = {
 export const bookmarkShopsRequestConverter = (request: {
   start?: string;
   count?: string;
-}): BookmarkShopsRequest => {
+}): GetBookmarkedShopsRequest => {
   const convertedRequest = {
     start: request.start ? Number(request.start) : undefined,
     count: request.count ? Number(request.count) : undefined,

@@ -3,6 +3,8 @@ import { Button } from '@mui/material';
 
 import { Link } from '@/components/Elements';
 
+import { FEATURE_CONSTANTS } from '../../constants';
+
 import type { Shop } from '../../types';
 
 const navigateShopDetailButtonLabel = 'Learn more';
@@ -12,7 +14,7 @@ export const NavigateShopDetailButton = ({ shop }: { shop: Shop }) => {
     <Button
       size="small"
       component={Link}
-      to={`/app/gourmet-search/shop/${shop.id}`}
+      to={`${FEATURE_CONSTANTS.SHOP_PATH}/${shop.id}`}
       endIcon={<NavigateNextIcon />}
     >
       {navigateShopDetailButtonLabel}
