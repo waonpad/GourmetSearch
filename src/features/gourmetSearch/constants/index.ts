@@ -6,12 +6,14 @@ export const FEATURE_CONSTANTS = {
     GET_SHOP: 'shop',
   },
   SHOP_DETAIL_HIDE_TARGET_STR_LENGTH: 1,
+  HOTPEPPER_SHOP_URL: 'https://www.hotpepper.jp/str',
   HOTPEPPER_GOURMET_SEARCH_API_ENDPOINT: '/gourmet/v1/',
   HOTPEPPER_GOURMET_SEARCH_API_CUSTOM_PROPERTIES: ['allRange'],
   GET_SHOPS_DEFAULT_REQUEST_RANGE: 5,
   GET_SHOPS_DEFAULT_REQUEST_COUNT: 10,
   GET_SHOPS_DEFAULT_REQUEST_START: 1,
   SHOPS_PATH: '/app/gourmet-search/shops',
+  SHOP_PATH: '/app/gourmet-search/shop',
 } as const;
 
 export const GET_SHOPS_DEFAULT_REQUEST: OmittedHotpepperGourmetSearchAPIRequest = {

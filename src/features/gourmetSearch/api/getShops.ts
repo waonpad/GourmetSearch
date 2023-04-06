@@ -1,5 +1,5 @@
-// import { useErrorHandler } from 'react-error-boundary';
 import _ from 'lodash';
+import { useErrorHandler } from 'react-error-boundary';
 import { useQuery } from 'react-query';
 
 import { RECRUIT_API_URL, RECRUIT_API_KEY, HEROKU_PROXY_URL } from '@/config';
@@ -7,7 +7,7 @@ import { axios } from '@/lib/axios';
 import type { ExtractFnReturnType, QueryConfig } from '@/lib/react-query';
 
 import { FEATURE_CONSTANTS, GET_SHOPS_DEFAULT_REQUEST } from '../constants';
-// import { isHotpepperAPIErrorResponse } from '../types';
+import { isHotpepperAPIErrorResponse } from '../types';
 
 import type {
   HotpepperGourmetSearchAPIRequest,
@@ -38,7 +38,7 @@ export type UseShopsOptions = {
 };
 
 export const useShops = ({ requestParams, config = {} }: UseShopsOptions) => {
-  // const handleError = useErrorHandler();
+  const handleError = useErrorHandler();
 
   const queryEnabled =
     config.enabled && (!!requestParams?.keyword || !!requestParams?.lat || !!requestParams?.lng);
@@ -54,9 +54,9 @@ export const useShops = ({ requestParams, config = {} }: UseShopsOptions) => {
       console.log(data);
       console.log(error);
 
-      // if (error || !data || (data && isHotpepperAPIErrorResponse(data))) {
-      //   handleError('Error: Failed to get shops.');
-      // }
+      if (error || !data || (data && isHotpepperAPIErrorResponse(data))) {
+        handleError('Error: Failed to get shops.');
+      }
 
       config.onSettled?.(data, error);
     },

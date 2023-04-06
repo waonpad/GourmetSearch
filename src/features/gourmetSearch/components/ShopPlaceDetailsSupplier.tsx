@@ -10,6 +10,7 @@ export type ShopPlaceDetailsSupplierData = {
 
 /**
  * findPlaceFromQueryは返さないほうがいいかも
+ * react-queryを使っていないので、suspenseやerror handlingができない
  */
 export const ShopPlaceDetailsSupplier = ({
   children,

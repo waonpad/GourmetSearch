@@ -1,0 +1,9 @@
+const LITERAL_CONSTANTS = {
+  STYLE_CHANGE_TARGET_BREAKPOINT: 'md',
+  REVIEW_LIST_RESULTS_LABEL: 'Reviews',
+  REVIEW_LIST_NO_RESULTS_LABEL: 'No Reviews',
+} as const;
+
+export const CONSTANTS = {
+  ...LITERAL_CONSTANTS,
+};
