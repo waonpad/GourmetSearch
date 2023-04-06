@@ -46,13 +46,14 @@ export const useLogics = ({ searchShopParams }: ShopListProps) => {
 
   const shopsQuery = useShops({
     config: {
-      suspense: true,
-      useErrorBoundary: true,
+      // suspense: true,
+      // useErrorBoundary: true,
       enabled: isShopsQueryEnabled,
     },
     requestParams: {
       ..._.omit(searchShopParams, FEATURE_CONSTANTS.HOTPEPPER_GOURMET_SEARCH_API_CUSTOM_PROPERTIES),
-      ...{ shopsQueryRequestLatLng },
+      lat: shopsQueryRequestLatLng?.lat,
+      lng: shopsQueryRequestLatLng?.lng,
       range: shopsQueryRequestRange,
       start: shopsQueryRequestStart,
     },
@@ -73,6 +74,7 @@ export const useLogics = ({ searchShopParams }: ShopListProps) => {
 
   return {
     page,
+    geolocated,
     shopsQuery,
     handleClickPaginte,
   };

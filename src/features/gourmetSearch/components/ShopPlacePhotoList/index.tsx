@@ -4,12 +4,9 @@ import { ShopPlacePhotoListView } from './ShopPlacePhotoList.view';
 
 import type { ShopPlacePhotoListProps } from './ShopPlacePhotoList.types';
 
-/**
- * エラー画面まだ作っていない
- */
 export const ShopPlacePhotoList = (props: ShopPlacePhotoListProps) => {
   return (
-    <FallbackWrapper>
+    <FallbackWrapper suspenseFallback={undefined} errorFallback={undefined}>
       <ShopPlacePhotoListView {...props} />
     </FallbackWrapper>
   );

@@ -57,7 +57,7 @@ export type HotpepperGourmetSearchAPIResponse =
 export const isHotpepperGourmetSearchAPISuccessResponse = (
   response: HotpepperGourmetSearchAPIResponse | undefined
 ): response is HotpepperGourmetSearchAPISuccessResponse => {
-  return (response as HotpepperGourmetSearchAPISuccessResponse).results.shop !== undefined;
+  return (response as HotpepperGourmetSearchAPISuccessResponse)?.results?.shop !== undefined;
 };
 
 /**
@@ -66,7 +66,7 @@ export const isHotpepperGourmetSearchAPISuccessResponse = (
 export const isHotpepperAPIErrorResponse = (
   response: HotpepperAPIResponse | undefined
 ): response is HotpepperAPIErrorResponse => {
-  return (response as HotpepperAPIErrorResponse).results.error !== undefined;
+  return (response as HotpepperAPIErrorResponse)?.results?.error !== undefined;
 };
 
 /**

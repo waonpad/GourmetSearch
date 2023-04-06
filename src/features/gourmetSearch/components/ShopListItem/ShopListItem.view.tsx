@@ -57,7 +57,11 @@ export const ShopListItemView = ({ shop }: ShopListItemProps) => {
       />
       <StyledShopCardMediaWrapper>
         <StyledShopCardMediaCollapse in={isCardMediaExpanded}>
-          <StyledShopCardMedia image={shop.photo.pc.l} isExpanded={isCardMediaExpanded} />
+          <StyledShopCardMedia
+            src={shop.photo.pc.l}
+            alt={shop.name}
+            isExpanded={isCardMediaExpanded}
+          />
         </StyledShopCardMediaCollapse>
         <StyledShopCardMediaExpandButton onClick={handleClickToggleExpandCardMedia}>
           {isCardMediaExpanded ? <CloseFullscreenIcon /> : <OpenInFullIcon />}

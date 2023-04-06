@@ -4,12 +4,9 @@ import { ShopListView } from './ShopList.view';
 
 import type { ShopListProps } from './ShopList.types';
 
-/**
- * エラー画面まだ作っていない
- */
 export const ShopList = (props: ShopListProps) => {
   return (
-    <FallbackWrapper>
+    <FallbackWrapper suspenseFallback={undefined} errorFallback={undefined}>
       <ShopListView {...props} />
     </FallbackWrapper>
   );

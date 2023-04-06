@@ -5,6 +5,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import { Avatar, IconButton, Grid, Box, CardActions, Container } from '@mui/material';
 
+import { SuspenseFallback } from '@/components/Elements/SuspenseFallback';
 import { Head } from '@/components/Head';
 
 import { ShopPlaceDetailsSupplier } from '../../components/ShopPlaceDetailsSupplier';
@@ -50,13 +51,22 @@ export const ShopView = () => {
     handleFavoriteClick,
   } = useLogics();
 
-  const shop = isHotpepperGourmetSearchAPISuccessResponse(gourmetQuery.data)
-    ? gourmetQuery.data.results.shop[0]
-    : null;
-
-  if (!shop) {
-    return null;
+  // loading
+  if (gourmetQuery.isLoading) {
+    return <SuspenseFallback />;
   }
+
+  // error
+  if (!gourmetQuery.data || !isHotpepperGourmetSearchAPISuccessResponse(gourmetQuery.data)) {
+    return <div>error</div>;
+  }
+
+  // cant find shop
+  if (!gourmetQuery.data.results.shop[0]) {
+    return <div>error</div>;
+  }
+
+  const shop = gourmetQuery.data.results.shop[0];
 
   const isShopBudgetVisible =
     shop.budget.name.length > FEATURE_CONSTANTS.SHOP_DETAIL_HIDE_TARGET_STR_LENGTH;
@@ -92,7 +102,8 @@ export const ShopView = () => {
                     <StyledShopCardMediaWrapper>
                       <StyledShopCardMediaCollapse in={isCardMediaExpanded}>
                         <StyledShopCardMedia
-                          image={shop.photo.pc.l}
+                          src={shop.photo.pc.l}
+                          alt={shop.name}
                           isExpanded={isCardMediaExpanded}
                         />
                       </StyledShopCardMediaCollapse>

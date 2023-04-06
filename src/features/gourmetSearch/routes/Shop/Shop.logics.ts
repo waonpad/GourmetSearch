@@ -11,8 +11,8 @@ export const useLogics = () => {
   const gourmetQuery = useShop({
     config: {
       enabled: !!shopId,
-      suspense: true,
-      useErrorBoundary: true,
+      // suspense: true,
+      // useErrorBoundary: true,
     },
     shopId: shopId,
   });
