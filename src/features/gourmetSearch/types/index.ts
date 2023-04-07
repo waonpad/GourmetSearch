@@ -7,8 +7,6 @@ export * from './hotpepperApiResponse';
 
 export type BookmarkedShop = BaseEntity;
 
-export type ShopBookmarkedUser = BaseEntity;
-
 export type ShopDoc = BaseEntity & {
   bookmarkCount: number;
 };

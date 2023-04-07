@@ -1,3 +1,4 @@
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
@@ -14,6 +15,7 @@ import MuiDrawer from '@mui/material/Drawer';
 import { useTheme } from '@mui/material/styles';
 
 import { DRAWER_WIDTH } from '@/config';
+import { useAuthContext } from '@/lib/auth';
 
 import { Link } from '../Link';
 import { StyledDrawerHeader } from '../styled';
@@ -29,16 +31,22 @@ type NavigationItem = {
   icon: JSX.Element;
 };
 
-const navigation: NavigationItem[] = [
-  {
-    name: 'Gourmet Search',
-    to: '/app/gourmet-search',
-    icon: <RestaurantIcon />,
-  },
-];
-
 export const Drawer = ({ open, handleDrawerClose }: DrawerProps) => {
   const theme = useTheme();
+  const auth = useAuthContext();
+
+  const navigation: NavigationItem[] = [
+    {
+      name: 'Gourmet Search',
+      to: '/app/gourmet-search',
+      icon: <RestaurantIcon />,
+    },
+    {
+      name: 'Bookmarka',
+      to: `/app/gourmet-search/bookmarks/${auth?.user?.uid}/start=1&count=10`,
+      icon: <BookmarkIcon />,
+    },
+  ];
 
   return (
     <MuiDrawer

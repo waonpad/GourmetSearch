@@ -9,10 +9,11 @@ import {
   isHotpepperAPIErrorResponse,
   isHotpepperGourmetSearchAPISuccessResponse,
 } from '../../types';
-import { CONSTANTS } from '../ShopList/ShopList.constants';
+// import by ShopList
 import { StyledShopListHeader, StyledShopListDivider } from '../ShopList/ShopList.styled';
 import { ShopListItem } from '../ShopListItem';
 
+import { CONSTANTS } from './BookmarkedShopList.constants';
 import { useLogics } from './BookmarkedShopList.logics';
 
 import type { BookmarkedShopListProps } from './BookmarkedShopList.types';
@@ -24,6 +25,11 @@ export const BookmarkedShopListView = ({ userId, start, count }: BookmarkedShopL
     count,
   });
 
+  // Not Enabled
+  if (!shopsQuery.isEnabled) {
+    return <div>Not Enabled</div>;
+  }
+
   // Loading
   if (shopsQuery.isLoading || firestoreBookmarkedShopsQuery.isLoading) {
     return <StyledCircularProgress />;
@@ -31,7 +37,7 @@ export const BookmarkedShopListView = ({ userId, start, count }: BookmarkedShopL
 
   // Fetch Error
   if (!shopsQuery.data || !firestoreBookmarkedShopsQuery.data) {
-    return null;
+    return <div>Fetch Error</div>;
   }
 
   // Hotpepper Error
@@ -49,17 +55,17 @@ export const BookmarkedShopListView = ({ userId, start, count }: BookmarkedShopL
     );
   }
 
+  const shopTotalCount = firestoreBookmarkedShopsQuery.totalCount ?? 0;
+
   return (
     <Container>
       <Grid container spacing={1}>
         <Grid item xs={12}>
           <StyledShopListHeader>
             <Typography variant="h6">
-              {(isHotpepperGourmetSearchAPISuccessResponse(shopsQuery.data)
-                ? shopsQuery.data.results.results_available
-                : 0) +
+              {(isHotpepperGourmetSearchAPISuccessResponse(shopsQuery.data) ? shopTotalCount : 0) +
                 ' ' +
-                CONSTANTS.SHOP_LIST_RESULTS_LABEL}
+                CONSTANTS.BOOKMARKED_SHOP_LIST_RESULTS_LABEL}
             </Typography>
           </StyledShopListHeader>
         </Grid>
@@ -68,8 +74,8 @@ export const BookmarkedShopListView = ({ userId, start, count }: BookmarkedShopL
             <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
               <Pagination
                 count={getTotalPages(
-                  shopsQuery.data.results.results_available,
-                  count ?? FEATURE_CONSTANTS.GET_SHOPS_DEFAULT_REQUEST_COUNT
+                  shopTotalCount,
+                  count ?? FEATURE_CONSTANTS.GET_BOOKMARKED_SHOPS_DEDAULT_REQUEST_COUNT
                 )}
                 page={page}
                 onChange={handleClickPaginte}
@@ -86,8 +92,8 @@ export const BookmarkedShopListView = ({ userId, start, count }: BookmarkedShopL
             <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
               <Pagination
                 count={getTotalPages(
-                  shopsQuery.data.results.results_available,
-                  count ?? FEATURE_CONSTANTS.GET_SHOPS_DEFAULT_REQUEST_COUNT
+                  shopTotalCount,
+                  count ?? FEATURE_CONSTANTS.GET_BOOKMARKED_SHOPS_DEDAULT_REQUEST_COUNT
                 )}
                 page={page}
                 onChange={handleClickPaginte}
@@ -95,9 +101,9 @@ export const BookmarkedShopListView = ({ userId, start, count }: BookmarkedShopL
             </Grid>
           </>
         )}
-        {shopsQuery.data.results.shop.length === 0 && (
+        {shopTotalCount === 0 && (
           <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
-            <Typography variant="h6">{CONSTANTS.SHOP_LIST_NO_RESULTS_LABEL}</Typography>
+            <Typography variant="h6">{CONSTANTS.BOOKMARKED_SHOP_LIST_NO_RESULTS_LABEL}</Typography>
           </Grid>
         )}
       </Grid>

@@ -1,32 +1,31 @@
-import { useParams } from 'react-router-dom';
+import React from 'react';
 
 import { Container, Grid } from '@mui/material';
-import qs from 'qs';
 
 import { Head } from '@/components/Head';
 
 import { BookmarkedShopList } from '../../components/BookmarkedShopList';
-import { bookmarkShopsRequestConverter } from '../../types';
 
-import type { GetBookmarkedShopsRequest } from '../../types';
+import { CONSTANTS } from './BookmarkedShops.constants';
+import { useLogics } from './BookmarkedShops.logics';
 
 export const BookmarkedShopsView = () => {
-  const { userId, searchParams } = useParams();
-
-  const parsedSearchParams: GetBookmarkedShopsRequest | undefined = bookmarkShopsRequestConverter(
-    qs.parse(searchParams)
-  );
+  const { userId, start, count } = useLogics();
 
   return (
-    <>
-      <Head title="Bookmarked Shops" />
-      <Container>
+    <React.Fragment key={userId}>
+      <Head title={CONSTANTS.PAGE_TITLE} />
+      <Container
+        sx={{
+          paddingTop: 1,
+        }}
+      >
         <Grid container spacing={4}>
           <Grid item xs={12}>
-            <BookmarkedShopList userId={userId} {...parsedSearchParams} />
+            <BookmarkedShopList userId={userId} start={start} count={count} />
           </Grid>
         </Grid>
       </Container>
-    </>
+    </React.Fragment>
   );
 };

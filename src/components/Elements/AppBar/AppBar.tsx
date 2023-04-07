@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+// 後でアイコンなどいろいろと調整する
 import * as React from 'react';
 
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
 import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import MoreIcon from '@mui/icons-material/MoreVert';
@@ -16,6 +18,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
 import { APP_NAME } from '@/config';
+import { useAuthContext } from '@/lib/auth';
 
 import { Drawer } from '../Drawer';
 import {
@@ -28,6 +31,8 @@ import {
 } from '../styled';
 
 export const AppBar = ({ children }: { children: React.ReactNode }) => {
+  const auth = useAuthContext();
+
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -58,6 +63,11 @@ export const AppBar = ({ children }: { children: React.ReactNode }) => {
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const handleClickLogout = () => {
+    console.log('logout');
+    auth?.signOut();
   };
 
   const menuId = 'primary-search-account-menu';
@@ -169,6 +179,10 @@ export const AppBar = ({ children }: { children: React.ReactNode }) => {
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
               </Badge>
+            </IconButton>
+            {/* 簡易的にログアウトボタンを設置 */}
+            <IconButton size="large" color="inherit" onClick={handleClickLogout}>
+              <LogoutIcon />
             </IconButton>
             <IconButton
               size="large"
