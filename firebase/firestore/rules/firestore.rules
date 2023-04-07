@@ -63,7 +63,8 @@ service cloud.firestore {
       return
       isValidString(data.displayName) &&
       isValidEmail(data.email) &&
-      isValidInArray(['ADMIN', 'USER'], data.role);
+      isValidInArray(['ADMIN', 'USER'], data.role) &&
+      isValidArray(data.bookmarkedShops);
     }
 
     // validate bookmark
@@ -83,13 +84,13 @@ service cloud.firestore {
       allow create: if isValidUser(request.resource.data) && isAuthenticated();
       allow update: if isValidUser(request.resource.data) && isUserAuthenticated(userId);
 
-      // bookmarkd shops
-      match /bookmarkedShops/{bookmarkedShopId} {
-        allow read;
-        allow create: if isUserAuthenticated(userId) && isValidCreatedAtAndUpdatedAt(request.resource.data);
-        allow update: if false;
-        allow delete: if isUserAuthenticated(userId);
-      }
+      // // bookmarkd shops
+      // match /bookmarkedShops/{bookmarkedShopId} {
+      //   allow read;
+      //   allow create: if isUserAuthenticated(userId) && isValidCreatedAtAndUpdatedAt(request.resource.data);
+      //   allow update: if false;
+      //   allow delete: if isUserAuthenticated(userId);
+      // }
     }
 
     // shop

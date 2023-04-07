@@ -43,7 +43,11 @@ export const useShops = ({ requestParams, config = {} }: UseShopsOptions) => {
   );
 
   const queryEnabled =
-    config.enabled && (!!requestParams?.keyword || !!requestParams?.lat || !!requestParams?.lng);
+    config.enabled &&
+    (!!requestParams?.keyword ||
+      !!requestParams?.lat ||
+      !!requestParams?.lng ||
+      !!requestParams?.id);
 
   const query = useQuery<ExtractFnReturnType<QueryFnType>>({
     ...{
@@ -62,5 +66,8 @@ export const useShops = ({ requestParams, config = {} }: UseShopsOptions) => {
     },
   });
 
-  return query;
+  return {
+    ...query,
+    isEnabled: queryEnabled,
+  };
 };

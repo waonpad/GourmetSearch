@@ -15,6 +15,8 @@ export const useCreateUser = (user: User | null) => {
         displayName: user.displayName,
         email: user.email,
         role: 'USER',
+
+        bookmarkedShops: [],
       };
 
       createUserMutaion.mutate(newUser);

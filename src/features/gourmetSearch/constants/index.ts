@@ -12,8 +12,11 @@ export const FEATURE_CONSTANTS = {
   GET_SHOPS_DEFAULT_REQUEST_RANGE: 5,
   GET_SHOPS_DEFAULT_REQUEST_COUNT: 10,
   GET_SHOPS_DEFAULT_REQUEST_START: 1,
+  GET_BOOKMARKED_SHOPS_DEDAULT_REQUEST_COUNT: 10,
+  GET_BOOKMARKED_SHOPS_DEDAULT_REQUEST_START: 1,
   SHOPS_PATH: '/app/gourmet-search/shops',
   SHOP_PATH: '/app/gourmet-search/shop',
+  BOOKMARKED_SHOPS_PATH: '/app/gourmet-search/bookmarks',
 } as const;
 
 export const GET_SHOPS_DEFAULT_REQUEST: OmittedHotpepperGourmetSearchAPIRequest = {

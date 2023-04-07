@@ -5,4 +5,6 @@ export type User = {
   displayName: string;
   email: string;
   role: RoleTypes;
+
+  bookmarkedShops: string[];
 };

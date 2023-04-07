@@ -21,13 +21,22 @@ import type { ShopListProps } from './ShopList.types';
 export const ShopListView = ({ searchShopParams }: ShopListProps) => {
   const { shopsQuery, geolocated, page, handleClickPaginte } = useLogics({ searchShopParams });
 
+  // TODO:エラーローディングハンドリングをやる
+
+  // Not Enabled
+  if (!shopsQuery.isEnabled) {
+    return <div>Not Enabled</div>;
+  }
+
   // Loading
   if (shopsQuery.isLoading) {
     return <StyledCircularProgress />;
   }
 
   // Fetch Error
-  if (!shopsQuery.data) return null;
+  if (!shopsQuery.data) {
+    return <div>Fetch Error</div>;
+  }
 
   // GeoLocation Error
   if (
