@@ -1,7 +1,7 @@
-import type { ShopPlaceDetailsSupplierData } from '../ShopPlaceDetailsSupplier';
+import type { useShopPlaceDetails } from '../../hooks/useShopPlaceDetails';
 
 export type ShopPlaceReviewListProps = {
   // shop: Shop;
   reviews: google.maps.places.PlaceResult['reviews'];
-  queryStatus: ShopPlaceDetailsSupplierData;
+  queryStatus: ReturnType<typeof useShopPlaceDetails>;
 };

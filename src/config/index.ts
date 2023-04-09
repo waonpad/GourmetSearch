@@ -18,11 +18,12 @@ export const FIREBASE_EMULATE = process.env.REACT_APP_FIREBASE_EMULATE as string
 
 export const RECAPTCHA_PUBLIC_KEY = process.env.REACT_APP_RECAPTCHA_PUBLIC_KEY as string;
 
-export const DRAWER_WIDTH = 240;
-
 export const RECRUIT_API_URL = process.env.REACT_APP_RECRUIT_API_URL as string;
 export const RECRUIT_API_KEY = process.env.REACT_APP_RECRUIT_API_KEY as string;
 
 export const HEROKU_PROXY_URL = process.env.REACT_APP_HEROKU_PROXY_URL as string;
 
 export const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY as string;
+
+export const DRAWER_WIDTH = 240 as const;
+export const SHIFT_MAIN_CONTENT_BREAKPOINT = 'lmd' as const;

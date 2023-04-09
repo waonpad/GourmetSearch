@@ -1,39 +1,25 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// 後でアイコンなどいろいろと調整する
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import LogoutIcon from '@mui/icons-material/Logout';
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import SearchIcon from '@mui/icons-material/Search';
-import Badge from '@mui/material/Badge';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
+import { Box, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
 
-import { APP_NAME } from '@/config';
+import { APP_NAME, SHIFT_MAIN_CONTENT_BREAKPOINT } from '@/config';
 import { useAuthContext } from '@/lib/auth';
+import { appTheme } from '@/styles/Theme';
 
 import { Drawer } from '../Drawer';
-import {
-  StyledAppBar,
-  StyledDrawerHeader,
-  StyledInputBase,
-  StyledMain,
-  StyledSearch,
-  StyledSearchIconWrapper,
-} from '../styled';
+import { StyledAppBar, StyledDrawerHeader, StyledMain } from '../styled';
 
 export const AppBar = ({ children }: { children: React.ReactNode }) => {
   const auth = useAuthContext();
 
-  const [open, setOpen] = React.useState(false);
+  // SHIFT_MAIN_CONTENT_BREAKPOINTより大きい場合true
+  const [open, setOpen] = React.useState<boolean>(
+    window.innerWidth > appTheme.breakpoints.values[SHIFT_MAIN_CONTENT_BREAKPOINT]
+  );
 
   const handleDrawerToggle = () => {
     setOpen(!open);
@@ -66,7 +52,6 @@ export const AppBar = ({ children }: { children: React.ReactNode }) => {
   };
 
   const handleClickLogout = () => {
-    console.log('logout');
     auth?.signOut();
   };
 
@@ -87,8 +72,15 @@ export const AppBar = ({ children }: { children: React.ReactNode }) => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem> */}
+      {/* <MenuItem onClick={handleMenuClose}>My account</MenuItem> */}
+      {auth?.user ? (
+        <MenuItem onClick={handleClickLogout}>Logout</MenuItem>
+      ) : (
+        <MenuItem component={Link} to="/auth/login">
+          Login
+        </MenuItem>
+      )}
     </Menu>
   );
 
@@ -109,22 +101,6 @@ export const AppBar = ({ children }: { children: React.ReactNode }) => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           size="large"
@@ -135,7 +111,7 @@ export const AppBar = ({ children }: { children: React.ReactNode }) => {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        {auth?.user?.displayName ?? 'Guest'}
       </MenuItem>
     </Menu>
   );
@@ -162,39 +138,25 @@ export const AppBar = ({ children }: { children: React.ReactNode }) => {
           >
             {APP_NAME}
           </Typography>
-          {/* <StyledSearch>
-            <StyledSearchIconWrapper>
-              <SearchIcon />
-            </StyledSearchIconWrapper>
-            <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
-          </StyledSearch> */}
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            {/* 簡易的にログアウトボタンを設置 */}
-            <IconButton size="large" color="inherit" onClick={handleClickLogout}>
-              <LogoutIcon />
-            </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+            {auth?.user ? (
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            ) : (
+              <Button color="inherit" size="large" component={Link} to="/auth/login">
+                Login
+              </Button>
+            )}
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton

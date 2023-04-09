@@ -48,6 +48,7 @@ const LITERAL_CONSTANTS = {
   MAP: {
     SHOW_MAP_BUTTON_LABEL: 'Search by Map',
     HIDE_MAP_BUTTON_LABEL: 'Hide Map',
+    MAP_BUTTON_LABEL_HIDE_TAERGET_BREAKPOINT: '450px',
     RESET_LOCATION_BUTTON_LABEL: 'Back to Current Location',
   },
 } as const;

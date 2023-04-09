@@ -1,6 +1,6 @@
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
-import { Avatar, Grid, Box, CardActions } from '@mui/material';
+import { Avatar, Grid, Box, CardActions, useMediaQuery } from '@mui/material';
 
 import { FEATURE_CONSTANTS } from '../../constants';
 import {
@@ -19,6 +19,7 @@ import {
   BookmarkShopButton,
 } from '../shopDetailAssets';
 
+import { CONSTANTS } from './ShopListItem.constants';
 import { useLogics } from './ShopListItem.logics';
 import {
   StyledShopCard,
@@ -36,6 +37,10 @@ import type { ShopListItemProps } from './ShopListItem.types';
 
 export const ShopListItemView = ({ shop }: ShopListItemProps) => {
   const { isCardMediaExpanded, handleClickToggleExpandCardMedia } = useLogics();
+
+  const isActionButtonLabelShort = useMediaQuery(
+    `(min-width:${CONSTANTS.ACTION_BUTTON_LABEL_SHORTEN_TARGET_BREAKPOINT})`
+  );
 
   const isShopBudgetVisible =
     shop.budget.name.length > FEATURE_CONSTANTS.SHOP_DETAIL_HIDE_TARGET_STR_LENGTH;
@@ -131,8 +136,8 @@ export const ShopListItemView = ({ shop }: ShopListItemProps) => {
         </Grid>
       </StyledShopCardContent>
       <CardActions>
-        <NavigateShopUrlButton shop={shop} />
-        <NavigateShopCouponAndMapButton shop={shop} />
+        <NavigateShopUrlButton shop={shop} shortLabel={!isActionButtonLabelShort} />
+        <NavigateShopCouponAndMapButton shop={shop} shortLabel={!isActionButtonLabelShort} />
         <Box sx={{ ml: 'auto' }}>
           <NavigateShopDetailButton shop={shop} />
         </Box>

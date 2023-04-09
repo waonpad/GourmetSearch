@@ -2,13 +2,15 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useShop } from '../../api/getShop';
+import { useShopPlaceDetails } from '../../hooks/useShopPlaceDetails';
+import { isHotpepperGourmetSearchAPISuccessResponse } from '../../types';
 
 export const useLogics = () => {
   const { shopId } = useParams();
 
   const renderKey = shopId;
 
-  const gourmetQuery = useShop({
+  const shopQuery = useShop({
     config: {
       enabled: !!shopId,
       // suspense: true,
@@ -17,11 +19,14 @@ export const useLogics = () => {
     shopId: shopId,
   });
 
-  const [isCardMediaExpanded, setIsCardMediaExpanded] = useState(false);
+  const shopPlaceDetails = useShopPlaceDetails({
+    shop: isHotpepperGourmetSearchAPISuccessResponse(shopQuery.data)
+      ? shopQuery.data.results.shop[0]
+      : undefined,
+    fields: ['reviews', 'photos'],
+  });
 
-  const handleFavoriteClick = () => {
-    console.log('handleFavoriteClick', shopId);
-  };
+  const [isCardMediaExpanded, setIsCardMediaExpanded] = useState(false);
 
   const handleClickToggleExpandCardMedia = () => {
     setIsCardMediaExpanded(!isCardMediaExpanded);
@@ -29,9 +34,9 @@ export const useLogics = () => {
 
   return {
     renderKey,
-    gourmetQuery,
+    shopQuery,
+    shopPlaceDetails,
     isCardMediaExpanded,
-    handleFavoriteClick,
     handleClickToggleExpandCardMedia,
   };
 };

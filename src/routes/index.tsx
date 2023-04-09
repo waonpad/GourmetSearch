@@ -11,7 +11,9 @@ import { lazyImport } from '@/utils/lazyImport';
 
 const { AuthRoutes } = lazyImport(() => import('@/features/auth'), 'AuthRoutes');
 
-const { Dashboard } = lazyImport(() => import('@/features/misc'), 'Dashboard');
+// const { Dashboard } = lazyImport(() => import('@/features/misc'), 'Dashboard');
+
+const { NotFound } = lazyImport(() => import('@/features/misc'), 'NotFound');
 
 const { GourmetSearchRoutes } = lazyImport(
   () => import('@/features/gourmetSearch'),
@@ -33,12 +35,11 @@ export const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/app" element={<App />}>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<Navigate to="/app/gourmet-search" />} />
         <Route path="/gourmet-search/*" element={<GourmetSearchRoutes />} />
-        <Route path="*" element={<Navigate to="/app" />} />
       </Route>
       <Route path="/auth/*" element={<AuthRoutes />} />
-      <Route path="*" element={<Navigate to="/" />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

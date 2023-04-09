@@ -5,7 +5,7 @@ import { FEATURE_CONSTANTS } from '../../constants';
 
 import type { Shop } from '../../types';
 
-const navigateShopUrlButtonLabel = 'Learn full details';
+const navigateShopUrlButtonLabel = 'Full details';
 
 export const NavigateShopHotpepperUrlButton = ({ shop }: { shop: Shop }) => {
   return (

@@ -1,6 +1,7 @@
+import ErrorIcon from '@mui/icons-material/Error';
 import { Pagination, Typography, Grid, Container } from '@mui/material';
 
-import { StyledCircularProgress } from '@/components/Elements';
+import { StyledCircularProgress, FallbackContainer } from '@/components/Elements';
 import { GEOLOCATION_DISABLED } from '@/messages';
 import { compositeStyle } from '@/styles/compositeStyle';
 import { getTotalPages } from '@/utils/pagination';
@@ -19,23 +20,13 @@ import { StyledShopListDivider, StyledShopListHeader } from './ShopList.styled';
 import type { ShopListProps } from './ShopList.types';
 
 export const ShopListView = ({ searchShopParams }: ShopListProps) => {
-  const { shopsQuery, geolocated, page, handleClickPaginte } = useLogics({ searchShopParams });
-
-  // TODO:エラーローディングハンドリングをやる
-
-  // Not Enabled
-  if (!shopsQuery.isEnabled) {
-    return <div>Not Enabled</div>;
-  }
+  const { shopsQuery, isShopsQueryEnabled, geolocated, page, handleClickPaginte } = useLogics({
+    searchShopParams,
+  });
 
   // Loading
-  if (shopsQuery.isLoading) {
+  if (shopsQuery.isLoading || !isShopsQueryEnabled) {
     return <StyledCircularProgress />;
-  }
-
-  // Fetch Error
-  if (!shopsQuery.data) {
-    return <div>Fetch Error</div>;
   }
 
   // GeoLocation Error
@@ -44,34 +35,23 @@ export const ShopListView = ({ searchShopParams }: ShopListProps) => {
     isHotpepperAPIErrorResponse(shopsQuery.data)
   ) {
     return (
-      <Container>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
-            <Typography variant="h6">{GEOLOCATION_DISABLED}</Typography>
-          </Grid>
-        </Grid>
-      </Container>
+      <FallbackContainer head={<ErrorIcon color="error" />} messages={[GEOLOCATION_DISABLED]} />
     );
   }
 
   // Hotpepper Error
   if (isHotpepperAPIErrorResponse(shopsQuery.data)) {
     return (
-      <Container>
-        <Grid container spacing={2}>
-          {shopsQuery.data.results.error.map((error) => (
-            <Grid item xs={12} key={error.code} sx={{ ...compositeStyle.centerBoth }}>
-              <Typography variant="h6">{error.message}</Typography>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
+      <FallbackContainer
+        head={<ErrorIcon color="error" />}
+        messages={shopsQuery.data.results.error.map((error) => error.message)}
+      />
     );
   }
 
   return (
     <Container>
-      <Grid container spacing={1}>
+      <Grid container spacing={2}>
         <Grid item xs={12}>
           <StyledShopListHeader>
             <Typography variant="h6">
@@ -83,18 +63,9 @@ export const ShopListView = ({ searchShopParams }: ShopListProps) => {
             </Typography>
           </StyledShopListHeader>
         </Grid>
-        {isHotpepperGourmetSearchAPISuccessResponse(shopsQuery.data) && (
+        {isHotpepperGourmetSearchAPISuccessResponse(shopsQuery.data) &&
+        shopsQuery.data?.results.shop.length ? (
           <>
-            <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
-              <Pagination
-                count={getTotalPages(
-                  shopsQuery.data.results.results_available,
-                  searchShopParams?.count ?? FEATURE_CONSTANTS.GET_SHOPS_DEFAULT_REQUEST_COUNT
-                )}
-                page={page}
-                onChange={handleClickPaginte}
-              />
-            </Grid>
             <Grid item container spacing={{ xs: 0, md: 2 }}>
               {shopsQuery.data.results.shop.map((shop) => (
                 <Grid item xs={12} key={shop.id}>
@@ -114,8 +85,7 @@ export const ShopListView = ({ searchShopParams }: ShopListProps) => {
               />
             </Grid>
           </>
-        )}
-        {shopsQuery.data.results.shop.length === 0 && (
+        ) : (
           <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
             <Typography variant="h6">{CONSTANTS.SHOP_LIST_NO_RESULTS_LABEL}</Typography>
           </Grid>

@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import { BookmarkedShops } from './BookmarkedShops';
 import { Shop } from './Shop';
@@ -13,7 +13,6 @@ export const GourmetSearchRoutes = () => {
       <Route path="shop/:shopId" element={<Shop />} />
       <Route path="bookmarks/:userId/:searchParams" element={<BookmarkedShops />} />
       <Route path="bookmarks/:userId" element={<BookmarkedShops />} />
-      <Route path="*" element={<Navigate to="." />} />
     </Routes>
   );
 };

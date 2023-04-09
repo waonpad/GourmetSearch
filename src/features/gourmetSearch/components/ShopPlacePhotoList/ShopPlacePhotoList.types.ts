@@ -1,6 +1,6 @@
-import type { ShopPlaceDetailsSupplierData } from '../ShopPlaceDetailsSupplier';
+import type { useShopPlaceDetails } from '../../hooks/useShopPlaceDetails';
 
 export type ShopPlacePhotoListProps = {
   photos: google.maps.places.PlaceResult['photos'];
-  queryStatus: ShopPlaceDetailsSupplierData;
+  queryStatus: ReturnType<typeof useShopPlaceDetails>;
 };

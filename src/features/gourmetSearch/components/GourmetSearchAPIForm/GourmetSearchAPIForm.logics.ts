@@ -31,11 +31,13 @@ export const useLogics = ({ defaultValues }: GourmetSearchAPIFormProps) => {
 
   const [isDisplayMap, setIsDisplayMap] = useState<boolean>(false);
 
-  const [activeRange, setActiveRange] = useState<GourmetSearchAPIFormInput['range']>(
+  const defaultActiveRange =
     defaultValues?.allRange === 1
       ? undefined
-      : defaultValues?.range ?? FEATURE_CONSTANTS.GET_SHOPS_DEFAULT_REQUEST_RANGE
-  );
+      : defaultValues?.range ?? FEATURE_CONSTANTS.GET_SHOPS_DEFAULT_REQUEST_RANGE;
+
+  const [activeRange, setActiveRange] =
+    useState<GourmetSearchAPIFormInput['range']>(defaultActiveRange);
 
   const [latLng, setLatLng] = useState<LatLng | undefined>(
     defaultValues?.lat && defaultValues?.lng
@@ -108,6 +110,7 @@ export const useLogics = ({ defaultValues }: GourmetSearchAPIFormProps) => {
 
   const handleClickReset = () => {
     reset();
+    setActiveRange(defaultActiveRange);
     setResetCenterTrigger(!resetCenterTrigger);
   };
 
