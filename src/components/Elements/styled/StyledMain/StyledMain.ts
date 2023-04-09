@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles';
 
-import { DRAWER_WIDTH } from '@/config';
+import { DRAWER_WIDTH, SHIFT_MAIN_CONTENT_BREAKPOINT } from '@/config';
 
 export const StyledMain = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
@@ -18,7 +18,7 @@ export const StyledMain = styled('main', { shouldForwardProp: (prop) => prop !==
   }),
   marginLeft: `-${DRAWER_WIDTH}px`,
   ...(open && {
-    [theme.breakpoints.up('lmd')]: {
+    [theme.breakpoints.up(SHIFT_MAIN_CONTENT_BREAKPOINT)]: {
       // mdにすると妙なズレ方をするのでlmdにしている
       transition: theme.transitions.create('margin', {
         easing: theme.transitions.easing.easeOut,

@@ -14,6 +14,7 @@ export type UseBookmarkedShopsOptions = {
   config?: {
     start?: number;
     count?: number;
+    reverse?: boolean;
   };
 };
 
@@ -44,7 +45,7 @@ export const useBookmarkedShops = ({ config, userId }: UseBookmarkedShopsOptions
 
   return {
     ...targetUserDoc,
-    data: bookmarkedShops,
+    data: config?.reverse ? _.reverse(bookmarkedShops) : bookmarkedShops,
     totalCount: targetUserDoc.data?.bookmarkedShops.length,
     isExistUser,
   };

@@ -15,3 +15,10 @@ export const StyledSearch = styled('div')(({ theme }) => ({
     width: 'auto',
   },
 }));
+
+/* <StyledSearch>
+  <StyledSearchIconWrapper>
+    <SearchIcon />
+  </StyledSearchIconWrapper>
+  <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
+</StyledSearch> */

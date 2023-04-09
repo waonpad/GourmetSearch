@@ -1,8 +1,9 @@
 import { Fragment } from 'react';
 
+import ErrorIcon from '@mui/icons-material/Error';
 import { Container, Grid, List, ListItem, Typography } from '@mui/material';
 
-import { StyledCircularProgress } from '@/components/Elements';
+import { StyledCircularProgress, FallbackContainer } from '@/components/Elements';
 import { compositeStyle } from '@/styles/compositeStyle';
 
 import { ShopPlaceReviewListItem } from '../ShopPlaceReviewListItem';
@@ -28,26 +29,20 @@ export const ShopPlaceReviewListView = ({ reviews, queryStatus }: ShopPlaceRevie
   // findPlaceFromQuery error
   if (findPlaceFromQuery.isError || !findPlaceFromQuery.data) {
     return (
-      <Container>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
-            <Typography variant="h6">{findPlaceFromQuery.serviceStatus}</Typography>
-          </Grid>
-        </Grid>
-      </Container>
+      <FallbackContainer
+        head={<ErrorIcon color="error" />}
+        messages={[findPlaceFromQuery.serviceStatus ?? '']}
+      />
     );
   }
 
   // placeDetails error
   if (placeDetails.isError || !placeDetails.data) {
     return (
-      <Container>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
-            <Typography variant="h6">{placeDetails.serviceStatus}</Typography>
-          </Grid>
-        </Grid>
-      </Container>
+      <FallbackContainer
+        head={<ErrorIcon color="error" />}
+        messages={[placeDetails.serviceStatus ?? '']}
+      />
     );
   }
 
@@ -61,7 +56,7 @@ export const ShopPlaceReviewListView = ({ reviews, queryStatus }: ShopPlaceRevie
             <Typography variant="h6">{CONSTANTS.REVIEW_LIST_RESULTS_LABEL}</Typography>
           </StyledReviewListHeader>
         </Grid>
-        {isExistReviews && (
+        {isExistReviews ? (
           <Grid item xs={12}>
             <StyledReviewListCard>
               <StyledReviewListCardContent>
@@ -78,8 +73,7 @@ export const ShopPlaceReviewListView = ({ reviews, queryStatus }: ShopPlaceRevie
               </StyledReviewListCardContent>
             </StyledReviewListCard>
           </Grid>
-        )}
-        {!isExistReviews && (
+        ) : (
           <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
             <Typography variant="h6">{CONSTANTS.REVIEW_LIST_NO_RESULTS_LABEL}</Typography>
           </Grid>

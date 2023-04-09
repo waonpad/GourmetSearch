@@ -42,18 +42,8 @@ export const useShops = ({ requestParams, config = {} }: UseShopsOptions) => {
     _.pickBy(requestParams, _.identity)
   );
 
-  const queryEnabled =
-    config.enabled &&
-    (!!requestParams?.keyword ||
-      !!requestParams?.lat ||
-      !!requestParams?.lng ||
-      !!requestParams?.id);
-
   const query = useQuery<ExtractFnReturnType<QueryFnType>>({
-    ...{
-      ...config,
-      enabled: queryEnabled,
-    },
+    ...config,
     queryKey: [FEATURE_CONSTANTS.REACT_QUERY_KEYS.GET_SHOPS, mergerdRequestParams],
     queryFn: () => getShops(mergerdRequestParams),
     onSettled(data, error) {
@@ -66,8 +56,5 @@ export const useShops = ({ requestParams, config = {} }: UseShopsOptions) => {
     },
   });
 
-  return {
-    ...query,
-    isEnabled: queryEnabled,
-  };
+  return query;
 };

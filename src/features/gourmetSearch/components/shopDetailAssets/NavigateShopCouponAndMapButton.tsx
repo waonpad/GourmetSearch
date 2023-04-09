@@ -4,8 +4,17 @@ import { Button } from '@mui/material';
 import type { Shop } from '../../types';
 
 const navigateShopCouponAndMapButtonLabel = 'Get coupon and map';
+const navigateShopCouponAndMapButtonLabelShort = 'Coupon / Map';
 
-export const NavigateShopCouponAndMapButton = ({ shop }: { shop: Shop }) => {
+type NavigateShopCouponAndMapButtonProps = {
+  shop: Shop;
+  shortLabel?: boolean;
+};
+
+export const NavigateShopCouponAndMapButton = ({
+  shop,
+  shortLabel,
+}: NavigateShopCouponAndMapButtonProps) => {
   return (
     <Button
       size="small"
@@ -14,7 +23,7 @@ export const NavigateShopCouponAndMapButton = ({ shop }: { shop: Shop }) => {
       target="_blank"
       rel="noreferrer"
     >
-      {navigateShopCouponAndMapButtonLabel}
+      {shortLabel ? navigateShopCouponAndMapButtonLabelShort : navigateShopCouponAndMapButtonLabel}
     </Button>
   );
 };

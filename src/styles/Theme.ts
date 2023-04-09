@@ -1,3 +1,4 @@
+import { grey, orange } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
 
 declare module '@mui/material/styles' {
@@ -26,14 +27,14 @@ export const appTheme = createTheme({
   },
   palette: {
     mode: 'light',
-    // primary: {
-    //   main: '#f00',
-    //   contrastText: '#e1e1e1',
-    // },
+    primary: {
+      main: orange[300],
+      contrastText: grey[900],
+    },
     background: {
       default: '#f8f8f8',
     },
-    // text: { primary: '#e1e1e1' },
+    text: { primary: grey[700] },
   },
   typography: {
     fontFamily: ['Roboto', 'Noto Sans JP'].join(','),
@@ -42,6 +43,9 @@ export const appTheme = createTheme({
   components: {
     MuiCssBaseline: {
       styleOverrides: {
+        body: {
+          overflowY: 'scroll',
+        },
         img: { verticalAlign: 'bottom' },
       },
     },
@@ -55,13 +59,6 @@ export const appTheme = createTheme({
         height: 'fit-content',
       },
     },
-    // MuiDrawer: {
-    //   styleOverrides: {
-    //     paper: {
-    //       background: '#353535',
-    //     },
-    //   },
-    // },
   },
 
   // sx={{ '&:focus': { outline: 'none' } }} を使うとクリックした後のフォーカスを消せる

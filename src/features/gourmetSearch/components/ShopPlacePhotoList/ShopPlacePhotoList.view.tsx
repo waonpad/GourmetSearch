@@ -1,3 +1,4 @@
+import ErrorIcon from '@mui/icons-material/Error';
 import {
   Container,
   Grid,
@@ -7,7 +8,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 
-import { StyledCircularProgress } from '@/components/Elements';
+import { StyledCircularProgress, FallbackContainer } from '@/components/Elements';
 import { compositeStyle } from '@/styles/compositeStyle';
 
 import { ShopPlacePhotoModal } from '../ShopPlacePhotoModal';
@@ -42,26 +43,20 @@ export const ShopPlacePhotoListView = ({ photos, queryStatus }: ShopPlacePhotoLi
   // findPlaceFromQuery error
   if (findPlaceFromQuery.isError || !findPlaceFromQuery.data) {
     return (
-      <Container>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
-            <Typography variant="h6">{findPlaceFromQuery.serviceStatus}</Typography>
-          </Grid>
-        </Grid>
-      </Container>
+      <FallbackContainer
+        head={<ErrorIcon color="error" />}
+        messages={[findPlaceFromQuery.serviceStatus ?? '']}
+      />
     );
   }
 
   // placeDetails error
   if (placeDetails.isError || !placeDetails.data) {
     return (
-      <Container>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
-            <Typography variant="h6">{placeDetails.serviceStatus}</Typography>
-          </Grid>
-        </Grid>
-      </Container>
+      <FallbackContainer
+        head={<ErrorIcon color="error" />}
+        messages={[placeDetails.serviceStatus ?? '']}
+      />
     );
   }
 
@@ -82,7 +77,7 @@ export const ShopPlacePhotoListView = ({ photos, queryStatus }: ShopPlacePhotoLi
             <Typography variant="h6">{CONSTANTS.PHOTO_LIST_RESULTS_LABEL}</Typography>
           </StyledPhotoListHeader>
         </Grid>
-        {isExistPhotos && (
+        {isExistPhotos ? (
           <Grid item xs={12}>
             <ImageList
               gap={6}
@@ -106,8 +101,7 @@ export const ShopPlacePhotoListView = ({ photos, queryStatus }: ShopPlacePhotoLi
               ))}
             </ImageList>
           </Grid>
-        )}
-        {!isExistPhotos && (
+        ) : (
           <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
             <Typography variant="h6">{CONSTANTS.PHOTO_LIST_NO_RESULTS_LABEL}</Typography>
           </Grid>

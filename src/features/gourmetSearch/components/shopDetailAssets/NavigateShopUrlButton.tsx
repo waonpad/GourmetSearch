@@ -4,8 +4,14 @@ import { Button } from '@mui/material';
 import type { Shop } from '../../types';
 
 const navigateShopUrlButtonLabel = 'Go to shop page';
+const navigateShopUrlButtonLabelShort = 'Shop page';
 
-export const NavigateShopUrlButton = ({ shop }: { shop: Shop }) => {
+type NavigateShopUrlButtonProps = {
+  shop: Shop;
+  shortLabel?: boolean;
+};
+
+export const NavigateShopUrlButton = ({ shop, shortLabel }: NavigateShopUrlButtonProps) => {
   return (
     <Button
       size="small"
@@ -14,7 +20,7 @@ export const NavigateShopUrlButton = ({ shop }: { shop: Shop }) => {
       target="_blank"
       rel="noreferrer"
     >
-      {navigateShopUrlButtonLabel}
+      {shortLabel ? navigateShopUrlButtonLabelShort : navigateShopUrlButtonLabel}
     </Button>
   );
 };

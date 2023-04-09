@@ -1,6 +1,7 @@
+import ErrorIcon from '@mui/icons-material/Error';
 import { Container, Grid, Typography, Pagination } from '@mui/material';
 
-import { StyledCircularProgress } from '@/components/Elements';
+import { StyledCircularProgress, FallbackContainer } from '@/components/Elements';
 import { compositeStyle } from '@/styles/compositeStyle';
 import { getTotalPages } from '@/utils/pagination';
 
@@ -9,7 +10,7 @@ import {
   isHotpepperAPIErrorResponse,
   isHotpepperGourmetSearchAPISuccessResponse,
 } from '../../types';
-// import by ShopList
+// import from ShopList
 import { StyledShopListHeader, StyledShopListDivider } from '../ShopList/ShopList.styled';
 import { ShopListItem } from '../ShopListItem';
 
@@ -25,33 +26,38 @@ export const BookmarkedShopListView = ({ userId, start, count }: BookmarkedShopL
     count,
   });
 
-  // Not Enabled
-  if (!shopsQuery.isEnabled) {
-    return <div>Not Enabled</div>;
-  }
-
   // Loading
   if (shopsQuery.isLoading || firestoreBookmarkedShopsQuery.isLoading) {
     return <StyledCircularProgress />;
   }
 
-  // Fetch Error
-  if (!shopsQuery.data || !firestoreBookmarkedShopsQuery.data) {
-    return <div>Fetch Error</div>;
+  // user is not exist
+  if (!firestoreBookmarkedShopsQuery.isExistUser) {
+    return (
+      <FallbackContainer
+        head={<ErrorIcon color="error" />}
+        messages={[CONSTANTS.USER_IS_NOT_EXIST_MESSAGE]}
+      />
+    );
+  }
+
+  // Firestore Error
+  if (!firestoreBookmarkedShopsQuery.data) {
+    return (
+      <FallbackContainer
+        head={<ErrorIcon color="error" />}
+        messages={[CONSTANTS.GET_BOOKMARKED_SHOPS_ERROR_MESSAGE]}
+      />
+    );
   }
 
   // Hotpepper Error
   if (isHotpepperAPIErrorResponse(shopsQuery.data)) {
     return (
-      <Container>
-        <Grid container spacing={2}>
-          {shopsQuery.data.results.error.map((error) => (
-            <Grid item xs={12} key={error.code} sx={{ ...compositeStyle.centerBoth }}>
-              <Typography variant="h6">{error.message}</Typography>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
+      <FallbackContainer
+        head={<ErrorIcon color="error" />}
+        messages={shopsQuery.data.results.error.map((error) => error.message)}
+      />
     );
   }
 
@@ -59,7 +65,7 @@ export const BookmarkedShopListView = ({ userId, start, count }: BookmarkedShopL
 
   return (
     <Container>
-      <Grid container spacing={1}>
+      <Grid container spacing={2}>
         <Grid item xs={12}>
           <StyledShopListHeader>
             <Typography variant="h6">
@@ -69,38 +75,29 @@ export const BookmarkedShopListView = ({ userId, start, count }: BookmarkedShopL
             </Typography>
           </StyledShopListHeader>
         </Grid>
-        {isHotpepperGourmetSearchAPISuccessResponse(shopsQuery.data) && (
-          <>
-            <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
-              <Pagination
-                count={getTotalPages(
-                  shopTotalCount,
-                  count ?? FEATURE_CONSTANTS.GET_BOOKMARKED_SHOPS_DEDAULT_REQUEST_COUNT
-                )}
-                page={page}
-                onChange={handleClickPaginte}
-              />
-            </Grid>
-            <Grid item container spacing={{ xs: 0, md: 2 }}>
-              {shopsQuery.data.results.shop.map((shop) => (
-                <Grid item xs={12} key={shop.id}>
-                  <StyledShopListDivider />
-                  <ShopListItem shop={shop} />
-                </Grid>
-              ))}
-            </Grid>
-            <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
-              <Pagination
-                count={getTotalPages(
-                  shopTotalCount,
-                  count ?? FEATURE_CONSTANTS.GET_BOOKMARKED_SHOPS_DEDAULT_REQUEST_COUNT
-                )}
-                page={page}
-                onChange={handleClickPaginte}
-              />
-            </Grid>
-          </>
-        )}
+        {isHotpepperGourmetSearchAPISuccessResponse(shopsQuery.data) &&
+          shopsQuery.data?.results.shop.length && (
+            <>
+              <Grid item container spacing={{ xs: 0, md: 2 }}>
+                {shopsQuery.data.results.shop.map((shop) => (
+                  <Grid item xs={12} key={shop.id}>
+                    <StyledShopListDivider />
+                    <ShopListItem shop={shop} />
+                  </Grid>
+                ))}
+              </Grid>
+              <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
+                <Pagination
+                  count={getTotalPages(
+                    shopTotalCount,
+                    count ?? FEATURE_CONSTANTS.GET_BOOKMARKED_SHOPS_DEDAULT_REQUEST_COUNT
+                  )}
+                  page={page}
+                  onChange={handleClickPaginte}
+                />
+              </Grid>
+            </>
+          )}
         {shopTotalCount === 0 && (
           <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
             <Typography variant="h6">{CONSTANTS.BOOKMARKED_SHOP_LIST_NO_RESULTS_LABEL}</Typography>

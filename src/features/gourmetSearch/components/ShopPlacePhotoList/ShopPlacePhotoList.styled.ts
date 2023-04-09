@@ -14,6 +14,10 @@ export const StyledPhotoListItemImage = styled('img', {
   shouldForwardProp: (prop) => prop !== 'isRadius',
 })<{ isRadius?: boolean }>(({ theme, isRadius }) => ({
   aspectRatio: '1/1',
+  cursor: 'zoom-in',
+  '&:hover': {
+    filter: 'brightness(0.85)',
+  },
   ...(isRadius && {
     borderRadius: theme.shape.borderRadius,
   }),

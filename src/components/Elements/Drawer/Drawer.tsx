@@ -29,6 +29,7 @@ type NavigationItem = {
   name: string;
   to: string;
   icon: JSX.Element;
+  enabled?: boolean;
 };
 
 export const Drawer = ({ open, handleDrawerClose }: DrawerProps) => {
@@ -40,11 +41,13 @@ export const Drawer = ({ open, handleDrawerClose }: DrawerProps) => {
       name: 'Gourmet Search',
       to: '/app/gourmet-search',
       icon: <RestaurantIcon />,
+      enabled: true,
     },
     {
-      name: 'Bookmarka',
+      name: 'Bookmarks',
       to: `/app/gourmet-search/bookmarks/${auth?.user?.uid}/start=1&count=10`,
       icon: <BookmarkIcon />,
+      enabled: !!auth?.user,
     },
   ];
 
@@ -71,8 +74,14 @@ export const Drawer = ({ open, handleDrawerClose }: DrawerProps) => {
       <List disablePadding>
         {navigation.map((item) => (
           <ListItem key={item.name} disablePadding>
-            <ListItemButton component={Link} to={item.to}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemButton component={Link} to={item.to} disabled={!item.enabled}>
+              <ListItemIcon
+                sx={{
+                  minWidth: theme.spacing(5),
+                }}
+              >
+                {item.icon}
+              </ListItemIcon>
               <ListItemText primary={item.name} />
             </ListItemButton>
           </ListItem>

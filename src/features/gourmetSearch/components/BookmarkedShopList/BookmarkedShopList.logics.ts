@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import qs from 'qs';
@@ -19,19 +18,16 @@ export const useLogics = ({ userId, start, count }: BookmarkedShopListProps) => 
     config: {
       start,
       count,
+      reverse: true,
     },
   });
-
-  useEffect(() => {
-    console.log(firestoreBookmarkedShopsQuery);
-  }, [firestoreBookmarkedShopsQuery]);
 
   const idsString = firestoreBookmarkedShopsQuery.data?.map((shopId) => shopId).join(',');
 
   const shopsQuery = useShops({
     config: {
       enabled: !!firestoreBookmarkedShopsQuery.data,
-      keepPreviousData: true,
+      // keepPreviousData: true,
     },
     requestParams: {
       id: idsString,
