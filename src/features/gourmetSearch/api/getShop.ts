@@ -33,8 +33,11 @@ export const useShop = ({ shopId, config }: UseShopsOptions) => {
     ...config,
     queryKey: [FEATURE_CONSTANTS.REACT_QUERY_KEYS.GET_SHOP, shopId],
     queryFn: () => getShop(shopId),
-    onSuccess(data) {
-      console.log('data', data);
+    onSettled(data, error) {
+      console.log(data);
+      console.log(error);
+
+      config?.onSettled?.(data, error);
     },
   });
 };
