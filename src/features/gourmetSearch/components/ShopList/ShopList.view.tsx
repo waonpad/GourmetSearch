@@ -51,7 +51,7 @@ export const ShopListView = ({ searchShopParams }: ShopListProps) => {
 
   return (
     <Container>
-      <Grid container spacing={2}>
+      <Grid container spacing={1}>
         <Grid item xs={12}>
           <StyledShopListHeader>
             <Typography variant="h6">
@@ -65,7 +65,7 @@ export const ShopListView = ({ searchShopParams }: ShopListProps) => {
         </Grid>
         {isHotpepperGourmetSearchAPISuccessResponse(shopsQuery.data) &&
         shopsQuery.data?.results.shop.length ? (
-          <>
+          <Grid item container spacing={2}>
             <Grid item container spacing={{ xs: 0, md: 2 }}>
               {shopsQuery.data.results.shop.map((shop) => (
                 <Grid item xs={12} key={shop.id}>
@@ -84,7 +84,7 @@ export const ShopListView = ({ searchShopParams }: ShopListProps) => {
                 onChange={handleClickPaginte}
               />
             </Grid>
-          </>
+          </Grid>
         ) : (
           <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
             <Typography variant="h6">{CONSTANTS.SHOP_LIST_NO_RESULTS_LABEL}</Typography>

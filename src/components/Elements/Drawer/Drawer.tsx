@@ -12,12 +12,14 @@ import {
   ListItemText,
 } from '@mui/material';
 import MuiDrawer from '@mui/material/Drawer';
+import { grey } from '@mui/material/colors';
 import { useTheme } from '@mui/material/styles';
 
 import { DRAWER_WIDTH } from '@/config';
 import { useAuthContext } from '@/lib/auth';
 
 import { Link } from '../Link';
+import { SimpleFooter } from '../SimpleFooter';
 import { StyledDrawerHeader } from '../styled';
 
 type DrawerProps = {
@@ -60,6 +62,7 @@ export const Drawer = ({ open, handleDrawerClose }: DrawerProps) => {
           width: DRAWER_WIDTH,
           boxSizing: 'border-box',
         },
+        position: 'relative',
       }}
       variant="persistent"
       anchor="left"
@@ -88,6 +91,24 @@ export const Drawer = ({ open, handleDrawerClose }: DrawerProps) => {
         ))}
       </List>
       <Divider />
+      <SimpleFooter
+        wrap
+        overrideProps={{
+          box: {
+            sx: {
+              position: 'absolute',
+              bottom: theme.spacing(1),
+              width: '100%',
+            },
+          },
+          text: {
+            variant: 'body2',
+            sx: {
+              color: grey[600],
+            },
+          },
+        }}
+      />
     </MuiDrawer>
   );
 };

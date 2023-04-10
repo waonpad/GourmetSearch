@@ -5,4 +5,5 @@ export * from './FallbackContainer';
 export * from './Link';
 export * from './styled';
 export * from './RatingStars';
+export * from './SimpleFooter';
 export * from './SuspenseFallback';

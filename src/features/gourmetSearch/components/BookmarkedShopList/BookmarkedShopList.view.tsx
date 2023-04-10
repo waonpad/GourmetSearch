@@ -6,10 +6,7 @@ import { compositeStyle } from '@/styles/compositeStyle';
 import { getTotalPages } from '@/utils/pagination';
 
 import { FEATURE_CONSTANTS } from '../../constants';
-import {
-  isHotpepperAPIErrorResponse,
-  isHotpepperGourmetSearchAPISuccessResponse,
-} from '../../types';
+import { isHotpepperAPIErrorResponse } from '../../types';
 // import from ShopList
 import { StyledShopListHeader, StyledShopListDivider } from '../ShopList/ShopList.styled';
 import { ShopListItem } from '../ShopListItem';
@@ -20,14 +17,21 @@ import { useLogics } from './BookmarkedShopList.logics';
 import type { BookmarkedShopListProps } from './BookmarkedShopList.types';
 
 export const BookmarkedShopListView = ({ userId, start, count }: BookmarkedShopListProps) => {
-  const { firestoreBookmarkedShopsQuery, shopsQuery, page, handleClickPaginte } = useLogics({
+  const {
+    shops,
+    shopTotalCount,
+    firestoreBookmarkedShopsQuery,
+    shopsQuery,
+    page,
+    handleClickPaginte,
+  } = useLogics({
     userId,
     start,
     count,
   });
 
   // Loading
-  if (shopsQuery.isLoading || firestoreBookmarkedShopsQuery.isLoading) {
+  if ((shopsQuery.isLoading || firestoreBookmarkedShopsQuery.isLoading) && !shops.length) {
     return <StyledCircularProgress />;
   }
 
@@ -52,7 +56,7 @@ export const BookmarkedShopListView = ({ userId, start, count }: BookmarkedShopL
   }
 
   // Hotpepper Error
-  if (isHotpepperAPIErrorResponse(shopsQuery.data)) {
+  if (isHotpepperAPIErrorResponse(shopsQuery.data) && shopTotalCount) {
     return (
       <FallbackContainer
         head={<ErrorIcon color="error" />}
@@ -61,44 +65,38 @@ export const BookmarkedShopListView = ({ userId, start, count }: BookmarkedShopL
     );
   }
 
-  const shopTotalCount = firestoreBookmarkedShopsQuery.totalCount ?? 0;
-
   return (
     <Container>
-      <Grid container spacing={2}>
+      <Grid container spacing={1}>
         <Grid item xs={12}>
           <StyledShopListHeader>
             <Typography variant="h6">
-              {(isHotpepperGourmetSearchAPISuccessResponse(shopsQuery.data) ? shopTotalCount : 0) +
-                ' ' +
-                CONSTANTS.BOOKMARKED_SHOP_LIST_RESULTS_LABEL}
+              {shopTotalCount + ' ' + CONSTANTS.BOOKMARKED_SHOP_LIST_RESULTS_LABEL}
             </Typography>
           </StyledShopListHeader>
         </Grid>
-        {isHotpepperGourmetSearchAPISuccessResponse(shopsQuery.data) &&
-          shopsQuery.data?.results.shop.length && (
-            <>
-              <Grid item container spacing={{ xs: 0, md: 2 }}>
-                {shopsQuery.data.results.shop.map((shop) => (
-                  <Grid item xs={12} key={shop.id}>
-                    <StyledShopListDivider />
-                    <ShopListItem shop={shop} />
-                  </Grid>
-                ))}
-              </Grid>
-              <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
-                <Pagination
-                  count={getTotalPages(
-                    shopTotalCount,
-                    count ?? FEATURE_CONSTANTS.GET_BOOKMARKED_SHOPS_DEDAULT_REQUEST_COUNT
-                  )}
-                  page={page}
-                  onChange={handleClickPaginte}
-                />
-              </Grid>
-            </>
-          )}
-        {shopTotalCount === 0 && (
+        {shops.length ? (
+          <Grid item container spacing={2}>
+            <Grid item container spacing={{ xs: 0, md: 2 }}>
+              {shops.map((shop) => (
+                <Grid item xs={12} key={shop.id}>
+                  <StyledShopListDivider />
+                  <ShopListItem shop={shop} />
+                </Grid>
+              ))}
+            </Grid>
+            <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
+              <Pagination
+                count={getTotalPages(
+                  shopTotalCount,
+                  count ?? FEATURE_CONSTANTS.GET_BOOKMARKED_SHOPS_DEDAULT_REQUEST_COUNT
+                )}
+                page={page}
+                onChange={handleClickPaginte}
+              />
+            </Grid>
+          </Grid>
+        ) : (
           <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
             <Typography variant="h6">{CONSTANTS.BOOKMARKED_SHOP_LIST_NO_RESULTS_LABEL}</Typography>
           </Grid>

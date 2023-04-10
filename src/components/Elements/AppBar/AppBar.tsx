@@ -16,7 +16,6 @@ import { StyledAppBar, StyledDrawerHeader, StyledMain } from '../styled';
 export const AppBar = ({ children }: { children: React.ReactNode }) => {
   const auth = useAuthContext();
 
-  // SHIFT_MAIN_CONTENT_BREAKPOINTより大きい場合true
   const [open, setOpen] = React.useState<boolean>(
     window.innerWidth > appTheme.breakpoints.values[SHIFT_MAIN_CONTENT_BREAKPOINT]
   );

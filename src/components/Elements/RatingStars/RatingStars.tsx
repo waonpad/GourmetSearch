@@ -1,7 +1,7 @@
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { Stack } from '@mui/material';
-import _ from 'lodash';
+import { styled } from '@mui/material/styles';
 
 import type { StackProps, SvgIconProps } from '@mui/material';
 
@@ -15,28 +15,24 @@ export type RatingStarsProps = {
   };
 };
 
-export const defaultRatingStarsProps: RatingStarsProps['overrideProps'] = {
-  stack: {
-    direction: 'row',
-    gap: 0,
-    alignItems: 'center',
-  },
-  filledStar: {},
-  emptyStar: {},
+const StyledStack = styled(Stack)({});
+
+StyledStack.defaultProps = {
+  direction: 'row',
+  gap: 0,
+  alignItems: 'center',
 };
 
 export const RatingStars = ({ rating, max, overrideProps }: RatingStarsProps) => {
-  const assetProps = _.merge({}, defaultRatingStarsProps, overrideProps);
-
   return (
-    <Stack {...assetProps.stack}>
+    <StyledStack {...overrideProps?.stack}>
       {[...Array(max)].map((_, i) =>
         i < rating ? (
-          <StarIcon {...assetProps.filledStar} key={i} />
+          <StarIcon {...overrideProps?.filledStar} key={i} />
         ) : (
-          <StarBorderIcon {...assetProps.emptyStar} key={i} />
+          <StarBorderIcon {...overrideProps?.emptyStar} key={i} />
         )
       )}
-    </Stack>
+    </StyledStack>
   );
 };

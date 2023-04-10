@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { IconButton } from '@mui/material';
 
 import { useAuthContext } from '@/lib/auth';
@@ -34,9 +34,9 @@ export const BookmarkShopButton = ({ shop }: BookmarkShopButtonProps) => {
           })}
     >
       {bookmarkShopMutation.isBookmarked ? (
-        <FavoriteIcon color="primary" />
+        <BookmarkIcon color="primary" />
       ) : (
-        <FavoriteBorderIcon color="primary" />
+        <BookmarkBorderIcon color="primary" />
       )}
     </IconButton>
   );

@@ -1,5 +1,5 @@
 import { Container, Grid, Typography } from '@mui/material';
-import _ from 'lodash';
+import { styled } from '@mui/material/styles';
 
 import { compositeStyle } from '@/styles/compositeStyle';
 
@@ -11,15 +11,13 @@ type FallbackContainerProps = {
   };
 };
 
-const FallbackContainerDefaultProps: FallbackContainerProps['overrideProps'] = {
-  message: {
-    variant: 'h6',
-  },
+const StyledTypography = styled(Typography)({});
+
+StyledTypography.defaultProps = {
+  variant: 'h6',
 };
 
 export const FallbackContainer = ({ head, messages, overrideProps }: FallbackContainerProps) => {
-  const assetProps = _.merge({}, FallbackContainerDefaultProps, overrideProps);
-
   return (
     <Container>
       <Grid container spacing={2}>
@@ -28,7 +26,7 @@ export const FallbackContainer = ({ head, messages, overrideProps }: FallbackCon
         </Grid>
         <Grid item xs={12} sx={{ ...compositeStyle.centerBoth }}>
           {messages.map((message) => (
-            <Typography key={message} {...assetProps.message}>
+            <Typography key={message} {...overrideProps?.message}>
               {message}
             </Typography>
           ))}

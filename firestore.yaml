@@ -5,46 +5,16 @@ users:
     displayName: string
     email: string
     role: ADMIN | USER
+    bookmarkedShops: string[]
+
+shops:
+  {shopId}:
+    # field
+    bookmarkCount: number
 
     # collection
-    gameClips:
-      {gameClipId}:
-        # field
-        gameTitle: string
-        title: string
-        author: reference
-        likeCount: number
+    bookmarkedUsers:
+      {bookmarkedUserId}:
+        #field
         createdAt: timestamp
         updatedAt: timestamp
-        type: site | twitter | youtube
-        # type: site
-        videoData:
-          bucket: string
-          contentType: string | undefined
-          fullPath: string
-          downloadUrl: string
-        thumbnailData: null |
-          bucket: string
-          contentType: string | undefined
-          fullPath: string
-          downloadUrl: string
-        # type: twitter
-        tweetId: string
-        # type: youtube
-        videoId: string
-
-        # collection
-        likedUsers:
-          {likedUserId}:
-            # field
-            createdAt: timestamp
-            updatedAt: timestamp
-
-    likedGameClips:
-      {likedGameClipId}:
-        # field
-        originRef: reference
-        createdAt: timestamp
-        updatedAt: timestamp
-
-
