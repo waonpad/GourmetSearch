@@ -36,7 +36,7 @@ export const SimpleFooter = ({ wrap = false, overrideProps }: SimpleFooterProps)
   return (
     <Box {...assetProps.box}>
       <Typography {...assetProps.text}>
-        Copryright &copy; {year} {wrap && '\n'} {APP_NAME}.
+        Copyright &copy; {year} {wrap && '\n'} {APP_NAME}.
       </Typography>
     </Box>
   );
